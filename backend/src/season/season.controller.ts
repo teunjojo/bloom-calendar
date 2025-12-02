@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { SeasonService } from './season.service';
 import { Season } from './interfaces/season.interface';
 
@@ -8,5 +8,10 @@ export class SeasonController {
   @Get()
   getAll(): Season[] {
     return this.seasonService.getAll();
+  }
+
+  @Get(':id')
+  getSeason(@Param('id') id: string): Season {
+    return this.seasonService.getSeason(id);
   }
 }
