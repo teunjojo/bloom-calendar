@@ -11,7 +11,7 @@ export class EventController {
   }
 
   @Get(':id')
-  async getEvent(@Param('id') id: number): Promise<Event | null> {
+  async getEvent(@Param('id') id: number): Promise<Event> {
     const event = await this.eventService.getEvent(id);
     if (!event) {
       throw new NotFoundException(`Event with ID ${id} not found`);
