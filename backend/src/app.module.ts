@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { typeOrmConfig } from './config/typeorm.config';
 
 import { EventModule } from './event/event.module';
+import { FlowerModule } from './flower/flower.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EventModule } from './event/event.module';
       useFactory: typeOrmConfig,
     }),
     EventModule,
+    FlowerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
