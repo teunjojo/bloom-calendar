@@ -12,7 +12,6 @@ import { EventModule } from './event/event.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: typeOrmConfig,
     }),
