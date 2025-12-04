@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Season } from './interfaces/season.interface';
+import { Event } from './interfaces/event.interface';
 
 @Injectable()
-export class SeasonService {
-  getAll(): Season[] {
+export class EventService {
+  getAll(): Event[] {
     return [
       {
         id: '1',
@@ -20,7 +20,7 @@ export class SeasonService {
     ];
   }
 
-  getSeason(id: string): Season {
+  getEvent(id: string): Event {
     return {
       id: id,
       name: 'December',

@@ -1,4 +1,4 @@
-export interface Season {
+export interface Event {
   id: string;
   name: string;
   startDate: Date;
