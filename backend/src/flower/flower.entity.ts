@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+
+import { Event } from '@app/event/event.entity';
 
 @Entity()
 export class Flower {
@@ -7,4 +9,7 @@ export class Flower {
 
   @Column()
   name: string;
+
+  @ManyToMany(() => Event, (event) => event.bigFlowers)
+  events: Event[];
 }

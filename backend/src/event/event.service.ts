@@ -12,10 +12,15 @@ export class EventService {
   ) {}
 
   getAll(): Promise<Event[]> {
-    return this.eventRepository.find();
+    return this.eventRepository.find({
+      select: ['id', 'name'],
+    });
   }
 
   getEvent(id: number): Promise<Event | null> {
-    return this.eventRepository.findOneBy({ id });
+    return this.eventRepository.findOne({
+      relations: ['bigFlowers'],
+      where: { id },
+    });
   }
 }

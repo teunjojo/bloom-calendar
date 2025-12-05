@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+
+import { Flower } from '@app/flower/flower.entity';
 
 @Entity()
 export class Event {
@@ -13,4 +21,8 @@ export class Event {
 
   @Column()
   endDate: Date;
+
+  @ManyToMany(() => Flower, (flower) => flower.events)
+  @JoinTable()
+  bigFlowers: Flower[];
 }
