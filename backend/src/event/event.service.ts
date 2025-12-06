@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, LessThan, MoreThan, Repository } from 'typeorm';
 
 import { Event } from './event.entity';
 import { EventFilterDto } from './dto/event-filter.dto';
@@ -18,7 +18,19 @@ export class EventService {
     };
 
     if (eventFilterDto.eventType) {
-      options.where = { eventType: eventFilterDto.eventType };
+      options.where = {
+        ...options.where,
+        eventType: eventFilterDto.eventType,
+      };
+    }
+
+    if (eventFilterDto.currentDate) {
+      const currentDate = new Date(eventFilterDto.currentDate);
+      options.where = {
+        ...options.where,
+        startDate: LessThan(currentDate),
+        endDate: MoreThan(currentDate),
+      };
     }
 
     return this.eventRepository.find(options);

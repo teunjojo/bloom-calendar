@@ -28,7 +28,7 @@ export class Event {
       from: (value: Date) => formatTimestampWithoutTZ(value),
     },
   })
-  startDate: string;
+  startDate: Date;
 
   @Column({
     type: 'timestamp',
@@ -37,7 +37,7 @@ export class Event {
       from: (value: Date) => formatTimestampWithoutTZ(value),
     },
   })
-  endDate: string;
+  endDate: Date;
 
   @ManyToMany(() => Flower, (flower) => flower.events)
   @JoinTable()
