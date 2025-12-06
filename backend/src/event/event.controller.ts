@@ -7,13 +7,14 @@ import {
 } from '@nestjs/common';
 import { EventService as EventService } from './event.service';
 import { Event } from './event.entity';
+import { EventFilterDto } from './dto/event-filter.dto';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
   @Get()
-  getAll(@Query('eventType') eventType: string): Promise<Event[]> {
-    return this.eventService.getAll(eventType);
+  getAll(@Query() filterDto: EventFilterDto): Promise<Event[]> {
+    return this.eventService.getAll(filterDto);
   }
 
   @Get(':id')

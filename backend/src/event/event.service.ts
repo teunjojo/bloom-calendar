@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 
 import { Event } from './event.entity';
+import { EventFilterDto } from './dto/event-filter.dto';
 
 @Injectable()
 export class EventService {
@@ -11,13 +12,13 @@ export class EventService {
     private eventRepository: Repository<Event>,
   ) {}
 
-  getAll(eventType?: string): Promise<Event[]> {
+  getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
     const options: FindManyOptions<Event> = {
       select: ['id', 'name'],
     };
 
-    if (eventType) {
-      options.where = { eventType };
+    if (eventFilterDto.eventType) {
+      options.where = { eventType: eventFilterDto.eventType };
     }
 
     return this.eventRepository.find(options);
