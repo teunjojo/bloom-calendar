@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="event-list flex flex-col gap-2 w-96">
+  <div class="event-list flex flex-col m-auto gap-2 w-96">
     <span class="text-xl font-bold">Current Events</span>
     <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
   </div>
