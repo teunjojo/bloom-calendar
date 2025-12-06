@@ -4,6 +4,7 @@ import { FindManyOptions, LessThan, MoreThan, Repository } from 'typeorm';
 
 import { Event } from './event.entity';
 import { EventFilterDto } from './dto/event-filter.dto';
+import { buildFindOptions } from '@app/common/utils/query-options';
 
 @Injectable()
 export class EventService {
@@ -13,7 +14,9 @@ export class EventService {
   ) {}
 
   getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
-    const options: FindManyOptions<Event> = {};
+    const options: FindManyOptions<Event> = {
+      ...buildFindOptions<Event>(eventFilterDto),
+    };
 
     if (eventFilterDto.eventType) {
       options.where = {
