@@ -1,5 +1,5 @@
-import { IsInt, IsOptional, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
 export class FilterDto {
   @IsOptional()
@@ -13,4 +13,14 @@ export class FilterDto {
   @IsInt()
   @Min(1)
   limit?: number = 10;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }: { value?: string }) => value?.toUpperCase())
+  @IsIn(['ASC', 'DESC'])
+  sortOrder?: 'ASC' | 'DESC' = 'ASC';
 }
