@@ -32,13 +32,6 @@ export class EventService {
     const baseOptions = buildFindOptions<T>(filter);
     let where: FindOptionsWhere<T> = {} as FindOptionsWhere<T>;
 
-    if (filter.eventType) {
-      where = {
-        ...where,
-        eventType: filter.eventType,
-      } as FindOptionsWhere<T>;
-    }
-
     if (filter.currentDate) {
       const currentDate = new Date(filter.currentDate);
       where = {

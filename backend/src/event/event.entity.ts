@@ -10,9 +10,6 @@ export class Event {
   @Column()
   name: string;
 
-  @Column()
-  eventType: string;
-
   @Column({
     type: 'timestamp',
     transformer: {
