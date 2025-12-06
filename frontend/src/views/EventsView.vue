@@ -16,16 +16,30 @@ async function fetchCurrentEvents() {
   events.value = await getEvents(filters)
 }
 
+function formatDate(date: Date) {
+  return date
+    .toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    .replace(',', '')
+}
+
 onMounted(() => {
   fetchCurrentEvents().then(() => console.log(events.value))
 })
 </script>
 
 <template>
-  <div class="flex flex-col event-list gap-2">
+  <div class="flex flex-col event-list gap-2 w-96">
     <span class="text-xl font-bold">Current Events</span>
     <div v-for="event in events" :key="event.id" class="event-container">
-      <h2 class="text-xl">{{ event.name }}</h2>
+      <h2 class="text-xl font-bold">{{ event.name }}</h2>
+      <div class="text-sm">Until {{ formatDate(new Date(event.endDate)) }}</div>
     </div>
   </div>
 </template>
@@ -37,7 +51,8 @@ onMounted(() => {
 
 .event-container {
   padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
+  background-color: var(--primary-color);
+  color: white;
 }
 </style>
