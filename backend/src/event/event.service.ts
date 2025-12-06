@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 import { Event } from './event.entity';
 
@@ -11,10 +11,16 @@ export class EventService {
     private eventRepository: Repository<Event>,
   ) {}
 
-  getAll(): Promise<Event[]> {
-    return this.eventRepository.find({
+  getAll(eventType?: string): Promise<Event[]> {
+    const options: FindManyOptions<Event> = {
       select: ['id', 'name'],
-    });
+    };
+
+    if (eventType) {
+      options.where = { eventType };
+    }
+
+    return this.eventRepository.find(options);
   }
 
   getEvent(id: number): Promise<Event | null> {
