@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { getEvents, type PikminEvent } from '@/service/eventService'
 import { onMounted, ref } from 'vue'
+
+import { getEvents } from '@/service/eventService'
+import { PikminEvent } from '@/models/PikminEvent'
 
 const events = ref<PikminEvent[]>([])
 

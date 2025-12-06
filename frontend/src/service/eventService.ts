@@ -1,17 +1,11 @@
 import axios from 'axios'
 
+import { PikminEvent } from '@/models/PikminEvent'
+
 export interface EventFilter {
   eventType?: string
   limit?: number
   offset?: number
-}
-
-export interface PikminEvent {
-  id: number
-  name: string
-  eventType: string
-  startDate: string
-  endDate: string
 }
 
 export const getEvents = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
