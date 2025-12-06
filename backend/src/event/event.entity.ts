@@ -20,9 +20,10 @@ export class Event {
   eventType: string;
 
   @Column()
+  @Column({ type: 'timestamp' })
   startDate: Date;
 
-  @Column()
+  @Column({ type: 'timestamp' })
   endDate: Date;
 
   @ManyToMany(() => Flower, (flower) => flower.events)
