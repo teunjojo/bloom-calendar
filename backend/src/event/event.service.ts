@@ -16,6 +16,7 @@ export class EventService {
   getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
     const options: FindManyOptions<Event> = {
       ...buildFindOptions<Event>(eventFilterDto),
+      relations: ['bigFlowers'],
     };
 
     if (eventFilterDto.eventType) {
