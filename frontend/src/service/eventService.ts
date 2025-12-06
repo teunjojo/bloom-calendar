@@ -1,12 +1,7 @@
 import axios from 'axios'
 
-import { PikminEvent } from '@/models/PikminEvent'
-
-export interface EventFilter {
-  eventType?: string
-  limit?: number
-  offset?: number
-}
+import type { PikminEvent } from '@/types/PikminEvent'
+import type { EventFilter } from '@/types/EventFilter'
 
 export const getEvents = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
   const requestUrl = `${import.meta.env.VITE_API_URL}/event`
