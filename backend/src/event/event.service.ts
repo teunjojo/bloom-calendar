@@ -13,9 +13,7 @@ export class EventService {
   ) {}
 
   getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
-    const options: FindManyOptions<Event> = {
-      select: ['id', 'name'],
-    };
+    const options: FindManyOptions<Event> = {};
 
     if (eventFilterDto.eventType) {
       options.where = {
