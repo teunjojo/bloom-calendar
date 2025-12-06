@@ -1,6 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
 
 import { Event } from '@app/event/event.entity';
+import { Forecast } from '@app/forecast/forecast.entity';
 
 @Entity()
 export class Flower {
@@ -13,6 +20,7 @@ export class Flower {
   @Column()
   name: string;
 
-  @ManyToMany(() => Event, (event) => event.bigFlowers)
-  events: Event[];
+  @OneToMany(() => Forecast, (forecast) => forecast.flowerOfTheMonth)
+  @ManyToMany(() => Forecast, (forecast) => forecast.bigFlowers)
+  forecasts: Forecast[];
 }

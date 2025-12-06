@@ -1,12 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Flower } from '@app/flower/flower.entity';
 import { formatTimestampWithoutTZ } from '@app/common/utils/date';
 
 @Entity()
@@ -20,7 +13,6 @@ export class Event {
   @Column()
   eventType: string;
 
-  @Column()
   @Column({
     type: 'timestamp',
     transformer: {
@@ -38,8 +30,4 @@ export class Event {
     },
   })
   endDate: Date;
-
-  @ManyToMany(() => Flower, (flower) => flower.events)
-  @JoinTable()
-  bigFlowers: Flower[];
 }

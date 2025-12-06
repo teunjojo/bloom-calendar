@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { PikminEvent } from '@/types/PikminEvent'
 
-import FlowerList from '@/components/FlowerList.vue'
-
 const props = defineProps<{
   pikminEvent: PikminEvent
 }>()
@@ -28,11 +26,11 @@ function formatDate(date: Date) {
       <h2 class="text-xl font-bold">{{ props.pikminEvent.name }}</h2>
     </span>
     <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
-    <FlowerList
+    <!-- <FlowerList
       v-if="props.pikminEvent.bigFlowers.length > 0"
       :flowers="props.pikminEvent.bigFlowers"
       :name="'Big Flower Forecast'"
-    />
+    /> -->
   </div>
 </template>
 

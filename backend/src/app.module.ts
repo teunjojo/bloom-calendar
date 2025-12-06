@@ -8,6 +8,7 @@ import { typeOrmConfig } from './config/typeorm.config';
 
 import { EventModule } from './event/event.module';
 import { FlowerModule } from './flower/flower.module';
+import { ForecastModule } from './forecast/forecast.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { FlowerModule } from './flower/flower.module';
     }),
     EventModule,
     FlowerModule,
+    ForecastModule,
   ],
   controllers: [AppController],
   providers: [AppService],

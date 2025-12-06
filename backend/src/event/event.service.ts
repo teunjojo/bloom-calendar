@@ -16,7 +16,6 @@ export class EventService {
   getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
     const options: FindManyOptions<Event> = {
       ...buildFindOptions<Event>(eventFilterDto),
-      relations: ['bigFlowers'],
     };
 
     if (eventFilterDto.eventType) {
@@ -40,7 +39,6 @@ export class EventService {
 
   getEvent(id: number): Promise<Event | null> {
     return this.eventRepository.findOne({
-      relations: ['bigFlowers'],
       where: { id },
     });
   }
