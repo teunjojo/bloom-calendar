@@ -2,14 +2,14 @@
 import type { Flower } from '@/types/Flower'
 
 const props = defineProps<{
-  flowers: Flower[],
-  name: string,
+  flowers: Flower[]
+  name: string
 }>()
 </script>
 
 <template>
-  <div class="big-flower-forecast">
-    <span class="text-md font-bold">{{ props.name }}</span>
+  <div class="flower-list-container">
+    <span class="text-lg font-bold">{{ props.name }}</span>
     <div class="flower-list flex justify-center flex-wrap gap-2 mt-2">
       <div
         v-for="flower in props.flowers"
@@ -17,10 +17,22 @@ const props = defineProps<{
         class="flower-container flex flex-col items-center"
       >
         <img class="w-20" :src="`/images/flowers/${flower.slug}.png`" />
-        <span class="text-md">{{ flower.name }}</span>
+        <span class="text-md font-bold">{{ flower.name }}</span>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.flower-list-container {
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.flower-list {
+  background-color: #f7f7f7;
+  color: black;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+</style>
