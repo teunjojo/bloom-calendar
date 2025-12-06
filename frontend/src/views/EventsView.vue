@@ -1,28 +1,41 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 
 import { getEvents } from '@/service/eventService'
-import { PikminEvent } from '@/models/PikminEvent'
+import type { PikminEvent } from '@/types/PikminEvent'
+import type { EventFilter } from '@/types/EventFilter'
 
-const events = ref<PikminEvent[]>([])
+const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 
-async function fetchEvents() {
-  const filters = {}
+async function fetchCurrentEvents() {
+  const filters: EventFilter = {
+    currentDate: new Date(),
+  }
   events.value = await getEvents(filters)
 }
 
 onMounted(() => {
-  fetchEvents().then(() => console.log(events.value))
+  fetchCurrentEvents().then(() => console.log(events.value))
 })
 </script>
 
 <template>
-  <h1>Events View</h1>
-  <ul>
-    <li v-for="event in events" :key="event.id">
-      {{ event.name }}
-    </li>
-  </ul>
+  <div class="flex flex-col event-list gap-2">
+    <span class="text-xl font-bold">Current Events</span>
+    <div v-for="event in events" :key="event.id" class="event-container">
+      <h2 class="text-xl">{{ event.name }}</h2>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.event-list {
+  padding: 1rem;
+}
+
+.event-container {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+</style>
