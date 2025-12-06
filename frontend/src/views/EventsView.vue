@@ -38,7 +38,10 @@ onMounted(() => {
   <div class="event-list flex flex-col gap-2 w-96">
     <span class="text-xl font-bold">Current Events</span>
     <div v-for="event in events" :key="event.id" class="event-container">
-      <h2 class="text-xl font-bold">{{ event.name }}</h2>
+      <span class="flex items-center gap-2 mb-2">
+        <img class="w-10 special-icon" src="/images/icons/special.png" />
+        <h2 class="text-xl font-bold">{{ event.name }}</h2>
+      </span>
       <div class="text-sm">Until {{ formatDate(new Date(event.endDate)) }}</div>
       <div v-if="event.bigFlowers.length > 0" class="big-flower-forecast">
         <span class="text-md font-bold">Big Flower Forecast</span>
@@ -75,5 +78,9 @@ onMounted(() => {
   border-radius: 0.5rem;
   background-color: white;
   color: var(--primary-color);
+}
+
+.special-icon {
+  filter: invert(1);
 }
 </style>
