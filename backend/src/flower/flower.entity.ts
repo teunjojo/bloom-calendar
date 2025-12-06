@@ -8,6 +8,9 @@ export class Flower {
   id: number;
 
   @Column()
+  slug: string;
+
+  @Column()
   name: string;
 
   @ManyToMany(() => Event, (event) => event.bigFlowers)
