@@ -10,6 +10,8 @@ const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 async function fetchCurrentEvents() {
   const filters: EventFilter = {
     currentDate: new Date(),
+    sortBy: 'endDate',
+    sortOrder: 'ASC',
   }
   events.value = await getEvents(filters)
 }
