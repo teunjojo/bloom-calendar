@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, LessThan, MoreThan, Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsWhere,
+  LessThan,
+  MoreThan,
+  Repository,
+} from 'typeorm';
 
 import { Event } from './event.entity';
 import { EventFilterDto } from './dto/event-filter.dto';
@@ -13,28 +19,39 @@ export class EventService {
     private eventRepository: Repository<Event>,
   ) {}
 
-  getAll(eventFilterDto: EventFilterDto): Promise<Event[]> {
-    const options: FindManyOptions<Event> = {
-      ...buildFindOptions<Event>(eventFilterDto),
-    };
+  getAll<T extends Event = Event>(
+    eventFilterDto: EventFilterDto,
+  ): Promise<T[]> {
+    const options = this.buildQueryOptions<T>(eventFilterDto);
+    return this.eventRepository.find(options as any) as Promise<T[]>;
+  }
 
-    if (eventFilterDto.eventType) {
-      options.where = {
-        ...options.where,
-        eventType: eventFilterDto.eventType,
-      };
+  protected buildQueryOptions<T extends Event>(
+    filter: EventFilterDto,
+  ): FindManyOptions<T> {
+    const baseOptions = buildFindOptions<T>(filter);
+    let where: FindOptionsWhere<T> = {} as FindOptionsWhere<T>;
+
+    if (filter.eventType) {
+      where = {
+        ...where,
+        eventType: filter.eventType,
+      } as FindOptionsWhere<T>;
     }
 
-    if (eventFilterDto.currentDate) {
-      const currentDate = new Date(eventFilterDto.currentDate);
-      options.where = {
-        ...options.where,
+    if (filter.currentDate) {
+      const currentDate = new Date(filter.currentDate);
+      where = {
+        ...where,
         startDate: LessThan(currentDate),
         endDate: MoreThan(currentDate),
-      };
+      } as FindOptionsWhere<T>;
     }
 
-    return this.eventRepository.find(options);
+    return {
+      ...baseOptions,
+      ...(Object.keys(where).length > 0 && { where }),
+    } as FindManyOptions<T>;
   }
 
   getEvent(id: number): Promise<Event | null> {

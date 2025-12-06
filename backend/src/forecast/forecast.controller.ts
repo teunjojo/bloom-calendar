@@ -8,7 +8,7 @@ export class ForecastController {
   constructor(private readonly forecastService: ForecastService) {}
   @Get()
   getAll(@Query() filterDto: ForecastFilterDto): Promise<Forecast[]> {
-    const forecast = this.forecastService.getAll(filterDto);
+    const forecast = this.forecastService.getAll<Forecast>(filterDto);
     return forecast;
   }
 }
