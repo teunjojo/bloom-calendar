@@ -41,12 +41,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-center gap-8 p-4">
-    <div class="event-list flex flex-col gap-2 w-96">
+  <div class="flex flex-wrap justify-center gap-4 p-4">
+    <div class="event-list flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold">Current Events</span>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
     </div>
-    <div v-if="forecast.bigFlowers" class="forecast flex flex-col gap-2 w-96">
+    <div v-if="forecast.bigFlowers" class="forecast flex flex-col gap-2 p-4 w-96">
       <h2 class="text-xl font-bold mb-2">Current Forecast</h2>
       <FlowerList
         class="flower-of-the-month"
@@ -59,8 +59,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.event-list .forecast {
-  padding: 1rem;
+.event-list, .forecast {
+  background-color: #f7f7f7;
+  border-radius: 1rem;
 }
 
 .big-flower-forecast {
