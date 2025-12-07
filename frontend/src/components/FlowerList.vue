@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Flower } from '@/types/Flower'
+import FlowerItem from '@/components/FlowerItem.vue'
 
 const props = defineProps<{
   flowers: Flower[]
@@ -11,14 +12,7 @@ const props = defineProps<{
   <div class="flower-list-container">
     <span class="text-lg font-bold">{{ props.name }}</span>
     <div class="flower-list flex justify-center flex-wrap gap-2 mt-2">
-      <div
-        v-for="flower in props.flowers"
-        :key="flower.id"
-        class="flower-container flex flex-col items-center"
-      >
-        <img class="w-20" :src="`/images/flowers/${flower.slug}.png`" />
-        <span class="text-md font-bold">{{ flower.name }}</span>
-      </div>
+      <FlowerItem v-for="flower in props.flowers" :key="flower.id" :flower="flower" />
     </div>
   </div>
 </template>
