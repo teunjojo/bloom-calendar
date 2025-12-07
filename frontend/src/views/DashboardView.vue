@@ -79,20 +79,26 @@ onMounted(() => {
 <template>
   <div class="dashboard flex flex-wrap justify-center gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-96">
-      <span class="text-xl font-bold">Current Events</span>
-      <div v-if="currentEventsFailed" class="error-message">
-        <span class="attention-icon"></span>Failed to load current events
-      </div>
-      <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <img
         src="/images/icons/gift.png"
         alt="Flower Icon"
         class="w-10 h-10 absolute self-end"
-        style="transform: translate(-25%, 12.5%) rotate(10deg)"
+        style="transform: translate(-1rem, calc(100% - 50%)) rotate(10deg)"
         v-if="events.length > 0"
       />
+      <span class="text-xl font-bold flex items-center">
+        <img class="w-10 special-icon" src="/images/icons/special.png" />
+        Current Events
+      </span>
+      <div v-if="currentEventsFailed" class="error-message">
+        <span class="attention-icon"></span>Failed to load current events
+      </div>
+      <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
-      <span class="text-xl font-bold">Upcoming Events</span>
+      <span class="text-xl font-bold flex items-center">
+        <img class="w-10 special-icon" src="/images/icons/special.png" />
+        Upcoming Events
+      </span>
       <div v-if="upcomingEventsFailed" class="error-message">
         <span class="attention-icon"></span>Failed to load upcoming events
       </div>

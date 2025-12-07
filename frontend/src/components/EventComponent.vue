@@ -76,7 +76,6 @@ onMounted(() => {
 <template>
   <div class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
-      <img class="w-10 special-icon" src="/images/icons/special.png" />
       <h2 class="text-xl font-bold flex-grow">{{ props.pikminEvent.name }}</h2>
       <a
         class="blog-link aspect-square flex items-center justify-center"
