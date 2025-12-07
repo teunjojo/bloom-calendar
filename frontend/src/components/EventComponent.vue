@@ -166,6 +166,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   transition: opacity 0.3s;
+  z-index: 1000;
 }
 
 .fullscreen-image {
