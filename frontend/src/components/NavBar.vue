@@ -9,9 +9,18 @@
           <h1 class="text-2xl font-bold">BloomCalendar</h1>
         </RouterLink>
       </li>
-      <li><RouterLink to="/login">Login</RouterLink></li>
+      <li><RouterLink to="/login" class="button">Login</RouterLink></li>
     </ul>
   </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 0.5rem 1rem;
+  border-radius: 100vw;
+  text-decoration: none;
+}
+
+</style>
