@@ -64,10 +64,25 @@ onMounted(() => {
       <span class="text-xl font-bold">Current Events</span>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
       <span class="text-xl font-bold">Upcoming Events</span>
-      <EventComponent v-for="event in upcomingEvents" :key="event.id" :pikminEvent="event" :grayedOut="true" />
+      <EventComponent
+        v-for="event in upcomingEvents"
+        :key="event.id"
+        :pikminEvent="event"
+        :grayedOut="true"
+      />
     </div>
     <div v-if="forecast.bigFlowers" class="forecast flex flex-col gap-2 p-4 w-96">
-      <h2 class="text-xl font-bold mb-2">Current Forecast</h2>
+      <span class="flex items-center justify-between gap-2 mb-2">
+        <h2 class="text-xl font-bold flex-grow">Forecast: {{ forecast.name }}</h2>
+        <a
+          class="blog-link aspect-square flex items-center justify-center"
+          v-if="forecast.blogLink"
+          :href="forecast.blogLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
+        >
+      </span>
       <FlowerList
         class="flower-of-the-month"
         :flowers="[forecast.flowerOfTheMonth]"
