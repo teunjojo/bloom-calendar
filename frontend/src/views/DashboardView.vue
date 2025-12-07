@@ -83,7 +83,7 @@ onMounted(() => {
         src="/images/icons/gift.png"
         alt="Flower Icon"
         class="w-10 h-10 absolute self-end"
-        style="transform: translate(-1rem, calc(100% - 50%)) rotate(10deg)"
+        style="transform: translate(-1rem, calc(20%)) rotate(10deg)"
         v-if="events.length > 0"
       />
       <span class="text-xl font-bold flex items-center gap-1">
