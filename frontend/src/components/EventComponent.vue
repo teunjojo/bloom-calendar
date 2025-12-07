@@ -130,10 +130,6 @@ onMounted(() => {
   --primary-color: #ababab;
 }
 
-.special-icon {
-  filter: invert(1);
-}
-
 .blog-link {
   color: white;
   border: 2px solid white;

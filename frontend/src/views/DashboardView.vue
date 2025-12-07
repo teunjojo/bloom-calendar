@@ -86,8 +86,8 @@ onMounted(() => {
         style="transform: translate(-1rem, calc(100% - 50%)) rotate(10deg)"
         v-if="events.length > 0"
       />
-      <span class="text-xl font-bold flex items-center">
-        <img class="w-10 special-icon" src="/images/icons/special.png" />
+      <span class="text-xl font-bold flex items-center gap-1">
+        <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Current Events
       </span>
       <div v-if="currentEventsFailed" class="error-message">
@@ -95,8 +95,8 @@ onMounted(() => {
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
-      <span class="text-xl font-bold flex items-center">
-        <img class="w-10 special-icon" src="/images/icons/special.png" />
+      <span class="text-xl font-bold flex items-center gap-1">
+        <img class="special-icon" style="height: 2rem;" src="/images/icons/special.png" />
         Upcoming Events
       </span>
       <div v-if="upcomingEventsFailed" class="error-message">
@@ -114,7 +114,10 @@ onMounted(() => {
     </div>
     <div class="forecast flex flex-col gap-2 p-4 w-96">
       <span class="flex items-center justify-between gap-2 mb-2">
-        <h2 class="text-xl font-bold flex-grow">Forecast: {{ forecast.name }}</h2>
+        <h2 class="text-xl font-bold flex items-center gap-1">
+          <img class="weather-icon" style="height: 2rem" src="/images/icons/weather.png" />
+          Forecast: {{ forecast.name }}
+        </h2>
         <a
           class="blog-link aspect-square flex items-center justify-center"
           v-if="forecast.blogLink"
@@ -151,6 +154,11 @@ onMounted(() => {
 .forecast {
   background-color: #fff;
   border-radius: 1rem;
+}
+
+.special-icon,
+.weather-icon {
+  filter: invert(1);
 }
 
 .big-flower-forecast {
