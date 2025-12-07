@@ -6,7 +6,8 @@ const props = defineProps<{
   pikminEvent: PikminEvent
 }>()
 
-const remainingTime = ref<string>('--:--:--')
+const remainingTime = ref<string>('')
+const isFullscreen = ref<boolean>(false)
 
 function formatDate(date: Date): string {
   return date
@@ -79,16 +80,26 @@ onMounted(() => {
       <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
     </div>
     <img
-      class="event-image mt-2 rounded-lg"
+      class="event-image mt-2 rounded-lg cursor-zoom-in"
       v-if="props.pikminEvent.imageUrl"
       :src="props.pikminEvent.imageUrl"
+      @click="isFullscreen = true"
       alt="Event image"
     />
+  </div>
+  <!-- fullscreen popup modal-->
+  <div class="fullscreen-popup cursor-zoom-out" v-if="isFullscreen" @click="isFullscreen = false">
+    <img class="fullscreen-image" :src="props.pikminEvent.imageUrl" />
+    <div class="close-icon-container">
+      <div class="close-icon aspect-square flex items-center justify-center cursor-pointer">
+        <span class="material-symbols-outlined"> close </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios';
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios,close';
 
 .event-container {
   padding: 1rem;
@@ -122,7 +133,59 @@ onMounted(() => {
   font-weight: bold;
   background-color: white;
   color: var(--primary-color);
-  padding: 0 .4rem;
+  padding: 0 0.4rem;
   height: 1.4em;
+}
+
+.fullscreen-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+  transition: opacity 0.3s;
+}
+
+.fullscreen-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 1rem;
+  animation: popIn 0.3s;
+}
+
+.close-icon-container {
+  height: 90%;
+  padding: 1rem;
+}
+
+.close-icon {
+  font-size: 2rem;
+  color: white;
+  border: 2px solid white;
+  border-radius: 100vw;
+  min-width: 2.5rem;
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 </style>
