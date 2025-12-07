@@ -15,13 +15,21 @@ const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 const forecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
 const upcomingEvents: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 
+const currentEventsFailed = ref<boolean>(false)
+const currentForecastFailed = ref<boolean>(false)
+const upcomingEventsFailed = ref<boolean>(false)
+
 async function fetchCurrentEvents() {
   const filters: EventFilter = {
     currentDate: new Date(),
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
-  events.value = await getEvents(filters)
+  try {
+    events.value = await getEvents(filters)
+  } catch {
+    currentEventsFailed.value = true
+  }
 }
 
 async function fetchCurrentForecast() {
@@ -30,7 +38,11 @@ async function fetchCurrentForecast() {
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
-  forecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
+  try {
+    forecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
+  } catch {
+    currentForecastFailed.value = true
+  }
 }
 
 async function fetchUpcomingEvents() {
@@ -43,7 +55,13 @@ async function fetchUpcomingEvents() {
     sortOrder: 'ASC',
   }
 
-  const nextWeekEvents = await getEvents(filters)
+  let nextWeekEvents: PikminEvent[] = []
+  try {
+    nextWeekEvents = await getEvents(filters)
+  } catch {
+    upcomingEventsFailed.value = true
+  }
+
   const filteredEvents = nextWeekEvents.filter((event) => {
     const eventStartDate = new Date(event.startDate)
     return eventStartDate > now
@@ -62,8 +80,18 @@ onMounted(() => {
   <div class="flex flex-wrap justify-center gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold">Current Events</span>
+      <div v-if="currentEventsFailed" class="error-message text-center italic text-red-600">
+        <span class="material-symbols-outlined"> warning </span>Failed to load current events
+      </div>
+      <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
       <span class="text-xl font-bold">Upcoming Events</span>
+      <div v-if="upcomingEventsFailed" class="error-message text-center italic text-red-600">
+        <span class="material-symbols-outlined"> warning </span>Failed to load upcoming events
+      </div>
+      <div v-else-if="upcomingEvents.length === 0" class="text-center italic">
+        No upcoming events
+      </div>
       <EventComponent
         v-for="event in upcomingEvents"
         :key="event.id"
@@ -71,7 +99,7 @@ onMounted(() => {
         :grayedOut="true"
       />
     </div>
-    <div v-if="forecast.bigFlowers" class="forecast flex flex-col gap-2 p-4 w-96">
+    <div class="forecast flex flex-col gap-2 p-4 w-96">
       <span class="flex items-center justify-between gap-2 mb-2">
         <h2 class="text-xl font-bold flex-grow">Forecast: {{ forecast.name }}</h2>
         <a
@@ -83,17 +111,28 @@ onMounted(() => {
           ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
         >
       </span>
+      <div v-if="currentForecastFailed" class="error-message text-center italic text-red-600">
+        <span class="material-symbols-outlined"> warning </span>Failed to load current forecast
+      </div>
+      <div v-else-if="!forecast.name" class="text-center italic">No current forecast</div>
       <FlowerList
+        v-if="forecast.flowerOfTheMonth"
         class="flower-of-the-month"
         :flowers="[forecast.flowerOfTheMonth]"
         name="Flower of the Month"
       />
-      <FlowerList class="big-flower-forecast" :flowers="forecast.bigFlowers" name="Big Flowers" />
+      <FlowerList
+        v-if="forecast.bigFlowers"
+        class="big-flower-forecast"
+        :flowers="forecast.bigFlowers"
+        name="Big Flowers"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=warning';
 .event-list,
 .forecast {
   background-color: #f7f7f7;
@@ -121,5 +160,15 @@ onMounted(() => {
   border-radius: 100vw;
   min-width: 2.5rem;
   font-size: 1rem;
+}
+
+.error-message {
+  background-color: #ffe5e5;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #b30000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
