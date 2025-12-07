@@ -21,20 +21,25 @@ function formatDate(date: Date) {
 
 <template>
   <div class="event-container">
-    <span class="flex items-center gap-2 mb-2">
+    <span class="flex items-center justify-between gap-2 mb-2">
       <img class="w-10 special-icon" src="/images/icons/special.png" />
-      <h2 class="text-xl font-bold">{{ props.pikminEvent.name }}</h2>
+      <h2 class="text-xl font-bold flex-grow">{{ props.pikminEvent.name }}</h2>
+      <a
+        class="blog-link aspect-square flex items-center justify-center"
+        v-if="props.pikminEvent.blogLink"
+        :href="props.pikminEvent.blogLink"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
+      >
     </span>
     <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
-    <!-- <FlowerList
-      v-if="props.pikminEvent.bigFlowers.length > 0"
-      :flowers="props.pikminEvent.bigFlowers"
-      :name="'Big Flower Forecast'"
-    /> -->
   </div>
 </template>
 
 <style scoped>
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios';
+
 .event-container {
   padding: 1rem;
   border-radius: 1rem;
@@ -52,5 +57,13 @@ function formatDate(date: Date) {
 
 .special-icon {
   filter: invert(1);
+}
+
+.blog-link {
+  color: white;
+  border: 2px solid white;
+  border-radius: 100vw;
+  min-width: 2.5rem;
+  font-size: 1rem;
 }
 </style>
