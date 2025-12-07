@@ -6,3 +6,8 @@
   --primary-color-rgb: 0, 168, 130;
   --primary-color: rgb(var(--primary-color-rgb));
 }
+
+body {
+  @apply bg-gradient-to-b from-blue-100 to-green-100 min-h-screen;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
