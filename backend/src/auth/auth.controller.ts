@@ -52,4 +52,16 @@ export class AuthController {
 
     res.json({ accessToken });
   }
+
+  @Post('logout')
+  logout(@Res() res: Response) {
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict' as const,
+    };
+
+    res.clearCookie('refresh_token', cookieOptions);
+    return res.json({ message: 'Logged out' });
+  }
 }
