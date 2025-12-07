@@ -30,13 +30,11 @@ async function fetchCurrentForecast() {
     sortOrder: 'ASC',
   }
   forecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
-  console.log(forecast.value)
 }
 
 onMounted(() => {
   fetchCurrentEvents()
   fetchCurrentForecast()
-  console.log(forecast.value)
 })
 </script>
 
