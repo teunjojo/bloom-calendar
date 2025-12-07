@@ -83,8 +83,9 @@ onMounted(() => {
         :href="props.pikminEvent.blogLink"
         target="_blank"
         rel="noopener noreferrer"
-        ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
       >
+        <span class="forward-icon primary"></span>
+      </a>
     </span>
     <div class="flex justify-between">
       <div v-if="startDate < dateNow && endDate > dateNow" class="text-sm">
@@ -136,6 +137,13 @@ onMounted(() => {
   border-radius: 100vw;
   min-width: 2.5rem;
   font-size: 1rem;
+}
+
+.forward-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: white;
+  mask: url('/images/icons/drillin.png') no-repeat center / contain;
 }
 
 .countdown {
