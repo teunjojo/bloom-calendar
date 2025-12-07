@@ -27,4 +27,7 @@ export class Event {
     },
   })
   endDate: Date;
+
+  @Column({ nullable: true })
+  blogLink: string;
 }
