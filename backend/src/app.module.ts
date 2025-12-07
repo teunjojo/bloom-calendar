@@ -10,6 +10,8 @@ import { EventModule } from './event/event.module';
 import { FlowerModule } from './flower/flower.module';
 import { ForecastModule } from './forecast/forecast.module';
 import { ImageModule } from './image/image.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ImageModule } from './image/image.module';
     FlowerModule,
     ForecastModule,
     ImageModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
