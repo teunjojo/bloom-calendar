@@ -114,4 +114,12 @@ onMounted(() => {
   border-radius: 0.5rem;
   background: white;
 }
+
+.blog-link {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 100vw;
+  min-width: 2.5rem;
+  font-size: 1rem;
+}
 </style>
