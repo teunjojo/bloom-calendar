@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { PikminEvent } from '@/types/PikminEvent'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps<{
   pikminEvent: PikminEvent
 }>()
 
-function formatDate(date: Date) {
+const remainingTime = ref<string>('--:--:--')
+
+function formatDate(date: Date): string {
   return date
     .toLocaleString('en-US', {
       year: 'numeric',
@@ -17,6 +20,44 @@ function formatDate(date: Date) {
     })
     .replace(',', '')
 }
+
+function dateDiff(date: Date): string {
+  const now = new Date()
+  let diff = Math.max(0, date.getTime() - now.getTime()) / 1000 // difference in seconds
+
+  const days = Math.floor(diff / 86400)
+  diff -= days * 86400
+  const hours = Math.floor(diff / 3600)
+  diff -= hours * 3600
+  const minutes = Math.floor(diff / 60)
+  diff -= minutes * 60
+  const seconds = Math.floor(diff)
+
+  function pad(num: number): string {
+    return num.toString().padStart(2, '0')
+  }
+
+  return `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+}
+
+function startPreciseInterval() {
+  function scheduleNextTick() {
+    const now = Date.now()
+    const next = Math.ceil(now / 1000) * 1000 // next whole second
+    const delay = next - now
+
+    setTimeout(() => {
+      remainingTime.value = dateDiff(new Date(props.pikminEvent.endDate))
+      scheduleNextTick()
+    }, delay)
+  }
+
+  scheduleNextTick()
+}
+
+onMounted(() => {
+  startPreciseInterval()
+})
 </script>
 
 <template>
@@ -33,7 +74,10 @@ function formatDate(date: Date) {
         ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
       >
     </span>
-    <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
+    <div class="flex justify-between">
+      <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
+      <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
+    </div>
     <img
       class="event-image mt-2 rounded-lg"
       v-if="props.pikminEvent.imageUrl"
@@ -71,5 +115,14 @@ function formatDate(date: Date) {
   border-radius: 100vw;
   min-width: 2.5rem;
   font-size: 1rem;
+}
+
+.countdown {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  background-color: white;
+  color: var(--primary-color);
+  padding: 0 .4rem;
+  height: 1.4em;
 }
 </style>
