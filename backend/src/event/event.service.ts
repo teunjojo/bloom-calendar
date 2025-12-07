@@ -29,7 +29,10 @@ export class EventService {
   protected buildQueryOptions<T extends Event>(
     filter: EventFilterDto,
   ): FindManyOptions<T> {
-    const baseOptions = buildFindOptions<T>(filter);
+    const baseOptions = {
+      ...buildFindOptions<T>(filter),
+      relations: ['images'],
+    };
     let where: FindOptionsWhere<T> = {} as FindOptionsWhere<T>;
 
     if (filter.currentDate) {
@@ -50,6 +53,7 @@ export class EventService {
   getEvent(id: number): Promise<Event | null> {
     return this.eventRepository.findOne({
       where: { id },
+      relations: ['images'],
     });
   }
 }

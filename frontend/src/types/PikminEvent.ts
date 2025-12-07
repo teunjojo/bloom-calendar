@@ -1,3 +1,5 @@
+import type { Image } from "./Image"
+
 export interface PikminEvent {
   id: number
   name: string
@@ -5,5 +7,5 @@ export interface PikminEvent {
   startDate: string
   endDate: string
   blogLink?: string
-  imageUrl?: string
+  images: Image[]
 }

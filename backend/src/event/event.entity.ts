@@ -1,6 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 import { formatTimestampWithoutTZ } from '@app/common/utils/date';
+
+import { Image } from '@app/image/image.entity';
 
 @Entity()
 export class Event {
@@ -31,6 +33,6 @@ export class Event {
   @Column({ nullable: true })
   blogLink: string;
 
-  @Column({ nullable: true })
-  imageUrl: string;
+  @OneToMany(() => Image, (image) => image.events)
+  images: string[];
 }

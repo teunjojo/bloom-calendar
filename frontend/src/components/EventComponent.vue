@@ -13,6 +13,7 @@ const endDate = ref<Date>(new Date(props.pikminEvent.endDate))
 
 const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
+const fullscreenImageUrl = ref<string>('')
 
 function formatDate(date: Date): string {
   return date
@@ -101,9 +102,10 @@ onMounted(() => {
     </div>
     <img
       class="event-image mt-2 rounded-lg cursor-zoom-in"
-      v-if="props.pikminEvent.imageUrl"
-      :src="props.pikminEvent.imageUrl"
-      @click="isFullscreen = true"
+      v-for="image in props.pikminEvent.images"
+      :key="image.id"
+      :src="image.imageUrl"
+      @click="isFullscreen = true; fullscreenImageUrl = image.imageUrl"
       alt="Event image"
     />
   </div>
@@ -119,7 +121,7 @@ onMounted(() => {
     <img
       class="fullscreen-image"
       :class="isFullscreen ? 'popin' : 'popout'"
-      :src="props.pikminEvent.imageUrl"
+      :src="fullscreenImageUrl"
     />
   </div>
 </template>
