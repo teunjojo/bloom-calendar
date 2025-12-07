@@ -6,11 +6,13 @@ import {
   HttpStatus,
   Res,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { SignInDto } from './dto/sign-in.dto';
 import { Request, Response } from 'express';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -63,5 +65,11 @@ export class AuthController {
 
     res.clearCookie('refresh_token', cookieOptions);
     return res.json({ message: 'Logged out' });
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('check')
+  check() {
+    return { message: 'Authenticated' };
   }
 }
