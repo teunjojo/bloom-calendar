@@ -46,6 +46,16 @@ function calculateRemainingTime(date: Date): string {
   return `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
 }
 
+function updateRemainingTime() {
+  if (startDate.value > dateNow.value) {
+    remainingTime.value = calculateRemainingTime(startDate.value)
+  } else if (endDate.value > dateNow.value) {
+    remainingTime.value = calculateRemainingTime(endDate.value)
+  } else {
+    remainingTime.value = '00:00:00:00'
+  }
+}
+
 function startPreciseInterval() {
   function scheduleNextTick() {
     const now = Date.now()
@@ -53,14 +63,8 @@ function startPreciseInterval() {
     const delay = next - now
 
     setTimeout(() => {
-      if (dateNow.value < startDate.value) {
-        remainingTime.value = calculateRemainingTime(new Date(props.pikminEvent.startDate))
-      } else if (dateNow.value >= startDate.value && dateNow.value < endDate.value) {
-        remainingTime.value = calculateRemainingTime(new Date(props.pikminEvent.endDate))
-      } else {
-        remainingTime.value = '00:00:00:00'
-      }
       dateNow.value = new Date()
+      updateRemainingTime()
       scheduleNextTick()
     }, delay)
   }
@@ -69,6 +73,7 @@ function startPreciseInterval() {
 }
 
 onMounted(() => {
+  updateRemainingTime()
   startPreciseInterval()
 })
 </script>
