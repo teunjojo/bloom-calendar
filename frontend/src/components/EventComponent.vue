@@ -4,7 +4,12 @@ import { onMounted, ref } from 'vue'
 
 const props = defineProps<{
   pikminEvent: PikminEvent
+  grayedOut?: boolean
 }>()
+
+const dateNow = ref<Date>(new Date())
+const startDate = ref<Date>(new Date(props.pikminEvent.startDate))
+const endDate = ref<Date>(new Date(props.pikminEvent.endDate))
 
 const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
@@ -22,7 +27,7 @@ function formatDate(date: Date): string {
     .replace(',', '')
 }
 
-function dateDiff(date: Date): string {
+function calculateRemainingTime(date: Date): string {
   const now = new Date()
   let diff = Math.max(0, date.getTime() - now.getTime()) / 1000 // difference in seconds
 
@@ -48,7 +53,14 @@ function startPreciseInterval() {
     const delay = next - now
 
     setTimeout(() => {
-      remainingTime.value = dateDiff(new Date(props.pikminEvent.endDate))
+      if (dateNow.value < startDate.value) {
+        remainingTime.value = calculateRemainingTime(new Date(props.pikminEvent.startDate))
+      } else if (dateNow.value >= startDate.value && dateNow.value < endDate.value) {
+        remainingTime.value = calculateRemainingTime(new Date(props.pikminEvent.endDate))
+      } else {
+        remainingTime.value = '00:00:00:00'
+      }
+      dateNow.value = new Date()
       scheduleNextTick()
     }, delay)
   }
@@ -62,7 +74,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="event-container">
+  <div class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
       <img class="w-10 special-icon" src="/images/icons/special.png" />
       <h2 class="text-xl font-bold flex-grow">{{ props.pikminEvent.name }}</h2>
@@ -76,7 +88,10 @@ onMounted(() => {
       >
     </span>
     <div class="flex justify-between">
-      <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
+      <div v-if="startDate < dateNow && endDate > dateNow" class="text-sm">
+        Until {{ formatDate(endDate) }}
+      </div>
+      <div v-else-if="startDate > dateNow" class="text-sm">From {{ formatDate(startDate) }}</div>
       <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
     </div>
     <img
@@ -114,12 +129,8 @@ onMounted(() => {
   color: white;
 }
 
-.big-flower-forecast {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: white;
-  color: var(--primary-color);
+.grayed-out {
+  --primary-color: #ababab;
 }
 
 .special-icon {
