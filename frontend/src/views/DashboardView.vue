@@ -77,13 +77,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-center gap-4 p-4">
+  <div class="dashboard flex flex-wrap justify-center gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold">Current Events</span>
       <div v-if="currentEventsFailed" class="error-message text-center italic text-red-600">
         <span class="material-symbols-outlined"> warning </span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
+      <img
+        src="/images/icons/gift.png"
+        alt="Flower Icon"
+        class="w-10 h-10 absolute self-end"
+        style="transform: translate(-25%, 12.5%) rotate(10deg)"
+        v-if="events.length > 0"
+      />
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
       <span class="text-xl font-bold">Upcoming Events</span>
       <div v-if="upcomingEventsFailed" class="error-message text-center italic text-red-600">
@@ -134,9 +141,13 @@ onMounted(() => {
 <style scoped>
 @import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios,close,warning';
 
+.dashboard {
+  background: linear-gradient(#c1e4ff, #c8fff2);
+}
+
 .event-list,
 .forecast {
-  background-color: #f7f7f7;
+  background-color: #fff;
   border-radius: 1rem;
 }
 
