@@ -30,4 +30,7 @@ export class Event {
 
   @Column({ nullable: true })
   blogLink: string;
+
+  @Column({ nullable: true })
+  imageUrl: string;
 }

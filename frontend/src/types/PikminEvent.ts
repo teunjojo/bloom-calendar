@@ -5,4 +5,5 @@ export interface PikminEvent {
   startDate: string
   endDate: string
   blogLink?: string
+  imageUrl?: string
 }
