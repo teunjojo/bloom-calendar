@@ -88,13 +88,19 @@ onMounted(() => {
     />
   </div>
   <!-- fullscreen popup modal-->
-  <div class="fullscreen-popup cursor-zoom-out" v-if="isFullscreen" @click="isFullscreen = false">
-    <img class="fullscreen-image" :src="props.pikminEvent.imageUrl" />
-    <div class="close-icon-container">
-      <div class="close-icon aspect-square flex items-center justify-center cursor-pointer">
-        <span class="material-symbols-outlined"> close </span>
-      </div>
-    </div>
+  <div
+    class="fullscreen-popup cursor-zoom-out"
+    :style="{
+      opacity: isFullscreen ? '1' : '0',
+      pointerEvents: isFullscreen ? 'auto' : 'none',
+    }"
+    @click="isFullscreen = false"
+  >
+    <img
+      class="fullscreen-image"
+      :class="isFullscreen ? 'popin' : 'popout'"
+      :src="props.pikminEvent.imageUrl"
+    />
   </div>
 </template>
 
@@ -147,7 +153,6 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.3s;
   transition: opacity 0.3s;
 }
 
@@ -155,29 +160,14 @@ onMounted(() => {
   max-width: 90%;
   max-height: 90%;
   border-radius: 1rem;
+}
+
+.popin {
   animation: popIn 0.3s;
 }
 
-.close-icon-container {
-  height: 90%;
-  padding: 1rem;
-}
-
-.close-icon {
-  font-size: 2rem;
-  color: white;
-  border: 2px solid white;
-  border-radius: 100vw;
-  min-width: 2.5rem;
-}
-
-@keyframes fadeIn {
-  from {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  to {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
+.popout {
+  animation: popOut 0.3s;
 }
 
 @keyframes popIn {
@@ -186,6 +176,15 @@ onMounted(() => {
   }
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes popOut {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
   }
 }
 </style>
