@@ -34,6 +34,12 @@ function formatDate(date: Date) {
       >
     </span>
     <div class="text-sm">Until {{ formatDate(new Date(props.pikminEvent.endDate)) }}</div>
+    <img
+      class="event-image mt-2 rounded-lg"
+      v-if="props.pikminEvent.imageUrl"
+      :src="props.pikminEvent.imageUrl"
+      alt="Event image"
+    />
   </div>
 </template>
 
