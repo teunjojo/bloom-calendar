@@ -80,8 +80,8 @@ onMounted(() => {
   <div class="dashboard flex flex-wrap justify-center gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold">Current Events</span>
-      <div v-if="currentEventsFailed" class="error-message text-center italic text-red-600">
-        <span class="material-symbols-outlined"> warning </span>Failed to load current events
+      <div v-if="currentEventsFailed" class="error-message">
+        <span class="attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <img
@@ -93,8 +93,8 @@ onMounted(() => {
       />
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
       <span class="text-xl font-bold">Upcoming Events</span>
-      <div v-if="upcomingEventsFailed" class="error-message text-center italic text-red-600">
-        <span class="material-symbols-outlined"> warning </span>Failed to load upcoming events
+      <div v-if="upcomingEventsFailed" class="error-message">
+        <span class="attention-icon"></span>Failed to load upcoming events
       </div>
       <div v-else-if="upcomingEvents.length === 0" class="text-center italic">
         No upcoming events
@@ -118,8 +118,8 @@ onMounted(() => {
           ><span class="material-symbols-outlined"> arrow_forward_ios </span></a
         >
       </span>
-      <div v-if="currentForecastFailed" class="error-message text-center italic text-red-600">
-        <span class="material-symbols-outlined"> warning </span>Failed to load current forecast
+      <div v-if="currentForecastFailed" class="error-message">
+        <span class="attention-icon"></span>Failed to load current forecast
       </div>
       <div v-else-if="!forecast.name" class="text-center italic">No current forecast</div>
       <FlowerList
@@ -182,5 +182,12 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.attention-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: #b30000;
+  mask: url('/images/icons/attention-stroke.png') no-repeat center / contain;
 }
 </style>
