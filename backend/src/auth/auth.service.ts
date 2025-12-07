@@ -12,15 +12,39 @@ export class AuthService {
   async signIn(
     username: string,
     pass: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await this.usersService.findOne(username);
     // TODO: Use hashed passwords
     if (user?.password !== pass) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.username };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const accessToken = this.jwtService.sign({ payload }, { expiresIn: '15m' });
+
+    const refreshToken = this.jwtService.sign({ payload }, { expiresIn: '7d' });
+
+    return { accessToken: accessToken, refreshToken: refreshToken };
+  }
+
+  refreshToken(refreshToken: string): {
+    accessToken: string;
+    refreshToken: string;
+  } {
+    if (!refreshToken) throw new UnauthorizedException();
+
+    const {
+      sub: userId,
+      username: userUsername,
+    }: { sub: string; username: string } = this.jwtService.verify(refreshToken);
+
+    const payload = { sub: userId, username: userUsername };
+
+    const newRefreshToken = this.jwtService.sign(
+      { payload },
+      { expiresIn: '7d' },
+    );
+
+    const accessToken = this.jwtService.sign({ payload }, { expiresIn: '15m' });
+    return { accessToken, refreshToken: newRefreshToken };
   }
 }
