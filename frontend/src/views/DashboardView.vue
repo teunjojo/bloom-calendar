@@ -132,7 +132,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=warning';
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios,close,warning';
+
 .event-list,
 .forecast {
   background-color: #f7f7f7;
