@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+import { RouterLink } from 'vue-router'
+
+const authStore = useAuthStore()
+
+console.log('Logged in:', authStore.isAuthenticated())
+</script>
 
 <template>
   <nav class="flex p-2 justify-center items-center bg-white px-4">
@@ -9,7 +16,12 @@
           <h1 class="text-2xl font-bold">BloomCalendar</h1>
         </RouterLink>
       </li>
-      <li><RouterLink to="/login" class="button">Login</RouterLink></li>
+      <li>
+        <RouterLink v-if="!authStore.isAuthenticated()" to="/login" class="button"
+          >Login</RouterLink
+        >
+        <RouterLink v-else to="/logout" class="button">Logout</RouterLink>
+      </li>
     </ul>
   </nav>
 </template>
@@ -22,5 +34,4 @@
   border-radius: 100vw;
   text-decoration: none;
 }
-
 </style>

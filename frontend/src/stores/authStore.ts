@@ -6,12 +6,15 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setToken = (newToken: string) => {
     token.value = newToken
-    document.cookie = `token=${newToken}; Secure; HttpOnly; SameSite=Strict`
   }
 
   const getToken = () => {
     return token.value
   }
 
-  return { setToken, getToken }
+  const isAuthenticated = () => {
+    return token.value !== ''
+  }
+
+  return { setToken, getToken, isAuthenticated }
 })
