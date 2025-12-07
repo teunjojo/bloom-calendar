@@ -4,4 +4,5 @@ export interface PikminEvent {
   eventType: string
   startDate: string
   endDate: string
+  blogLink?: string
 }
