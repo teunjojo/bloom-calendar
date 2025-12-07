@@ -69,7 +69,7 @@ async function fetchUpcomingEvents() {
   upcomingEvents.value = filteredEvents
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
   fetchUpcomingEvents()

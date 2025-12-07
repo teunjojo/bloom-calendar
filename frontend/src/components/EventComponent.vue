@@ -105,7 +105,12 @@ onMounted(() => {
       v-for="image in props.pikminEvent.images"
       :key="image.id"
       :src="image.imageUrl"
-      @click="isFullscreen = true; fullscreenImageUrl = image.imageUrl"
+      @click="
+        (() => {
+          fullscreenImageUrl = image.imageUrl
+          isFullscreen = true
+        })()
+      "
       alt="Event image"
     />
   </div>

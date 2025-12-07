@@ -1,12 +1,9 @@
-import axios from 'axios'
-
 import type { PikminEvent } from '@/types/PikminEvent'
 import type { EventFilter } from '@/types/EventFilter'
+import api from '@/axiosClient'
 
 export const getEvents = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
-  const requestUrl = `${import.meta.env.VITE_API_URL}/event`
-
-  const response = await axios.get<PikminEvent[]>(requestUrl, {
+  const response = await api.get<PikminEvent[]>('/event', {
     params: filters,
   })
   return response.data
