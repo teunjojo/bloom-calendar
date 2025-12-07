@@ -96,7 +96,7 @@ onMounted(() => {
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="special-icon" style="height: 2rem;" src="/images/icons/special.png" />
+        <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
       </span>
       <div v-if="upcomingEventsFailed" class="error-message">
@@ -124,10 +124,9 @@ onMounted(() => {
           :href="forecast.blogLink"
           target="_blank"
           rel="noopener noreferrer"
-          >
-          <span class="forward-icon primary"></span>
-          </a
         >
+          <span class="forward-icon primary"></span>
+        </a>
       </span>
       <div v-if="currentForecastFailed" class="error-message">
         <span class="attention-icon"></span>Failed to load current forecast
@@ -150,8 +149,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward_ios,close,warning';
-
 .event-list,
 .forecast {
   background-color: #fff;
