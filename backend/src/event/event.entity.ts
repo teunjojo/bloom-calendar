@@ -12,22 +12,10 @@ export class Event {
   @Column()
   name: string;
 
-  @Column({
-    type: 'timestamp',
-    transformer: {
-      to: (value: string) => value,
-      from: (value: Date) => formatTimestampWithoutTZ(value),
-    },
-  })
+  @Column()
   startDate: Date;
 
-  @Column({
-    type: 'timestamp',
-    transformer: {
-      to: (value: Date) => value,
-      from: (value: Date) => formatTimestampWithoutTZ(value),
-    },
-  })
+  @Column()
   endDate: Date;
 
   @Column({ nullable: true })
