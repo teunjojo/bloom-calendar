@@ -45,19 +45,22 @@ onMounted(() => {
       style="border-radius: 1rem"
     >
       <span class="text-4xl font-bold">Login</span>
+      <span class="text-red-500 mt-2">Login is currently disabled.</span>
       <input
         v-model="username"
         type="text"
         placeholder="Username"
         class="border border-gray-300 rounded-full p-2 mt-4 w-64"
+        disabled="true"
       />
       <input
         v-model="password"
         type="password"
         placeholder="Password"
         class="border border-gray-300 rounded-full p-2 mt-4 w-64"
+        disabled="true"
       />
-      <button @click="handleLogin" class="">Login</button>
+      <button @click="handleLogin" disabled="true" class="">Login</button>
       <div v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</div>
     </div>
   </div>
@@ -77,5 +80,15 @@ button {
 
 button:hover {
   background-color: rgba(var(--primary-color-rgb), 0.8);
+}
+
+input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 </style>
