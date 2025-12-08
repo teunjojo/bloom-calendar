@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 
@@ -16,6 +17,7 @@ onMounted(async () => {
 <template>
   <NavBar />
   <RouterView />
+  <FooterComponent />
 </template>
 
 <style scoped></style>
