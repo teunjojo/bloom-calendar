@@ -7,7 +7,7 @@ const authStore = useAuthStore()
 
 <template>
   <nav class="flex p-2 justify-center items-center bg-white px-4">
-    <ul class="flex justify-between items-center gap-4" style="width: 100%; max-width: 720px">
+    <ul class="flex justify-center items-center gap-4" style="width: 100%; max-width: 720px">
       <li>
         <RouterLink to="/" class="flex items-center gap-2">
           <img src="/images/icons/logo.png" style="height: 3rem" />
