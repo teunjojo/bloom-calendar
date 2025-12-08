@@ -17,19 +17,17 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-let refreshing = true
+let refreshing = false
 let queue: ((token: string) => void)[] = [] // Explicitly typed function array
 
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
-    console.error('Error in Axios interceptor:', error) // Log the error for debugging
 
     const original = error.config
 
     if (error.response?.status === 401 && !original.__retry) {
       original.__retry = true
-
       if (!refreshing) {
         refreshing = true
         try {
