@@ -20,7 +20,7 @@ services:
     ports:
       - ${ADMINER_PORT}:8080
 
-  pikmin-parse-backend:
+  bloom-calendar-backend:
     build: ./backend
     environment:
       DB_HOST: db
