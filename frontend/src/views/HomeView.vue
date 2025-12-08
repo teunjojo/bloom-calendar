@@ -159,12 +159,12 @@ onMounted(async () => {
 }
 
 .big-flower-forecast {
-  background-color: #72bef7;
+  background: linear-gradient(135deg, var(--tertiary-color), var(--tertiary-color-dark));
   color: white;
 }
 
 .flower-of-the-month {
-  background-color: #ffa633;
+  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color-dark));
   color: white;
 }
 

@@ -135,12 +135,13 @@ onMounted(() => {
 .event-container {
   padding: 1rem;
   border-radius: 1rem;
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
   color: white;
 }
 
 .grayed-out {
-  --primary-color: #ababab;
+  --primary-color: var(--gray-500);
+  --primary-color-dark: var(--gray-550);
 }
 
 .blog-link {
