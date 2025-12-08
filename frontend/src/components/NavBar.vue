@@ -4,7 +4,6 @@ import { RouterLink } from 'vue-router'
 
 const authStore = useAuthStore()
 
-console.log('Logged in:', authStore.isAuthenticated())
 </script>
 
 <template>
