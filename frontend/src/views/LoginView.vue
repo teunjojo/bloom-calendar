@@ -2,7 +2,6 @@
 import { signIn } from '@/service/authService'
 import { useAuthStore } from '@/stores/authStore'
 import type { AxiosError } from 'axios'
-import { error } from 'console'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 
