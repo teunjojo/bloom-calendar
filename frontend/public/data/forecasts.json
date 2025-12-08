@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "December",
+    "startDate": "2025-12-01 00:00:00",
+    "endDate": "2025-12-31 23:59:00",
+    "blogLink": "https://pikminbloom.com/en/news/dec25-flowerforecast",
+    "flowerOfTheMonth": { "id": 45, "slug": "primrose", "name": "Primrose" },
+    "bigFlowers": [
+      { "id": 4, "slug": "poinsettia", "name": "Poinsettia" },
+      { "id": 24, "slug": "chrysanthemum", "name": "Chrysanthemum" },
+      { "id": 25, "slug": "helleborus", "name": "Helleborus" },
+      { "id": 35, "slug": "clematis", "name": "Clematis" },
+      { "id": 44, "slug": "salvia", "name": "Salvia" },
+      { "id": 45, "slug": "primrose", "name": "Primrose" }
+    ]
+  }
+]
