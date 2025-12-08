@@ -1,23 +1,23 @@
-import type { PikminEvent } from '@/types/PikminEvent'
-import type { EventFilter } from '@/types/EventFilter'
+import type { ForecastFilter } from '@/types/ForecastFilter'
+import type { Forecast } from '@/types/Forecast'
 
-let eventsCache: PikminEvent[] | null = null
+let eventsCache: Forecast[] | null = null
 
-async function loadForecasts(): Promise<PikminEvent[]> {
+async function loadForecasts(): Promise<Forecast[]> {
   if (!eventsCache) {
     const res = await fetch('/data/forecasts.json')
-    eventsCache = await res.json() as PikminEvent[]
+    eventsCache = await res.json() as Forecast[]
   }
   return eventsCache
 }
 
-// Extract keys of PikminEvent for typed sorting
-type EventKey = keyof PikminEvent
+// Extract keys of Forecast for typed sorting
+type EventKey = keyof Forecast
 
-export const getForecasts = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
+export const getForecasts = async (filters: ForecastFilter = {}): Promise<Forecast[]> => {
   const events = await loadForecasts()
 
-  let result = events.filter((event: PikminEvent): boolean => {
+  let result = events.filter((event: Forecast): boolean => {
     // === Simple equality filters ===
     if (filters.eventType && event.eventType !== filters.eventType) {
       return false
@@ -49,7 +49,7 @@ export const getForecasts = async (filters: EventFilter = {}): Promise<PikminEve
     const key = filters.sortBy as EventKey
     const direction = filters.sortOrder === 'DESC' ? -1 : 1
 
-    result = [...result].sort((a: PikminEvent, b: PikminEvent): number => {
+    result = [...result].sort((a: Forecast, b: Forecast): number => {
       const av = a[key]
       const bv = b[key]
 
