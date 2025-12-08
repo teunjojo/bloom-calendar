@@ -20,11 +20,6 @@ services:
     ports:
       - ${ADMINER_PORT}:8080
 
-  pikmin-parse-frontend:
-    build: ./frontend
-    ports:
-      - ${FRONTEND_PORT}:80
-
   pikmin-parse-backend:
     build: ./backend
     environment:
