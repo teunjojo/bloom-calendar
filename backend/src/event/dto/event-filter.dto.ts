@@ -5,4 +5,8 @@ export class EventFilterDto extends FilterDto {
   @IsOptional()
   @IsDateString()
   currentDate?: string;
+
+  @IsOptional()
+  @IsDateString()
+  afterDate?: string;
 }

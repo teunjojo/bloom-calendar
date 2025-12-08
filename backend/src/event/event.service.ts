@@ -44,6 +44,14 @@ export class EventService {
       } as FindOptionsWhere<T>;
     }
 
+    if (filter.afterDate) {
+      const afterDate = new Date(filter.afterDate);
+      where = {
+        ...where,
+        startDate: MoreThan(afterDate),
+      } as FindOptionsWhere<T>;
+    }
+
     return {
       ...baseOptions,
       ...(Object.keys(where).length > 0 && { where }),
