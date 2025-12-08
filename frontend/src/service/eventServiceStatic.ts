@@ -14,7 +14,7 @@ async function loadEvents(): Promise<PikminEvent[]> {
 // Extract keys of PikminEvent for typed sorting
 type EventKey = keyof PikminEvent
 
-export const getEvents = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
+export const getEventsStatic = async (filters: EventFilter = {}): Promise<PikminEvent[]> => {
   const events = await loadEvents()
 
   let result = events.filter((event: PikminEvent): boolean => {

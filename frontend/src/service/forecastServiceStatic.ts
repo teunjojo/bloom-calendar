@@ -3,7 +3,7 @@ import type { Forecast } from '@/types/Forecast'
 
 let eventsCache: Forecast[] | null = null
 
-async function loadForecasts(): Promise<Forecast[]> {
+async function loadForecastsStatic(): Promise<Forecast[]> {
   if (!eventsCache) {
     const res = await fetch('/data/forecasts.json')
     eventsCache = await res.json() as Forecast[]
@@ -14,8 +14,8 @@ async function loadForecasts(): Promise<Forecast[]> {
 // Extract keys of Forecast for typed sorting
 type EventKey = keyof Forecast
 
-export const getForecasts = async (filters: ForecastFilter = {}): Promise<Forecast[]> => {
-  const events = await loadForecasts()
+export const getForecastsStatic = async (filters: ForecastFilter = {}): Promise<Forecast[]> => {
+  const events = await loadForecastsStatic()
 
   let result = events.filter((event: Forecast): boolean => {
     // === Simple equality filters ===
