@@ -6,15 +6,6 @@ A web application to view events and forecasts for Pikmin Bloom.
 
 ### Backend
 
-#### Production mode (docker)
-
-1. Create a `.env` file in the root directory based on the `.env.example` file.
-2. Run `docker-compose up --build` to start the backend and database.
-3. The backend will be accessible at `http://localhost:8000` (or the port you specified in the `.env` file).
-4. To access Adminer for database management, go to `http://localhost:8080` (or the port you specified in the `.env` file).
-
-#### Development mode
-
 1. Create a `.env` file in the `backend` directory based on the `.env.example` file.
 2. Install dependencies with `npm install`.
 3. Run `npm run start:dev` to start the backend in development mode.
