@@ -5,6 +5,29 @@
 :root {
   --primary-color-rgb: 0, 168, 130;
   --primary-color: rgb(var(--primary-color-rgb));
+  --primary-color-dark-rgb: 0, 130, 100;
+  --primary-color-dark: rgb(var(--primary-color-dark-rgb));
+
+  --secondary-color-rgb: 255, 166, 51;
+  --secondary-color: rgb(var(--secondary-color-rgb));
+  --secondary-color-dark-rgb: 255, 140, 0;
+  --secondary-color-dark: rgb(var(--secondary-color-dark-rgb));
+
+  --tertiary-color-rgb: 114, 190, 247;
+  --tertiary-color: rgb(var(--tertiary-color-rgb));
+  --tertiary-color-dark-rgb: 72, 175, 231;
+  --tertiary-color-dark: rgb(var(--tertiary-color-dark-rgb));
+
+  --gray-100: #f7fafc;
+  --gray-200: #edf2f7;
+  --gray-300: #e2e8f0;
+  --gray-400: #cbd5e0;
+  --gray-500: #a0aec0;
+  --gray-550: #8897ad;
+  --gray-600: #718096;
+  --gray-700: #4a5568;
+  --gray-800: #2d3748;
+  --gray-900: #1a202c;
 }
 
 body {
