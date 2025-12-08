@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-[calc(100vh-4rem)]">
+  <div class="flex justify-center items-center">
     <div
       class="bg-white m-5 p-5 shadow-lg flex flex-col justify-center items-center"
       style="border-radius: 1rem"
