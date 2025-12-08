@@ -15,8 +15,8 @@ export const refreshAccessToken = async () => {
   const authStore = useAuthStore()
   try {
     const res = await api.post('/auth/refresh')
-    authStore.setToken(res.data.access_token)
-    return res.data.access_token
+    authStore.setToken(res.data.accessToken)
+    return res.data.accessToken
   } catch (err) {
     authStore.setToken('')
     throw err
@@ -27,4 +27,8 @@ export const signOut = () => {
   const authStore = useAuthStore()
   api.post('/auth/logout')
   authStore.setToken('')
+}
+
+export const checkAuth = async () => {
+  await api.post('/auth/check')
 }
