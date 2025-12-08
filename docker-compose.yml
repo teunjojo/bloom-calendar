@@ -25,5 +25,21 @@ services:
     ports:
       - 80:80
 
+  pikmin-parse-backend:
+    build: ./backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      ADMINER_URL: http://adminer:${ADMINER_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
 volumes:
   db_data:
