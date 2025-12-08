@@ -27,9 +27,11 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="flex flex-col justify-between min-h-screen">
   <NavBar />
   <RouterView />
   <FooterComponent />
+  </div>
 </template>
 
 <style scoped></style>
