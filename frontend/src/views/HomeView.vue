@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue'
 
-import { getEvents } from '@/service/eventService'
+import { getEvents } from '@/service/eventServiceStatic'
 import type { PikminEvent } from '@/types/PikminEvent'
 import type { EventFilter } from '@/types/EventFilter'
 
@@ -9,7 +9,7 @@ import EventComponent from '@/components/EventComponent.vue'
 import FlowerList from '@/components/FlowerList.vue'
 import type { ForecastFilter } from '@/types/ForecastFilter'
 import type { Forecast } from '@/types/Forecast'
-import { getForecasts } from '@/service/forecastService'
+import { getForecasts } from '@/service/forecastServiceStatic'
 
 const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 const forecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
