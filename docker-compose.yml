@@ -20,5 +20,10 @@ services:
     ports:
       - ${ADMINER_PORT}:8080
 
+  pikmin-parse-frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+
 volumes:
   db_data:
