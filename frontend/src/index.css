@@ -31,6 +31,6 @@
 }
 
 body {
-  @apply bg-gradient-to-b from-blue-100 to-green-100 min-h-screen;
+  @apply bg-gradient-to-b from-blue-100 to-green-200 min-h-screen;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
