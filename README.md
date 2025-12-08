@@ -2,6 +2,8 @@
 
 A web application to view events and forecasts for Pikmin Bloom.
 
+Live at: [https://bloom-calendar.teunjojo.com](https://bloom-calendar.teunjojo.com)
+
 ## Running Locally
 
 ### Backend
