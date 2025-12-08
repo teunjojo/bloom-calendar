@@ -47,10 +47,8 @@ async function fetchCurrentForecast() {
 
 async function fetchUpcomingEvents() {
   const now = new Date()
-  const nextWeek = new Date()
-  nextWeek.setDate(now.getDate() + 7)
   const filters: EventFilter = {
-    currentDate: nextWeek,
+    afterDate: now,
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
