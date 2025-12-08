@@ -23,7 +23,7 @@ services:
   pikmin-parse-frontend:
     build: ./frontend
     ports:
-      - 80:80
+      - ${FRONTEND_PORT}:80
 
   pikmin-parse-backend:
     build: ./backend
@@ -37,7 +37,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
     ports:
-      - 3000:3000
+      - ${BACKEND_PORT}:3000
     depends_on:
       - db
 
