@@ -77,7 +77,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="dashboard flex flex-wrap justify-center gap-4 p-4">
+  <div class="dashboard flex flex-wrap justify-center items-start gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-96">
       <img
         src="/images/icons/gift.png"
