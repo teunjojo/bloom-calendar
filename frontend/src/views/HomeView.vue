@@ -147,7 +147,7 @@ onMounted(async () => {
     </div>
     <div class="flowchart flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="special-icon" style="height: 2rem" src="/images/icons/weather.png" />
+        <img class="special-icon" style="height: 2rem" src="/images/icons/flower.png" />
         Big Flower Blooming Guide
       </span>
       <BigFlowerFlowchart />
