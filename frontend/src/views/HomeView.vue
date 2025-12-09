@@ -6,6 +6,8 @@ import type { PikminEvent } from '@/types/PikminEvent'
 import type { EventFilter } from '@/types/EventFilter'
 
 import EventComponent from '@/components/EventComponent.vue'
+import BigFlowerFlowchart from '@/components/BigFlowerFlowchart.vue'
+
 import FlowerList from '@/components/FlowerList.vue'
 import type { ForecastFilter } from '@/types/ForecastFilter'
 import type { Forecast } from '@/types/Forecast'
@@ -143,12 +145,20 @@ onMounted(async () => {
         name="Big Flowers"
       />
     </div>
+    <div class="flowchart flex flex-col gap-2 p-4 w-96">
+      <span class="text-xl font-bold flex items-center gap-1">
+        <img class="special-icon" style="height: 2rem" src="/images/icons/weather.png" />
+        Big Flower Blooming Guide
+      </span>
+      <BigFlowerFlowchart />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .event-list,
-.forecast {
+.forecast,
+.flowchart {
   background-color: #fff;
   border-radius: 1rem;
 }
