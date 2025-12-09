@@ -275,7 +275,7 @@ async function traverse(nodeId: string) {
       <span class="text-white font-bold">{{ question }}</span>
       <div class="flex justify-center gap-4 p-4" v-if="question">
         <button class="button bg-green-500 text-white font-bold" @click="answer = 1">Yes</button>
-        <button class="button bg-red-500 text-white font-bold" @click="answer = 2">No</button>
+        <button class="button bg-red-500 text-white font-bold" @click="answer = 0">No</button>
       </div>
       <button class="button bg-gray-100 text-black" v-else @click="traverse('start')">Start</button>
     </div>
