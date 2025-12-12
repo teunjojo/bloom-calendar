@@ -11,17 +11,34 @@ datasource db {
 }
 
 model Event {
-  id        Int    @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   name      String
   startDate String
   endDate   String
   blogLink  String
-	images	 Image[]
+  images    Image[]
 }
 
 model Image {
   id       Int    @id @default(autoincrement())
   imageUrl String
-	event		Event  @relation(fields: [eventId], references: [id])
-	eventId  Int
+  event    Event  @relation(fields: [eventId], references: [id])
+  eventId  Int
+  int      Int
+}
+
+model Forecast {
+  id                 Int      @id @default(autoincrement())
+  startDate          String
+  endDate            String
+  bigFlowers         Flower[] @relation(name: "BigFlowers")
+  flowerOfTheMonth   Flower   @relation(name: "FOTM", fields: [flowerOfTheMonthId], references: [id])
+  flowerOfTheMonthId Int
+}
+
+model Flower {
+  id                        Int        @id @default(autoincrement())
+  name                      String
+  flowerOfTheMonthForecasts Forecast[] @relation("FOTM")
+  bigFlowerForecasts        Forecast[] @relation("BigFlowers")
 }
