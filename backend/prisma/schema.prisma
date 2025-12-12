@@ -24,7 +24,6 @@ model Image {
   imageUrl String
   event    Event  @relation(fields: [eventId], references: [id])
   eventId  Int
-  int      Int
 }
 
 model Forecast {
