@@ -32,6 +32,8 @@ model Forecast {
   bigFlowers         Flower[] @relation(name: "BigFlowers")
   flowerOfTheMonth   Flower   @relation(name: "FOTM", fields: [flowerOfTheMonthId], references: [id])
   flowerOfTheMonthId Int
+	blogLink          String
+	name							String
 }
 
 model Flower {
