@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 
 import indexRouter from '@/routes';
 import eventRouter from '@/routes/event';
+import forecastRouter from './routes/forecast';
 
 
 type Bindings = {
@@ -21,5 +22,6 @@ app.use(
 
 app.route('/', indexRouter);
 app.route('/events', eventRouter);
+app.route('/forecasts', forecastRouter);
 
 export default app;
