@@ -10,6 +10,11 @@ export async function getForecasts(prisma: PrismaClient, filter: ForecastFilter)
 export function applyForecastFilter(filter: ForecastFilter) {
 	const options = applyFilter(filter);
 
+	options.include = {
+		bigFlowers: true,
+		flowerOfTheMonth: true,
+	};
+
 	if (filter.currentDate) {
 		const yearMonth = filter.currentDate.slice(0, 7);
 		options.where = {

@@ -10,7 +10,9 @@ export async function getEvents(prisma: PrismaClient, filter: EventFilter) {
 export function applyEventFilter(filter: EventFilter) {
 	const options = applyFilter(filter);
 
-	console.log(filter.currentDate);
+	options.include = {
+		images: true,
+	};
 
 	if (filter.currentDate) {
 		options.where = {
