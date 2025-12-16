@@ -2,7 +2,6 @@
 // npm install --save-dev prisma dotenv
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
-import { listLocalDatabases } from "@prisma/adapter-d1";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -10,6 +9,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: 'file:'+listLocalDatabases()[0],
+    url: env('DATABASE_URL'),
   },
 });
