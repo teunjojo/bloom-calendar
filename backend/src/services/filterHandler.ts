@@ -4,7 +4,7 @@ export function applyFilter(filter: Filter) {
 	const options: any = {};
 	if (filter.sortBy) {
 		options.orderBy = {
-			[filter.sortBy]: filter.sortOrder,
+			[filter.sortBy]: filter.sortOrder?.toLowerCase(),
 		};
 	}
 
