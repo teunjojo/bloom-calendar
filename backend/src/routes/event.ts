@@ -1,8 +1,6 @@
 import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
-import { Prisma } from '@/generated/prisma';
 import { z } from 'zod';
-import { filterSchema } from '@/schemas/filter';
 import { getEvents } from '@/services/eventHandler';
 import { eventFilterSchema } from '@/schemas/event-filter';
 
@@ -18,7 +16,6 @@ eventRouter.get('/', async (c: Context) => {
 		}
 		return c.json({ error: 'Invalid request' }, 400);
 	}
-	const { currentDate, afterDate } = query;
 
 	const db = c.env.bloom_calendar_database;
 	const prisma = await prismaClients.fetch(db);
