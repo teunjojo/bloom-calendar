@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "backend",
+	"name": "bloom-calendar-backend",
 	"main": "src/worker.ts",
 	"compatibility_date": "2025-12-10",
 	"observability": {
