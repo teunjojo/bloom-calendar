@@ -28,7 +28,7 @@ model Image {
 
 model Forecast {
   id                 Int      @id @default(autoincrement())
-  month			 Int
+  date               String
   bigFlowers         Flower[] @relation(name: "BigFlowers")
   flowerOfTheMonth   Flower   @relation(name: "FOTM", fields: [flowerOfTheMonthId], references: [id])
   flowerOfTheMonthId Int
