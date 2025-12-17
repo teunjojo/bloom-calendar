@@ -18,7 +18,7 @@ app.use(
 		origin: [
 			'https://bloom-calendar.teunjojo.com',
 			'https://api.bloom-calendar.teunjojo.com',
-			'https://dev-bloom-calendar-frontend.teunjojo.workers.dev/',
+			'https://dev-bloom-calendar-frontend.teunjojo.workers.dev',
 			'https://dev-bloom-calendar-backend.teunjojo.workers.dev',
 		],
 	})
