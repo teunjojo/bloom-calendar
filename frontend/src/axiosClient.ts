@@ -44,35 +44,4 @@ api.interceptors.response.use(
   },
 )
 
-// Offline Static data return
-api.interceptors.request.use(async (config) => {
-  if (import.meta.env.VITE_OFFLINE_MODE === 'true') {
-    switch (config.url) {
-      case '/event': {
-        const { getEventsStatic } = await import('@/service/eventServiceStatic')
-        const params = config.params || {}
-        const data = await getEventsStatic(params)
-        return Promise.resolve({
-          ...config,
-          adapter: () =>
-            Promise.resolve({ data, status: 200, statusText: 'OK', headers: {}, config }),
-        })
-      }
-      case '/forecast': {
-        const { getForecastsStatic } = await import('@/service/forecastServiceStatic')
-        const params = config.params || {}
-        const data = await getForecastsStatic(params)
-        return Promise.resolve({
-          ...config,
-          adapter: () =>
-            Promise.resolve({ data, status: 200, statusText: 'OK', headers: {}, config }),
-        })
-      }
-      default:
-        break
-    }
-  }
-  return config
-})
-
 export default api
