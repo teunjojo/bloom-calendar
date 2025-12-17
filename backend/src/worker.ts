@@ -15,7 +15,11 @@ const app = new Hono<{ Bindings: Bindings }>(); // binding env value
 app.use(
 	cors({
 		credentials: true,
-		origin: ['https://bloom-calendar.teunjojo.com', 'https://api.bloom-calendar.teunjojo.com'],
+		origin: [
+			'https://bloom-calendar.teunjojo.com',
+			'https://api.bloom-calendar.teunjojo.com',
+			'dev-bloom-calendar-backend.teunjojo.workers.dev',
+		],
 	})
 );
 
