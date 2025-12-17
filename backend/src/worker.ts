@@ -5,18 +5,17 @@ import indexRouter from '@/routes';
 import eventRouter from '@/routes/event';
 import forecastRouter from './routes/forecast';
 
-
 type Bindings = {
-  MY_KV: KVNamespace
-  DB: D1Database
-}
+	MY_KV: KVNamespace;
+	DB: D1Database;
+};
 
-const app = new Hono<{ Bindings: Bindings }>() // binding env value
+const app = new Hono<{ Bindings: Bindings }>(); // binding env value
 
 app.use(
 	cors({
 		credentials: true,
-		origin: ['http://localhost:5173', 'http://localhost:8787'],
+		origin: ['http://bloom-calendar.teunjojo.com', 'http://api.bloom-calendar.teunjojo.com'],
 	})
 );
 
