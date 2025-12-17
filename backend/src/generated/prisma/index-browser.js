@@ -141,7 +141,8 @@ exports.Prisma.ForecastScalarFieldEnum = {
 
 exports.Prisma.FlowerScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  slug: 'slug'
 };
 
 exports.Prisma.SortOrder = {

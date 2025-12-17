@@ -4553,16 +4553,19 @@ export namespace Prisma {
   export type FlowerMinAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
   }
 
   export type FlowerMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
   }
 
   export type FlowerCountAggregateOutputType = {
     id: number
     name: number
+    slug: number
     _all: number
   }
 
@@ -4578,16 +4581,19 @@ export namespace Prisma {
   export type FlowerMinAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
   }
 
   export type FlowerMaxAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
   }
 
   export type FlowerCountAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     _all?: true
   }
 
@@ -4680,6 +4686,7 @@ export namespace Prisma {
   export type FlowerGroupByOutputType = {
     id: number
     name: string
+    slug: string
     _count: FlowerCountAggregateOutputType | null
     _avg: FlowerAvgAggregateOutputType | null
     _sum: FlowerSumAggregateOutputType | null
@@ -4704,6 +4711,7 @@ export namespace Prisma {
   export type FlowerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     flowerOfTheMonthForecasts?: boolean | Flower$flowerOfTheMonthForecastsArgs<ExtArgs>
     bigFlowerForecasts?: boolean | Flower$bigFlowerForecastsArgs<ExtArgs>
     _count?: boolean | FlowerCountOutputTypeDefaultArgs<ExtArgs>
@@ -4712,19 +4720,22 @@ export namespace Prisma {
   export type FlowerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
   }, ExtArgs["result"]["flower"]>
 
   export type FlowerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
   }, ExtArgs["result"]["flower"]>
 
   export type FlowerSelectScalar = {
     id?: boolean
     name?: boolean
+    slug?: boolean
   }
 
-  export type FlowerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["flower"]>
+  export type FlowerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug", ExtArgs["result"]["flower"]>
   export type FlowerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     flowerOfTheMonthForecasts?: boolean | Flower$flowerOfTheMonthForecastsArgs<ExtArgs>
     bigFlowerForecasts?: boolean | Flower$bigFlowerForecastsArgs<ExtArgs>
@@ -4742,6 +4753,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      slug: string
     }, ExtArgs["result"]["flower"]>
     composites: {}
   }
@@ -5169,6 +5181,7 @@ export namespace Prisma {
   interface FlowerFieldRefs {
     readonly id: FieldRef<"Flower", 'Int'>
     readonly name: FieldRef<"Flower", 'String'>
+    readonly slug: FieldRef<"Flower", 'String'>
   }
     
 
@@ -5665,7 +5678,8 @@ export namespace Prisma {
 
   export const FlowerScalarFieldEnum: {
     id: 'id',
-    name: 'name'
+    name: 'name',
+    slug: 'slug'
   };
 
   export type FlowerScalarFieldEnum = (typeof FlowerScalarFieldEnum)[keyof typeof FlowerScalarFieldEnum]
@@ -5878,6 +5892,7 @@ export namespace Prisma {
     NOT?: FlowerWhereInput | FlowerWhereInput[]
     id?: IntFilter<"Flower"> | number
     name?: StringFilter<"Flower"> | string
+    slug?: StringFilter<"Flower"> | string
     flowerOfTheMonthForecasts?: ForecastListRelationFilter
     bigFlowerForecasts?: ForecastListRelationFilter
   }
@@ -5885,23 +5900,26 @@ export namespace Prisma {
   export type FlowerOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     flowerOfTheMonthForecasts?: ForecastOrderByRelationAggregateInput
     bigFlowerForecasts?: ForecastOrderByRelationAggregateInput
   }
 
   export type FlowerWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    slug?: string
     AND?: FlowerWhereInput | FlowerWhereInput[]
     OR?: FlowerWhereInput[]
     NOT?: FlowerWhereInput | FlowerWhereInput[]
     name?: StringFilter<"Flower"> | string
     flowerOfTheMonthForecasts?: ForecastListRelationFilter
     bigFlowerForecasts?: ForecastListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type FlowerOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     _count?: FlowerCountOrderByAggregateInput
     _avg?: FlowerAvgOrderByAggregateInput
     _max?: FlowerMaxOrderByAggregateInput
@@ -5915,6 +5933,7 @@ export namespace Prisma {
     NOT?: FlowerScalarWhereWithAggregatesInput | FlowerScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Flower"> | number
     name?: StringWithAggregatesFilter<"Flower"> | string
+    slug?: StringWithAggregatesFilter<"Flower"> | string
   }
 
   export type EventCreateInput = {
@@ -6070,6 +6089,7 @@ export namespace Prisma {
 
   export type FlowerCreateInput = {
     name: string
+    slug: string
     flowerOfTheMonthForecasts?: ForecastCreateNestedManyWithoutFlowerOfTheMonthInput
     bigFlowerForecasts?: ForecastCreateNestedManyWithoutBigFlowersInput
   }
@@ -6077,12 +6097,14 @@ export namespace Prisma {
   export type FlowerUncheckedCreateInput = {
     id?: number
     name: string
+    slug: string
     flowerOfTheMonthForecasts?: ForecastUncheckedCreateNestedManyWithoutFlowerOfTheMonthInput
     bigFlowerForecasts?: ForecastUncheckedCreateNestedManyWithoutBigFlowersInput
   }
 
   export type FlowerUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     flowerOfTheMonthForecasts?: ForecastUpdateManyWithoutFlowerOfTheMonthNestedInput
     bigFlowerForecasts?: ForecastUpdateManyWithoutBigFlowersNestedInput
   }
@@ -6090,6 +6112,7 @@ export namespace Prisma {
   export type FlowerUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     flowerOfTheMonthForecasts?: ForecastUncheckedUpdateManyWithoutFlowerOfTheMonthNestedInput
     bigFlowerForecasts?: ForecastUncheckedUpdateManyWithoutBigFlowersNestedInput
   }
@@ -6097,15 +6120,18 @@ export namespace Prisma {
   export type FlowerCreateManyInput = {
     id?: number
     name: string
+    slug: string
   }
 
   export type FlowerUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type FlowerUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6303,6 +6329,7 @@ export namespace Prisma {
   export type FlowerCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
   }
 
   export type FlowerAvgOrderByAggregateInput = {
@@ -6312,11 +6339,13 @@ export namespace Prisma {
   export type FlowerMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
   }
 
   export type FlowerMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
   }
 
   export type FlowerSumOrderByAggregateInput = {
@@ -6683,12 +6712,14 @@ export namespace Prisma {
 
   export type FlowerCreateWithoutBigFlowerForecastsInput = {
     name: string
+    slug: string
     flowerOfTheMonthForecasts?: ForecastCreateNestedManyWithoutFlowerOfTheMonthInput
   }
 
   export type FlowerUncheckedCreateWithoutBigFlowerForecastsInput = {
     id?: number
     name: string
+    slug: string
     flowerOfTheMonthForecasts?: ForecastUncheckedCreateNestedManyWithoutFlowerOfTheMonthInput
   }
 
@@ -6699,12 +6730,14 @@ export namespace Prisma {
 
   export type FlowerCreateWithoutFlowerOfTheMonthForecastsInput = {
     name: string
+    slug: string
     bigFlowerForecasts?: ForecastCreateNestedManyWithoutBigFlowersInput
   }
 
   export type FlowerUncheckedCreateWithoutFlowerOfTheMonthForecastsInput = {
     id?: number
     name: string
+    slug: string
     bigFlowerForecasts?: ForecastUncheckedCreateNestedManyWithoutBigFlowersInput
   }
 
@@ -6735,6 +6768,7 @@ export namespace Prisma {
     NOT?: FlowerScalarWhereInput | FlowerScalarWhereInput[]
     id?: IntFilter<"Flower"> | number
     name?: StringFilter<"Flower"> | string
+    slug?: StringFilter<"Flower"> | string
   }
 
   export type FlowerUpsertWithoutFlowerOfTheMonthForecastsInput = {
@@ -6750,12 +6784,14 @@ export namespace Prisma {
 
   export type FlowerUpdateWithoutFlowerOfTheMonthForecastsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     bigFlowerForecasts?: ForecastUpdateManyWithoutBigFlowersNestedInput
   }
 
   export type FlowerUncheckedUpdateWithoutFlowerOfTheMonthForecastsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     bigFlowerForecasts?: ForecastUncheckedUpdateManyWithoutBigFlowersNestedInput
   }
 
@@ -6867,18 +6903,21 @@ export namespace Prisma {
 
   export type FlowerUpdateWithoutBigFlowerForecastsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     flowerOfTheMonthForecasts?: ForecastUpdateManyWithoutFlowerOfTheMonthNestedInput
   }
 
   export type FlowerUncheckedUpdateWithoutBigFlowerForecastsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     flowerOfTheMonthForecasts?: ForecastUncheckedUpdateManyWithoutFlowerOfTheMonthNestedInput
   }
 
   export type FlowerUncheckedUpdateManyWithoutBigFlowerForecastsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForecastCreateManyFlowerOfTheMonthInput = {
