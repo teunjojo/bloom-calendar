@@ -1,7 +1,10 @@
 import type { Flower } from "./Flower"
-import type { PikminEvent } from "./PikminEvent"
 
-export interface Forecast extends PikminEvent {
+export interface Forecast {
+  id: string
+  name: string
+  date: string
+  blogLink?: string
   bigFlowers: Flower[]
   flowerOfTheMonth: Flower
 }

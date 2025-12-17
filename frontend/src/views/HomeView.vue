@@ -37,7 +37,7 @@ async function fetchCurrentEvents() {
 async function fetchCurrentForecast() {
   const filters: ForecastFilter = {
     currentDate: new Date(),
-    sortBy: 'endDate',
+    sortBy: 'date',
     sortOrder: 'ASC',
   }
   try {
@@ -131,7 +131,7 @@ onMounted(async () => {
       <div v-if="currentForecastFailed" class="error-message">
         <span class="attention-icon"></span>Failed to load current forecast
       </div>
-      <div v-else-if="!forecast.name" class="text-center italic">No current forecast</div>
+      <div v-else-if="!forecast.id" class="text-center italic">No current forecast</div>
       <FlowerList
         v-if="forecast.flowerOfTheMonth"
         class="flower-of-the-month"

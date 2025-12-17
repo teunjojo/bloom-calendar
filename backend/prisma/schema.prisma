@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Event {
+  id        Int     @id @default(autoincrement())
+  name      String
+  startDate String
+  endDate   String
+  blogLink  String
+  images    Image[]
+}
+
+model Image {
+  id       Int    @id @default(autoincrement())
+  imageUrl String
+  event    Event  @relation(fields: [eventId], references: [id])
+  eventId  Int
+}
+
+model Forecast {
+  id                 Int      @id @default(autoincrement())
+  date               String
+  bigFlowers         Flower[] @relation(name: "BigFlowers")
+  flowerOfTheMonth   Flower   @relation(name: "FOTM", fields: [flowerOfTheMonthId], references: [id])
+  flowerOfTheMonthId Int
+	blogLink          String
+	name							String
+}
+
+model Flower {
+  id                        Int        @id @default(autoincrement())
+  name                      String
+	slug 										String     @unique
+  flowerOfTheMonthForecasts Forecast[] @relation("FOTM")
+  bigFlowerForecasts        Forecast[] @relation("BigFlowers")
+}
