@@ -1,12 +1,9 @@
 import { HTTPException } from 'hono/http-exception';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 import { getUser } from './userService';
 import { sign, verify } from 'hono/jwt';
 import { PrismaClient } from '@/generated/prisma';
-
-const saltRounds = 12;
-const salt = await bcrypt.genSalt(saltRounds);
 
 export async function signIn(
 	prisma: PrismaClient,
