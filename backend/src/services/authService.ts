@@ -1,8 +1,12 @@
 import { HTTPException } from 'hono/http-exception';
+import bcrypt from 'bcrypt';
 
 import { getUser } from './userService';
 import { sign, verify } from 'hono/jwt';
 import { PrismaClient } from '@/generated/prisma';
+
+const saltRounds = 12;
+const salt = await bcrypt.genSalt(saltRounds);
 
 export async function signIn(
 	prisma: PrismaClient,
@@ -13,9 +17,8 @@ export async function signIn(
 	const users = await getUser(prisma, username);
 	const user = users[0];
 
-	console.log('%s == %s', user.password, pass);
-	// TODO: Use hashed passwords
-	if (user?.password !== pass) {
+	const passwordMatches = await bcrypt.compare(pass, user.password);
+	if (!passwordMatches) {
 		throw new HTTPException(401);
 	}
 	const accessPayload = { sub: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + 15 * 60 }; // 15 minutes
