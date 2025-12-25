@@ -32,14 +32,20 @@ model Forecast {
   bigFlowers         Flower[] @relation(name: "BigFlowers")
   flowerOfTheMonth   Flower   @relation(name: "FOTM", fields: [flowerOfTheMonthId], references: [id])
   flowerOfTheMonthId Int
-	blogLink          String
-	name							String
+  blogLink           String
+  name               String
 }
 
 model Flower {
   id                        Int        @id @default(autoincrement())
   name                      String
-	slug 										String     @unique
+  slug                      String     @unique
   flowerOfTheMonthForecasts Forecast[] @relation("FOTM")
   bigFlowerForecasts        Forecast[] @relation("BigFlowers")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
 }
