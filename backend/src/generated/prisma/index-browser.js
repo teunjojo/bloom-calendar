@@ -145,6 +145,12 @@ exports.Prisma.FlowerScalarFieldEnum = {
   slug: 'slug'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  password: 'password'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -155,7 +161,8 @@ exports.Prisma.ModelName = {
   Event: 'Event',
   Image: 'Image',
   Forecast: 'Forecast',
-  Flower: 'Flower'
+  Flower: 'Flower',
+  User: 'User'
 };
 
 /**
