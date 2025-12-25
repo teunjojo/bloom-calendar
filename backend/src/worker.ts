@@ -4,6 +4,7 @@ import { cors } from 'hono/cors';
 import indexRouter from '@/routes';
 import eventRouter from '@/routes/event';
 import forecastRouter from './routes/forecast';
+import authRouter from './routes/auth';
 
 type Bindings = {
 	MY_KV: KVNamespace;
@@ -15,15 +16,13 @@ const app = new Hono<{ Bindings: Bindings }>(); // binding env value
 app.use(
 	cors({
 		credentials: true,
-		origin: [
-			'https://bloom-calendar.teunjojo.com',
-			'https://dev-bloom-calendar-frontend.teunjojo.workers.dev',
-		],
+		origin: ['https://bloom-calendar.teunjojo.com', 'https://dev-bloom-calendar-frontend.teunjojo.workers.dev', 'http://localhost:8787', 'http://localhost:5173'],
 	})
 );
 
 app.route('/', indexRouter);
 app.route('/events', eventRouter);
 app.route('/forecasts', forecastRouter);
+app.route('/auth', authRouter);
 
 export default app;
