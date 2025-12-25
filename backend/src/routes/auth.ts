@@ -21,16 +21,20 @@ authRouter.post('login', async (c: Context) => {
 	const db = c.env.bloom_calendar_database;
 	const prisma = await prismaClients.fetch(db);
 
-	const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
+	try {
+		const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
 
-	const cookie = setCookie(c, 'refresh_token', refreshToken, {
-		httpOnly: true,
-		secure: false,
-		sameSite: 'strict',
-		maxAge: 7 * 24 * 60 * 60, // 7 days
-	});
+		const cookie = setCookie(c, 'refresh_token', refreshToken, {
+			httpOnly: true,
+			secure: false,
+			sameSite: 'strict',
+			maxAge: 7 * 24 * 60 * 60, // 7 days
+		});
 
-	return c.json({ accessToken });
+		return c.json({ accessToken });
+	} catch (e) {
+		return c.json({error: 'Invalid credentials'}, 401)
+	}
 });
 
 authRouter.post('refresh', async (c: Context) => {
@@ -50,12 +54,12 @@ authRouter.post('refresh', async (c: Context) => {
 authRouter.post('logout', (c: Context) => {
 	deleteCookie(c, 'refresh_token');
 
-	return c.json({success: true})
+	return c.json({ success: true });
 });
 
 authRouter.use('*', (c, next) => {
 	const jwtMiddleware = jwt({
-		secret: (c.env as {JWT_SECRET: string}).JWT_SECRET,
+		secret: (c.env as { JWT_SECRET: string }).JWT_SECRET,
 	});
 	return jwtMiddleware(c, next);
 });
@@ -64,6 +68,6 @@ authRouter.use('*', (c, next) => {
 //
 
 authRouter.post('check', async (c: Context) => {
-	return c.json({ success: true})
+	return c.json({ success: true });
 });
 export default authRouter;
