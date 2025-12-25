@@ -26,7 +26,9 @@ async function handleLogin() {
         errorMessage.value = 'Please provide a valid username and password.'
         break
       default:
-        errorMessage.value = 'An unexpected error occurred. Please try again later.'
+        errorMessage.value =
+          'An unexpected error occurred. Please try again later. ' +
+          (error as AxiosError).response?.status
     }
   }
 }
@@ -45,22 +47,19 @@ onMounted(() => {
       style="border-radius: 1rem"
     >
       <span class="text-4xl font-bold">Login</span>
-      <span class="text-red-500 mt-2">Login is currently disabled.</span>
       <input
         v-model="username"
         type="text"
         placeholder="Username"
         class="border border-gray-300 rounded-full p-2 mt-4 w-64"
-        disabled="true"
       />
       <input
         v-model="password"
         type="password"
         placeholder="Password"
         class="border border-gray-300 rounded-full p-2 mt-4 w-64"
-        disabled="true"
       />
-      <button @click="handleLogin" disabled="true" class="">Login</button>
+      <button @click="handleLogin" class="">Login</button>
       <div v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</div>
     </div>
   </div>

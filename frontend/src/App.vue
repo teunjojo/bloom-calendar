@@ -5,6 +5,9 @@ import { onMounted, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
 import { checkAuth } from '@/service/authService'
+import { useAuthStore } from './stores/authStore'
+
+const authStore = useAuthStore()
 
 const route = useRoute()
 watch(
@@ -16,21 +19,21 @@ watch(
     }
     document.title = `BloomCalendar - ${newName}`
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 onMounted(async () => {
   checkAuth().catch(() => {
-    // Not authenticated
+    authStore.setToken('')
   })
 })
 </script>
 
 <template>
   <div class="flex flex-col justify-between min-h-screen">
-  <NavBar />
-  <RouterView />
-  <FooterComponent />
+    <NavBar />
+    <RouterView />
+    <FooterComponent />
   </div>
 </template>
 
