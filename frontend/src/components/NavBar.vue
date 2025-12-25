@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+
 </script>
 
 <template>
@@ -12,10 +17,10 @@ import { RouterLink } from 'vue-router'
         </RouterLink>
       </li>
       <li>
-        <!-- <RouterLink v-if="!authStore.isAuthenticated()" to="/login" class="button"
+        <RouterLink v-if="!authStore.isAuthenticated()" to="/login" class="button"
           >Login</RouterLink
         >
-        <RouterLink v-else to="/logout" class="button">Logout</RouterLink> -->
+        <RouterLink v-else to="/logout" class="button">Logout</RouterLink>
       </li>
     </ul>
   </nav>
