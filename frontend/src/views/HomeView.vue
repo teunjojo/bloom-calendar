@@ -105,7 +105,16 @@ onMounted(async () => {
         <span class="attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
-      <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
+      <EventComponent
+        v-for="event in events"
+        :key="event.id"
+        :pikminEvent="event"
+        @event-ended="
+          () => {
+            fetchCurrentEvents()
+          }
+        "
+      />
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
@@ -121,6 +130,12 @@ onMounted(async () => {
         :key="event.id"
         :pikminEvent="event"
         :grayedOut="true"
+        @event-started="
+          () => {
+            fetchCurrentEvents()
+            fetchUpcomingEvents()
+          }
+        "
       />
     </div>
     <div class="forecast flex flex-col gap-2 p-4 w-96">
