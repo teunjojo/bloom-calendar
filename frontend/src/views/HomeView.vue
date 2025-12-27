@@ -80,10 +80,38 @@ function getLocalTimeString(date?: Date) {
   )
 }
 
+function startPreciseInterval() {
+  function scheduleNextTick() {
+    const now = Date.now()
+    const next = Math.ceil(now / 1000) * 1000 // next whole second
+    const delay = next - now
+
+    setTimeout(() => {
+      if (forecast.value.id) {
+        const [year, month] = forecast.value.date.split('-').map(Number)
+
+        if (year && month) {
+          const endDate = new Date(year, month, 0, 23, 59, 59)
+          const now = new Date()
+
+          if (endDate < now) {
+            fetchCurrentForecast()
+          }
+        }
+      }
+      scheduleNextTick()
+    }, delay)
+  }
+
+  scheduleNextTick()
+}
+
 onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
   fetchUpcomingEvents()
+
+  startPreciseInterval()
 })
 </script>
 
