@@ -23,7 +23,7 @@ const upcomingEventsFailed = ref<boolean>(false)
 
 async function fetchCurrentEvents() {
   const filters: EventFilter = {
-    currentDate: new Date(),
+    currentDate: getLocalTimeString(),
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
@@ -36,7 +36,7 @@ async function fetchCurrentEvents() {
 
 async function fetchCurrentForecast() {
   const filters: ForecastFilter = {
-    currentDate: new Date(),
+    currentDate: getLocalTimeString(),
     sortBy: 'date',
     sortOrder: 'ASC',
   }
@@ -50,7 +50,7 @@ async function fetchCurrentForecast() {
 async function fetchUpcomingEvents() {
   const now = new Date()
   const filters: EventFilter = {
-    afterDate: now,
+    afterDate: getLocalTimeString(),
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
@@ -67,6 +67,17 @@ async function fetchUpcomingEvents() {
     return eventStartDate > now
   })
   upcomingEvents.value = filteredEvents
+}
+
+function getLocalTimeString(date?: Date) {
+  if (!date) {
+    date = new Date()
+  }
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return (
+    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
+    ` ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  )
 }
 
 onMounted(async () => {
