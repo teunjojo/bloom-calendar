@@ -7,6 +7,8 @@ const props = defineProps<{
   grayedOut?: boolean
 }>()
 
+const emit = defineEmits(['eventEnded', 'eventStarted'])
+
 const dateNow = ref<Date>(new Date())
 const startDate = ref<Date>(new Date(props.pikminEvent.startDate))
 const endDate = ref<Date>(new Date(props.pikminEvent.endDate))
@@ -14,6 +16,9 @@ const endDate = ref<Date>(new Date(props.pikminEvent.endDate))
 const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
 const fullscreenImageUrl = ref<string>('')
+
+const eventEnded = ref<boolean>(false)
+const eventStarted = ref<boolean>(false)
 
 function formatDate(date: Date): string {
   return date
@@ -29,31 +34,60 @@ function formatDate(date: Date): string {
 }
 
 function calculateRemainingTime(date: Date): string {
+  const maxParts = 3
+
   const now = new Date()
   let diff = Math.max(0, date.getTime() - now.getTime()) / 1000 // difference in seconds
 
-  const days = Math.floor(diff / 86400)
-  diff -= days * 86400
-  const hours = Math.floor(diff / 3600)
-  diff -= hours * 3600
-  const minutes = Math.floor(diff / 60)
-  diff -= minutes * 60
-  const seconds = Math.floor(diff)
+  const units = new Map<string, number>([
+    ['d', 86400],
+    ['h', 3600],
+    ['m', 60],
+    ['s', 1],
+  ])
 
-  function pad(num: number): string {
-    return num.toString().padStart(2, '0')
+  // units to array for indexing
+  const entries = Array.from(units.entries())
+  const parts: string[] = []
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i]
+    if (!entry) continue
+    const [label, value] = entry
+
+    const amount = Math.floor(diff / value)
+    diff %= value
+
+    if (amount > 0 || parts.length > 0 || i == entries.length - 1) {
+      parts.push(`${amount}${label}`)
+    }
+
+    if (parts.length >= maxParts) break
   }
-
-  return `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  return parts.join(' ')
 }
 
 function updateRemainingTime() {
-  if (startDate.value > dateNow.value) {
-    remainingTime.value = calculateRemainingTime(startDate.value)
-  } else if (endDate.value > dateNow.value) {
+
+  if (new Date(startDate.value) <= new Date(dateNow.value)) {
+    if (!eventStarted.value) {
+    eventStarted.value = true
+    console.log(
+      `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} started at ${new Date()}`,
+    )
+    emit('eventStarted')
+    }
     remainingTime.value = calculateRemainingTime(endDate.value)
   } else {
-    remainingTime.value = '00:00:00:00'
+    remainingTime.value = calculateRemainingTime(startDate.value)
+  }
+
+  if (new Date(endDate.value) <= new Date(dateNow.value)) {
+    if (!eventEnded.value) {
+    eventEnded.value = true
+    console.log(`Event: '${props.pikminEvent.name}':${props.pikminEvent.id} ended started at ${new Date()}`)
+    emit('eventEnded')
+    }
   }
 }
 

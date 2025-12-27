@@ -23,7 +23,7 @@ const upcomingEventsFailed = ref<boolean>(false)
 
 async function fetchCurrentEvents() {
   const filters: EventFilter = {
-    currentDate: new Date(),
+    currentDate: getLocalTimeString(),
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
@@ -36,7 +36,7 @@ async function fetchCurrentEvents() {
 
 async function fetchCurrentForecast() {
   const filters: ForecastFilter = {
-    currentDate: new Date(),
+    currentDate: getLocalTimeString(),
     sortBy: 'date',
     sortOrder: 'ASC',
   }
@@ -50,7 +50,7 @@ async function fetchCurrentForecast() {
 async function fetchUpcomingEvents() {
   const now = new Date()
   const filters: EventFilter = {
-    afterDate: now,
+    afterDate: getLocalTimeString(),
     sortBy: 'endDate',
     sortOrder: 'ASC',
   }
@@ -69,10 +69,49 @@ async function fetchUpcomingEvents() {
   upcomingEvents.value = filteredEvents
 }
 
+function getLocalTimeString(date?: Date) {
+  if (!date) {
+    date = new Date()
+  }
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return (
+    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
+    ` ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  )
+}
+
+function startPreciseInterval() {
+  function scheduleNextTick() {
+    const now = Date.now()
+    const next = Math.ceil(now / 1000) * 1000 // next whole second
+    const delay = next - now
+
+    setTimeout(() => {
+      if (forecast.value.id) {
+        const [year, month] = forecast.value.date.split('-').map(Number)
+
+        if (year && month) {
+          const endDate = new Date(year, month, 0, 23, 59, 59)
+          const now = new Date()
+
+          if (endDate < now) {
+            fetchCurrentForecast()
+          }
+        }
+      }
+      scheduleNextTick()
+    }, delay)
+  }
+
+  scheduleNextTick()
+}
+
 onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
   fetchUpcomingEvents()
+
+  startPreciseInterval()
 })
 </script>
 
@@ -94,7 +133,16 @@ onMounted(async () => {
         <span class="attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
-      <EventComponent v-for="event in events" :key="event.id" :pikminEvent="event" />
+      <EventComponent
+        v-for="event in events"
+        :key="event.id"
+        :pikminEvent="event"
+        @event-ended="
+          () => {
+            fetchCurrentEvents()
+          }
+        "
+      />
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
@@ -110,6 +158,12 @@ onMounted(async () => {
         :key="event.id"
         :pikminEvent="event"
         :grayedOut="true"
+        @event-started="
+          () => {
+            fetchCurrentEvents()
+            fetchUpcomingEvents()
+          }
+        "
       />
     </div>
     <div class="forecast flex flex-col gap-2 p-4 w-96">
