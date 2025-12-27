@@ -29,22 +29,37 @@ function formatDate(date: Date): string {
 }
 
 function calculateRemainingTime(date: Date): string {
+  const maxParts = 3
+
   const now = new Date()
   let diff = Math.max(0, date.getTime() - now.getTime()) / 1000 // difference in seconds
 
-  const days = Math.floor(diff / 86400)
-  diff -= days * 86400
-  const hours = Math.floor(diff / 3600)
-  diff -= hours * 3600
-  const minutes = Math.floor(diff / 60)
-  diff -= minutes * 60
-  const seconds = Math.floor(diff)
+  const units = new Map<string, number>([
+    ['d', 86400],
+    ['h', 3600],
+    ['m', 60],
+    ['s', 1],
+  ])
 
-  function pad(num: number): string {
-    return num.toString().padStart(2, '0')
+  const parts = []
+
+  // for every unit in units
+  for (const [label, value] of units) {
+    // calculate the relative amount of time left based on the label
+    const amount = Math.floor(diff / value)
+    diff %= value
+
+    // if amount above zero or has preceding parts
+    if (amount > 0 || parts.length > 0) {
+      parts.push(`${amount}${label}`)
+    }
+
+    // break if max parts reached
+    if (parts.length >= maxParts) {
+      break
+    }
   }
-
-  return `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  return parts.join(' ')
 }
 
 function updateRemainingTime() {
@@ -53,7 +68,7 @@ function updateRemainingTime() {
   } else if (endDate.value > dateNow.value) {
     remainingTime.value = calculateRemainingTime(endDate.value)
   } else {
-    remainingTime.value = '00:00:00:00'
+    remainingTime.value = '0'
   }
 }
 
