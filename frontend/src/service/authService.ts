@@ -1,6 +1,6 @@
 import api from '@/axiosClient'
 import { useAuthStore } from '@/stores/authStore'
-import type { SignInRequest } from '@/types/signInRequest'
+import type { SignInRequest } from '@/types/SignInRequest'
 
 export const signIn = async (signInRequest: SignInRequest) => {
   const authStore = useAuthStore()
