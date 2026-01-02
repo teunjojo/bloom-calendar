@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   switchState: boolean
@@ -9,27 +8,19 @@ const props = defineProps<{
 
 const emit = defineEmits(['stateChanged'])
 
-onMounted(() => {
-  watch(
-    () => localSwitchState.value,
-    () => emit('stateChanged', localSwitchState.value),
-  )
-})
-
-const localSwitchState = ref<boolean>(props.switchState)
 </script>
 
 <template>
   <div
     class="switch"
-    :class="localSwitchState ? 'checked' : 'unchecked'"
-    @click="localSwitchState = !localSwitchState"
+    :class="props.switchState ? 'checked' : 'unchecked'"
+    @click="emit('stateChanged', !props.switchState)"
   >
     <div class="button">
       <span class="icon" :class="props.icon"></span>
     </div>
     <div class="button button-label">
-      <span class="icon-text">{{ localSwitchState ? props.states[0] : props.states[1] }}</span>
+      <span class="icon-text">{{ props.switchState ? props.states[0] : props.states[1] }}</span>
     </div>
   </div>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
 import type { PikminEvent } from '@/types/PikminEvent'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import SwitchComponent from './SwitchComponent.vue'
+import { updateEventPublicState } from '@/service/eventService'
 
 const authStore = useAuthStore()
 
@@ -169,7 +170,7 @@ onMounted(() => {
         @click="eventEdit.public = !eventEdit.public"
       >
         <SwitchComponent
-          :switch-state="eventEdit.public"
+          :switch-state="props.pikminEvent.public"
           :states="['public', 'hidden']"
           @state-changed="handlePublicSwitchUpdate"
           :icon="'everyone-icon'"
