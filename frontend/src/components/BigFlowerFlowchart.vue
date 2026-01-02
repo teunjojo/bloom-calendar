@@ -274,12 +274,12 @@ async function traverse(nodeId: string) {
     <div v-else>
       <span class="text-white font-bold">{{ question }}</span>
       <div class="flex justify-center gap-4 p-4" v-if="question">
-        <button class="button bg-green-500 text-white font-bold" @click="answer = 1">Yes</button>
-        <button class="button bg-red-500 text-white font-bold" @click="answer = 0">No</button>
+        <button class="big-button button-green" @click="answer = 1">Yes</button>
+        <button class="big-button button-red" @click="answer = 0">No</button>
       </div>
-      <button class="button bg-gray-100 text-black" v-else @click="traverse('start')">Start</button>
+      <button class="big-button" v-else @click="traverse('start')">Start</button>
     </div>
-    <button v-if="reachedEnd" class="button bg-gray-400 text-white mt-4" @click="resetFlowchart()">
+    <button v-if="reachedEnd" class="big-button mt-4" @click="resetFlowchart()">
       Reset
     </button>
   </div>
@@ -290,13 +290,6 @@ async function traverse(nodeId: string) {
   background: linear-gradient(135deg, #956bff 0%, #8a3cd8 100%);
   border-radius: 1rem;
   padding: 1rem;
-}
-
-.button {
-  @apply rounded-full;
-  padding: 0.5rem 1rem;
-  border: none;
-  cursor: pointer;
 }
 
 .step {

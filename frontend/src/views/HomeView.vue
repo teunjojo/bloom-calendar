@@ -106,6 +106,31 @@ function startPreciseInterval() {
   scheduleNextTick()
 }
 
+function handleAddUpcomingEvent() {
+  const now = new Date()
+  const startDate = new Date(0)
+  startDate.setFullYear(now.getFullYear())
+  startDate.setMonth(now.getMonth() + 1)
+  startDate.setDate(1)
+  const endDate = new Date(startDate)
+  endDate.setMonth(now.getMonth() + 2)
+  endDate.setMinutes(-1)
+  const newEvent: PikminEvent = {
+    id: 0,
+    name: 'New Event',
+    startDate: getLocalTimeString(startDate),
+    endDate: getLocalTimeString(endDate),
+    images: [],
+    public: false,
+    blogLink: 'd',
+  }
+  console.log(getLocalTimeString(startDate))
+  console.log(getLocalTimeString(endDate))
+
+  upcomingEvents.value.push(newEvent)
+  console.log(events)
+}
+
 onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
@@ -137,9 +162,16 @@ onMounted(async () => {
         v-for="event in events"
         :key="event.id"
         :pikminEvent="event"
+        :edit-mode="event.id === -1"
         @event-ended="
           () => {
             fetchCurrentEvents()
+          }
+        "
+        @event-updated="
+          () => {
+            fetchCurrentEvents()
+            fetchUpcomingEvents()
           }
         "
       />
@@ -164,7 +196,18 @@ onMounted(async () => {
             fetchUpcomingEvents()
           }
         "
+        @event-updated="
+          () => {
+            fetchCurrentEvents()
+            fetchUpcomingEvents()
+          }
+        "
       />
+      <div class="flex justify-center" @click="handleAddUpcomingEvent()">
+        <button class="button button-primary">
+          <span class="icon plus-icon"></span>
+        </button>
+      </div>
     </div>
     <div class="forecast flex flex-col gap-2 p-4 w-96">
       <span class="flex items-center justify-between gap-2 mb-2">
@@ -173,13 +216,13 @@ onMounted(async () => {
           Forecast: {{ forecast.name }}
         </h2>
         <a
-          class="blog-link aspect-square flex items-center justify-center"
+          class="blog-link"
           v-if="forecast.blogLink"
           :href="forecast.blogLink"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span class="forward-icon primary"></span>
+          <span class="icon forward-icon"></span>
         </a>
       </span>
       <div v-if="currentForecastFailed" class="error-message">
@@ -235,21 +278,6 @@ onMounted(async () => {
 .flower-container img {
   border-radius: 0.5rem;
   background: white;
-}
-
-.blog-link {
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  border-radius: 100vw;
-  min-width: 2.5rem;
-  font-size: 1rem;
-}
-
-.forward-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: white;
-  mask: url('/images/icons/drillin.png') no-repeat center / contain;
 }
 
 .forward-icon.primary {

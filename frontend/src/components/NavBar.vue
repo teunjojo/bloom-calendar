@@ -17,21 +17,15 @@ const authStore = useAuthStore()
         </RouterLink>
       </li>
       <li>
-        <RouterLink v-if="!authStore.isAuthenticated()" to="/login" class="button"
+        <RouterLink v-if="!authStore.isAuthenticated()" to="/login" class="big-button"
           >Login</RouterLink
         >
-        <RouterLink v-else to="/logout" class="button">Logout</RouterLink>
+        <RouterLink v-else to="/logout" class="big-button">Logout</RouterLink>
       </li>
     </ul>
   </nav>
 </template>
 
 <style scoped>
-.button {
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-  padding: 0.5rem 1rem;
-  border-radius: 100vw;
-  text-decoration: none;
-}
+
 </style>

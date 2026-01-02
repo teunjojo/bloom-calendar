@@ -59,35 +59,12 @@ onMounted(() => {
         placeholder="Password"
         class="border border-gray-300 rounded-full p-2 mt-4 w-64"
       />
-      <button @click="handleLogin" class="">Login</button>
+      <button @click="handleLogin" class="big-button mt-2">Login</button>
       <div v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-button {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 100vw;
-  margin-top: 1rem;
-  cursor: pointer;
-  border: 2px solid white;
-}
 
-button:hover {
-  background-color: rgba(var(--primary-color-rgb), 0.8);
-}
-
-input:disabled {
-  background-color: #f3f4f6;
-  cursor: not-allowed;
-}
-
-button:disabled {
-  background-color: #9ca3af;
-  cursor: not-allowed;
-}
 </style>

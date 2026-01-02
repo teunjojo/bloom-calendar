@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
 import type { PikminEvent } from '@/types/PikminEvent'
 import { onMounted, ref } from 'vue'
+import SwitchComponent from './SwitchComponent.vue'
+
+const authStore = useAuthStore()
 
 const props = defineProps<{
   pikminEvent: PikminEvent
   grayedOut?: boolean
+  editMode?: boolean
 }>()
 
-const emit = defineEmits(['eventEnded', 'eventStarted'])
+const emit = defineEmits(['eventEnded', 'eventStarted', 'eventUpdated'])
 
 const dateNow = ref<Date>(new Date())
 const startDate = ref<Date>(new Date(props.pikminEvent.startDate))
@@ -19,6 +24,11 @@ const fullscreenImageUrl = ref<string>('')
 
 const eventEnded = ref<boolean>(false)
 const eventStarted = ref<boolean>(false)
+
+const eventEditMode = ref<boolean>(props.editMode || false)
+const eventEdit = ref<PikminEvent>({} as PikminEvent)
+
+const eventDeleteDialog = ref<HTMLDialogElement | null>(null)
 
 function formatDate(date: Date): string {
   return date
@@ -68,14 +78,13 @@ function calculateRemainingTime(date: Date): string {
 }
 
 function updateRemainingTime() {
-
   if (new Date(startDate.value) <= new Date(dateNow.value)) {
     if (!eventStarted.value) {
-    eventStarted.value = true
-    console.log(
-      `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} started at ${new Date()}`,
-    )
-    emit('eventStarted')
+      eventStarted.value = true
+      console.log(
+        `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} started at ${new Date()}`,
+      )
+      emit('eventStarted')
     }
     remainingTime.value = calculateRemainingTime(endDate.value)
   } else {
@@ -84,9 +93,11 @@ function updateRemainingTime() {
 
   if (new Date(endDate.value) <= new Date(dateNow.value)) {
     if (!eventEnded.value) {
-    eventEnded.value = true
-    console.log(`Event: '${props.pikminEvent.name}':${props.pikminEvent.id} ended started at ${new Date()}`)
-    emit('eventEnded')
+      eventEnded.value = true
+      console.log(
+        `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} ended started at ${new Date()}`,
+      )
+      emit('eventEnded')
     }
   }
 }
@@ -107,6 +118,36 @@ function startPreciseInterval() {
   scheduleNextTick()
 }
 
+function handleEditEventButton() {
+  eventEditMode.value = true
+  eventEdit.value = Object.assign({}, props.pikminEvent)
+}
+
+function handleEditEventCancelButton() {
+  eventEditMode.value = false
+  emit('eventUpdated')
+}
+
+function handleSaveEventButton() {
+  eventEditMode.value = false
+  emit('eventUpdated')
+}
+
+function handleDeleteEventButton() {
+  eventDeleteDialog.value?.showModal()
+}
+
+function handleDeleteEventConfirm() {
+  eventDeleteDialog.value?.close()
+  eventEditMode.value = false
+  emit('eventUpdated')
+}
+
+function handlePublicSwitchUpdate(state: boolean) {
+  eventEdit.value.public = state
+  emit('eventUpdated')
+}
+
 onMounted(() => {
   updateRemainingTime()
   startPreciseInterval()
@@ -116,37 +157,120 @@ onMounted(() => {
 <template>
   <div class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
-      <h2 class="text-xl font-bold flex-grow">{{ props.pikminEvent.name }}</h2>
+      <h2 v-if="!eventEditMode" class="text-xl font-bold flex-grow">
+        {{ props.pikminEvent.name }}
+      </h2>
+      <h2 v-else class="text-xl font-bold flex-grow">
+        <input type="text" class="w-full" v-model="eventEdit.name" />
+      </h2>
+      <div
+        class="flex gap-2 flex-col"
+        v-if="authStore.isAuthenticated() && !eventEditMode"
+        @click="eventEdit.public = !eventEdit.public"
+      >
+        <SwitchComponent
+          :switch-state="eventEdit.public"
+          :states="['public', 'hidden']"
+          @state-changed="handlePublicSwitchUpdate"
+          :icon="'everyone-icon'"
+        ></SwitchComponent>
+      </div>
+      <button
+        class="button button-red"
+        v-if="authStore.isAuthenticated() && eventEditMode"
+        @click="handleDeleteEventButton()"
+      >
+        <span class="icon delete-icon"></span>
+      </button>
+      <button
+        class="button"
+        v-if="authStore.isAuthenticated() && !eventEditMode"
+        @click="handleEditEventButton()"
+      >
+        <span class="icon edit-icon"></span>
+      </button>
+      <button
+        class="button"
+        v-if="authStore.isAuthenticated() && eventEditMode"
+        @click="handleEditEventCancelButton()"
+      >
+        <span class="icon close-icon"></span>
+      </button>
+      <button class="button" v-if="eventEditMode" @click="handleSaveEventButton">
+        <span class="icon save-icon"></span>
+      </button>
       <a
-        class="blog-link aspect-square flex items-center justify-center"
-        v-if="props.pikminEvent.blogLink"
+        class="button button-outline"
+        v-if="props.pikminEvent.blogLink && !eventEditMode"
         :href="props.pikminEvent.blogLink"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span class="forward-icon primary"></span>
+        <span class="icon forward-icon"></span>
       </a>
     </span>
-    <div class="flex justify-between">
+    <div class="flex justify-between" v-if="!eventEditMode">
       <div v-if="startDate < dateNow && endDate > dateNow" class="text-sm">
         Until {{ formatDate(endDate) }}
       </div>
       <div v-else-if="startDate > dateNow" class="text-sm">From {{ formatDate(startDate) }}</div>
       <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
     </div>
-    <img
-      class="event-image mt-2 rounded-lg cursor-zoom-in"
-      v-for="image in props.pikminEvent.images"
-      :key="image.id"
-      :src="image.imageUrl"
-      @click="
-        (() => {
-          fullscreenImageUrl = image.imageUrl
-          isFullscreen = true
-        })()
-      "
-      alt="Event image"
-    />
+    <div v-else>
+      <label for="start-date" class="whitespace-nowrap">From:</label>
+      <input type="datetime-local" class="w-full" name="start-date" v-model="eventEdit.startDate" />
+      <label for="end-date" class="whitespace-nowrap">Until:</label>
+      <input type="datetime-local" class="w-full" name="end-date" v-model="eventEdit.endDate" />
+    </div>
+    <div v-if="eventEditMode">
+      <label for="blog-link" class="whitespace-nowrap">Link:</label>
+      <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" />
+    </div>
+    <div v-if="!eventEditMode">
+      <img
+        class="event-image mt-2 rounded-lg cursor-zoom-in"
+        v-for="image in props.pikminEvent.images"
+        :key="image.id"
+        :src="image.imageUrl"
+        @click="
+          (() => {
+            fullscreenImageUrl = image.imageUrl
+            isFullscreen = true
+          })()
+        "
+        alt="Event image"
+      />
+    </div>
+    <div v-else class="flex flex-col items-center">
+      <span class="text-lg align-center">Images</span>
+      <div
+        class="flex gap-2 items-center justify-start w-full"
+        v-for="image in eventEdit.images"
+        :key="image.id"
+      >
+        <button
+          class="button button-red"
+          @click="eventEdit.images.splice(eventEdit.images.indexOf(image), 1)"
+        >
+          <span class="icon delete-icon"></span>
+        </button>
+        <input class="w-full" type="text" v-model="image.imageUrl" />
+        <img
+          class="event-image mt-2 cursor-zoom-in"
+          style="height: 2rem"
+          :src="image.imageUrl"
+          @click="
+            (() => {
+              fullscreenImageUrl = image.imageUrl
+              isFullscreen = true
+            })()
+          "
+        />
+      </div>
+      <button class="button" @click="eventEdit.images.push({ id: -1, imageUrl: '' })">
+        <span class="icon plus-icon"></span>
+      </button>
+    </div>
   </div>
   <!-- fullscreen popup modal-->
   <div
@@ -163,6 +287,31 @@ onMounted(() => {
       :src="fullscreenImageUrl"
     />
   </div>
+
+  <!-- delete event dialog modal -->
+  <dialog ref="eventDeleteDialog" class="dialog" closedby="any">
+    <div class="flex flex-col items-center">
+      <span class="text-xl">Are you sure you want to:</span>
+      <span class="font-bold">
+        Delete <span class="code-block">{{ props.pikminEvent.name }}</span
+        >?
+      </span>
+    </div>
+    <div class="flex justify-around pt-3">
+      <div class="flex flex-col items-center">
+        <button class="button button-red" @click="handleDeleteEventConfirm()">
+          <span class="icon delete-icon"></span>
+        </button>
+        <span>Yes</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <button class="button" @click="eventDeleteDialog?.close()">
+          <span class="icon close-icon"></span>
+        </button>
+        <span>No</span>
+      </div>
+    </div>
+  </dialog>
 </template>
 
 <style scoped>
@@ -173,24 +322,16 @@ onMounted(() => {
   color: white;
 }
 
+input {
+  background: #ffffff40;
+  border: solid 2px white;
+  border-radius: 12px;
+  padding: 0;
+}
+
 .grayed-out {
   --primary-color: var(--gray-500);
   --primary-color-dark: var(--gray-550);
-}
-
-.blog-link {
-  color: white;
-  border: 2px solid white;
-  border-radius: 100vw;
-  min-width: 2.5rem;
-  font-size: 1rem;
-}
-
-.forward-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: white;
-  mask: url('/images/icons/drillin.png') no-repeat center / contain;
 }
 
 .countdown {
@@ -220,6 +361,20 @@ onMounted(() => {
   max-width: 90%;
   max-height: 90%;
   border-radius: 1rem;
+}
+
+.dialog {
+  background: var(--primary-color);
+  box-shadow: 0px 0px 12px black;
+  border-radius: 12px;
+  padding: 1rem;
+  color: white;
+}
+
+.code-block {
+  background: #00000040;
+  padding: 3px;
+  border-radius: 3px;
 }
 
 .popin {

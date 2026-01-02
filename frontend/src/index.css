@@ -34,3 +34,90 @@ body {
   @apply bg-gradient-to-b from-blue-100 to-green-200 min-h-screen;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.button {
+  --bg: var(--gray-200);
+  --color: black;
+  border-radius: 100vw;
+  height: 2.5rem;
+  font-size: 1rem;
+  background: var(--bg);
+  color: vaR(--color);
+  transition: all 0.25s ease-in-out;
+  @apply aspect-square flex items-center justify-center;
+}
+
+.button:hover {
+  background: color-mix(in hsl, var(--bg) 80%, white);
+}
+
+.button .icon {
+  background-color: var(--color);
+}
+
+.button-outline {
+  --color: white;
+  --bg: transparent;
+  background: transparent;
+  border: 2px solid var(--color);
+  @apply aspect-square flex items-center justify-center;
+}
+
+.button-primary {
+  --bg: var(--primary-color);
+}
+
+.button-primary .icon {
+  --color: white;
+}
+
+.big-button {
+  @apply button;
+  --bg: var(--primary-color);
+  --color: white;
+  padding: 0.5rem 1rem;
+  aspect-ratio: unset;
+  font-weight: bold;
+}
+
+.button-red {
+  --bg: #de4230;
+}
+
+.button-green {
+  --bg: #1aca06;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--bg);
+}
+
+.forward-icon {
+  mask: url('/images/icons/drillin.png') no-repeat center / contain;
+}
+
+.edit-icon {
+  mask: url('/images/icons/edit.png') no-repeat center / contain;
+}
+
+.close-icon {
+  mask: url('/images/icons/close.png') no-repeat center / contain;
+}
+
+.save-icon {
+  mask: url('/images/icons/save.png') no-repeat center / contain;
+}
+
+.plus-icon {
+  mask: url('/images/icons/plus.png') no-repeat center / contain;
+}
+
+.delete-icon {
+  mask: url('/images/icons/delete.png') no-repeat center / contain;
+}
+
+.everyone-icon {
+  mask: url('/images/icons/everyone.png') no-repeat center / contain;
+}
