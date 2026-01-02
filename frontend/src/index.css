@@ -121,3 +121,20 @@ body {
 .everyone-icon {
   mask: url('/images/icons/everyone.png') no-repeat center / contain;
 }
+
+.flip-icon {
+  mask: url('/images/icons/flip.png') no-repeat center / contain;
+}
+
+.spinning-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}

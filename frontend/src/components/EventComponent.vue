@@ -31,6 +31,9 @@ const eventEdit = ref<PikminEvent>({} as PikminEvent)
 
 const eventDeleteDialog = ref<HTMLDialogElement | null>(null)
 
+const updatingPublicState = ref<boolean>(false)
+const showPublicStateLoading = ref<boolean>(false)
+
 function formatDate(date: Date): string {
   return date
     .toLocaleString('en-US', {
@@ -144,11 +147,28 @@ function handleDeleteEventConfirm() {
   emit('eventUpdated')
 }
 
-function handlePublicSwitchUpdate(state: boolean) {
+async function handlePublicSwitchUpdate(state: boolean) {
   eventEdit.value.public = state
-  updateEventPublicState(props.pikminEvent.id, state)
+  updatingPublicState.value = true
+  await updateEventPublicState(props.pikminEvent.id, state)
+  updatingPublicState.value = false
   emit('eventUpdated')
 }
+
+let timer: number | undefined
+watch(
+  updatingPublicState,
+  (updatingPublicState) => {
+    showPublicStateLoading.value = false
+    if (!updatingPublicState) return
+
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      showPublicStateLoading.value = true
+    }, 150)
+  },
+  { immediate: true },
+)
 
 onMounted(() => {
   updateRemainingTime()
@@ -171,6 +191,13 @@ onMounted(() => {
         @click="eventEdit.public = !eventEdit.public"
       >
         <SwitchComponent
+          v-if="updatingPublicState && showPublicStateLoading"
+          :switch-state="props.pikminEvent.public"
+          :states="['public', 'hidden']"
+          :icon="'flip-icon spinning-icon'"
+        ></SwitchComponent>
+        <SwitchComponent
+          v-else
           :switch-state="props.pikminEvent.public"
           :states="['public', 'hidden']"
           @state-changed="handlePublicSwitchUpdate"
