@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { Event, PrismaClient } from '@/generated/prisma';
 import { EventFilter } from '@/schemas/event-filter';
 import { applyFilter } from '@/services/filterHandler';
 
@@ -36,4 +36,20 @@ export function applyEventFilter(filter: EventFilter) {
 	}
 
 	return options;
+}
+
+export async function updateEventPublicState(prisma: PrismaClient, _id: number, _state: boolean) {
+	const updatedEvent = await prisma.event.update({
+		where: {
+			id: _id,
+		},
+		data: {
+			public: _state,
+		},
+	});
+
+	console.log('updated state');
+	console.log(updatedEvent);
+
+	return updatedEvent;
 }
