@@ -146,6 +146,7 @@ function handleDeleteEventConfirm() {
 
 function handlePublicSwitchUpdate(state: boolean) {
   eventEdit.value.public = state
+  updateEventPublicState(props.pikminEvent.id, state)
   emit('eventUpdated')
 }
 
