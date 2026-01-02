@@ -8,3 +8,11 @@ export const getEvents = async (filters: EventFilter = {}): Promise<PikminEvent[
   })
   return response.data
 }
+
+export const updateEventPublicState = async (id: number, state: boolean) => {
+  const response = await api.post<PikminEvent>(`/events/${id}/public`, {
+    state: state,
+  })
+
+  return response.data
+}
