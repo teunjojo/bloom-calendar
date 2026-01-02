@@ -122,7 +122,8 @@ exports.Prisma.EventScalarFieldEnum = {
   name: 'name',
   startDate: 'startDate',
   endDate: 'endDate',
-  blogLink: 'blogLink'
+  blogLink: 'blogLink',
+  public: 'public'
 };
 
 exports.Prisma.ImageScalarFieldEnum = {

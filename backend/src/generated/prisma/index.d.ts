@@ -1353,6 +1353,7 @@ export namespace Prisma {
     startDate: string | null
     endDate: string | null
     blogLink: string | null
+    public: boolean | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -1361,6 +1362,7 @@ export namespace Prisma {
     startDate: string | null
     endDate: string | null
     blogLink: string | null
+    public: boolean | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -1369,6 +1371,7 @@ export namespace Prisma {
     startDate: number
     endDate: number
     blogLink: number
+    public: number
     _all: number
   }
 
@@ -1387,6 +1390,7 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     blogLink?: true
+    public?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -1395,6 +1399,7 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     blogLink?: true
+    public?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -1403,6 +1408,7 @@ export namespace Prisma {
     startDate?: true
     endDate?: true
     blogLink?: true
+    public?: true
     _all?: true
   }
 
@@ -1498,6 +1504,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public: boolean
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -1525,6 +1532,7 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     blogLink?: boolean
+    public?: boolean
     images?: boolean | Event$imagesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -1535,6 +1543,7 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     blogLink?: boolean
+    public?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1543,6 +1552,7 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     blogLink?: boolean
+    public?: boolean
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -1551,9 +1561,10 @@ export namespace Prisma {
     startDate?: boolean
     endDate?: boolean
     blogLink?: boolean
+    public?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "startDate" | "endDate" | "blogLink", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "startDate" | "endDate" | "blogLink" | "public", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | Event$imagesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
@@ -1572,6 +1583,7 @@ export namespace Prisma {
       startDate: string
       endDate: string
       blogLink: string
+      public: boolean
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -2001,6 +2013,7 @@ export namespace Prisma {
     readonly startDate: FieldRef<"Event", 'String'>
     readonly endDate: FieldRef<"Event", 'String'>
     readonly blogLink: FieldRef<"Event", 'String'>
+    readonly public: FieldRef<"Event", 'Boolean'>
   }
     
 
@@ -6742,7 +6755,8 @@ export namespace Prisma {
     name: 'name',
     startDate: 'startDate',
     endDate: 'endDate',
-    blogLink: 'blogLink'
+    blogLink: 'blogLink',
+    public: 'public'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -6814,6 +6828,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -6832,6 +6853,7 @@ export namespace Prisma {
     startDate?: StringFilter<"Event"> | string
     endDate?: StringFilter<"Event"> | string
     blogLink?: StringFilter<"Event"> | string
+    public?: BoolFilter<"Event"> | boolean
     images?: ImageListRelationFilter
   }
 
@@ -6841,6 +6863,7 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     blogLink?: SortOrder
+    public?: SortOrder
     images?: ImageOrderByRelationAggregateInput
   }
 
@@ -6853,6 +6876,7 @@ export namespace Prisma {
     startDate?: StringFilter<"Event"> | string
     endDate?: StringFilter<"Event"> | string
     blogLink?: StringFilter<"Event"> | string
+    public?: BoolFilter<"Event"> | boolean
     images?: ImageListRelationFilter
   }, "id">
 
@@ -6862,6 +6886,7 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     blogLink?: SortOrder
+    public?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -6878,6 +6903,7 @@ export namespace Prisma {
     startDate?: StringWithAggregatesFilter<"Event"> | string
     endDate?: StringWithAggregatesFilter<"Event"> | string
     blogLink?: StringWithAggregatesFilter<"Event"> | string
+    public?: BoolWithAggregatesFilter<"Event"> | boolean
   }
 
   export type ImageWhereInput = {
@@ -7086,6 +7112,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public?: boolean
     images?: ImageCreateNestedManyWithoutEventInput
   }
 
@@ -7095,6 +7122,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public?: boolean
     images?: ImageUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -7103,6 +7131,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUpdateManyWithoutEventNestedInput
   }
 
@@ -7112,6 +7141,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -7121,6 +7151,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public?: boolean
   }
 
   export type EventUpdateManyMutationInput = {
@@ -7128,6 +7159,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -7136,6 +7168,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ImageCreateInput = {
@@ -7343,6 +7376,11 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type ImageListRelationFilter = {
     every?: ImageWhereInput
     some?: ImageWhereInput
@@ -7359,6 +7397,7 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     blogLink?: SortOrder
+    public?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
@@ -7371,6 +7410,7 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     blogLink?: SortOrder
+    public?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -7379,6 +7419,7 @@ export namespace Prisma {
     startDate?: SortOrder
     endDate?: SortOrder
     blogLink?: SortOrder
+    public?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
@@ -7416,6 +7457,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EventScalarRelationFilter = {
@@ -7578,6 +7627,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type ImageUpdateManyWithoutEventNestedInput = {
@@ -7787,6 +7840,11 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -7829,6 +7887,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ImageCreateWithoutEventInput = {
@@ -7879,6 +7945,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public?: boolean
   }
 
   export type EventUncheckedCreateWithoutImagesInput = {
@@ -7887,6 +7954,7 @@ export namespace Prisma {
     startDate: string
     endDate: string
     blogLink: string
+    public?: boolean
   }
 
   export type EventCreateOrConnectWithoutImagesInput = {
@@ -7910,6 +7978,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type EventUncheckedUpdateWithoutImagesInput = {
@@ -7918,6 +7987,7 @@ export namespace Prisma {
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FlowerCreateWithoutBigFlowerForecastsInput = {

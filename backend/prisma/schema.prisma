@@ -17,6 +17,7 @@ model Event {
   endDate   String
   blogLink  String
   images    Image[]
+	public		Boolean @default(false)
 }
 
 model Image {
