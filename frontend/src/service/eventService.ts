@@ -26,3 +26,8 @@ export const deleteEvent = async (id: number) => {
   const response = await api.delete<PikminEvent>(`/events/${id}`)
   return response
 }
+
+export const updateEvent = async (event: PikminEvent): Promise<PikminEvent> => {
+  const response = await api.post<PikminEvent>(`/events/${event.id}`, event)
+  return response.data
+}

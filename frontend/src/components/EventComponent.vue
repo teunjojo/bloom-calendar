@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/authStore'
 import type { PikminEvent } from '@/types/PikminEvent'
 import { onMounted, ref, watch } from 'vue'
 import SwitchComponent from './SwitchComponent.vue'
-import { deleteEvent, updateEventPublicState } from '@/service/eventService'
+import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/eventService'
 
 const authStore = useAuthStore()
 
@@ -16,9 +16,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['eventEnded', 'eventStarted', 'eventUpdated'])
 
+const event = ref<PikminEvent>(props.pikminEvent)
+
 const dateNow = ref<Date>(new Date())
-const startDate = ref<Date>(new Date(props.pikminEvent.startDate))
-const endDate = ref<Date>(new Date(props.pikminEvent.endDate))
 
 const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
@@ -83,25 +83,21 @@ function calculateRemainingTime(date: Date): string {
 }
 
 function updateRemainingTime() {
-  if (new Date(startDate.value) <= new Date(dateNow.value)) {
+  if (new Date(event.value.startDate) <= new Date(dateNow.value)) {
     if (!eventStarted.value) {
       eventStarted.value = true
-      console.log(
-        `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} started at ${new Date()}`,
-      )
+      console.log(`Event: '${event.value.name}':${event.value.id} started at ${new Date()}`)
       emit('eventStarted')
     }
-    remainingTime.value = calculateRemainingTime(endDate.value)
+    remainingTime.value = calculateRemainingTime(new Date(event.value.endDate))
   } else {
-    remainingTime.value = calculateRemainingTime(startDate.value)
+    remainingTime.value = calculateRemainingTime(new Date(event.value.startDate))
   }
 
-  if (new Date(endDate.value) <= new Date(dateNow.value)) {
+  if (new Date(event.value.endDate) <= new Date(dateNow.value)) {
     if (!eventEnded.value) {
       eventEnded.value = true
-      console.log(
-        `Event: '${props.pikminEvent.name}':${props.pikminEvent.id} ended started at ${new Date()}`,
-      )
+      console.log(`Event: '${event.value.name}':${event.value.id} ended started at ${new Date()}`)
       emit('eventEnded')
     }
   }
@@ -125,17 +121,23 @@ function startPreciseInterval() {
 
 function handleEditEventButton() {
   eventEditMode.value = true
-  eventEdit.value = Object.assign({}, props.pikminEvent)
+  eventEdit.value = Object.assign({}, event.value)
 }
 
 function handleEditEventCancelButton() {
   eventEditMode.value = false
-  emit('eventUpdated')
 }
 
-function handleSaveEventButton() {
+async function handleSaveEventButton() {
   eventEditMode.value = false
-  emit('eventUpdated')
+  event.value = await updateEvent(eventEdit.value)
+
+  if (
+    event.value.startDate != props.pikminEvent.startDate ||
+    event.value.endDate != props.pikminEvent.endDate
+  ) {
+    emit('eventUpdated')
+  }
 }
 
 function handleDeleteEventButton() {
@@ -145,16 +147,15 @@ function handleDeleteEventButton() {
 async function handleDeleteEventConfirm() {
   eventDeleteDialog.value?.close()
   eventEditMode.value = false
-  await deleteEvent(props.pikminEvent.id)
+  await deleteEvent(event.value.id)
   emit('eventUpdated')
 }
 
 async function handlePublicSwitchUpdate(state: boolean) {
   eventEdit.value.public = state
   updatingPublicState.value = true
-  await updateEventPublicState(props.pikminEvent.id, state)
+  event.value = await updateEventPublicState(event.value.id, state)
   updatingPublicState.value = false
-  emit('eventUpdated')
 }
 
 let timer: number | undefined
@@ -171,6 +172,10 @@ watch(
   },
   { immediate: true },
 )
+
+watch(props.pikminEvent, (_event) => {
+  event.value = _event
+})
 
 onMounted(() => {
   updateRemainingTime()
@@ -195,7 +200,7 @@ onMounted(() => {
   <div v-else class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 v-if="!eventEditMode" class="text-xl font-bold flex-grow">
-        {{ props.pikminEvent.name }}
+        {{ event.name }}
       </h2>
       <h2 v-else class="text-xl font-bold flex-grow">
         <input type="text" class="w-full" v-model="eventEdit.name" />
@@ -206,17 +211,14 @@ onMounted(() => {
         @click="eventEdit.public = !eventEdit.public"
       >
         <SwitchComponent
-          v-if="(updatingPublicState && showPublicStateLoading) || loading"
-          :switch-state="props.pikminEvent.public"
-          :states="['public', 'hidden']"
-          :icon="'flip-icon spinning-icon'"
-        ></SwitchComponent>
-        <SwitchComponent
-          v-else
-          :switch-state="props.pikminEvent.public"
+          :switch-state="event.public"
           :states="['public', 'hidden']"
           @state-changed="handlePublicSwitchUpdate"
-          :icon="'everyone-icon'"
+          :icon="
+            (updatingPublicState && showPublicStateLoading) || loading
+              ? 'flip-icon spinning-icon'
+              : 'everyone-icon'
+          "
         ></SwitchComponent>
       </div>
       <button
@@ -245,8 +247,8 @@ onMounted(() => {
       </button>
       <a
         class="button button-outline"
-        v-if="props.pikminEvent.blogLink && !eventEditMode"
-        :href="props.pikminEvent.blogLink"
+        v-if="event.blogLink && !eventEditMode"
+        :href="event.blogLink"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -254,10 +256,15 @@ onMounted(() => {
       </a>
     </span>
     <div class="flex justify-between" v-if="!eventEditMode">
-      <div v-if="startDate < dateNow && endDate > dateNow" class="text-sm">
-        Until {{ formatDate(endDate) }}
+      <div
+        v-if="new Date(event.startDate) < dateNow && new Date(event.endDate) > dateNow"
+        class="text-sm"
+      >
+        Until {{ formatDate(new Date(event.endDate)) }}
       </div>
-      <div v-else-if="startDate > dateNow" class="text-sm">From {{ formatDate(startDate) }}</div>
+      <div v-else-if="new Date(event.startDate) > dateNow" class="text-sm">
+        From {{ formatDate(new Date(event.startDate)) }}
+      </div>
       <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
     </div>
     <div v-else>
@@ -273,7 +280,7 @@ onMounted(() => {
     <div v-if="!eventEditMode">
       <img
         class="event-image mt-2 rounded-lg cursor-zoom-in"
-        v-for="image in props.pikminEvent.images"
+        v-for="image in event.images"
         :key="image.id"
         :src="image.imageUrl"
         @click="
@@ -337,7 +344,7 @@ onMounted(() => {
     <div class="flex flex-col items-center">
       <span class="text-xl">Are you sure you want to:</span>
       <span class="font-bold">
-        Delete <span class="code-block">{{ props.pikminEvent.name }}</span
+        Delete <span class="code-block">{{ event.name }}</span
         >?
       </span>
     </div>

@@ -77,5 +77,20 @@ export async function createEvent(prisma: PrismaClient, event: Event) {
 
 export async function deleteEvent(prisma: PrismaClient, id: number) {
 	const deletedEvent = prisma.event.delete({ where: { id } });
-	return deletedEvent
+	return deletedEvent;
+}
+
+export async function updateEvent(prisma: PrismaClient, event: Event) {
+	const updatedEvent = prisma.event.update({
+		where: { id: event.id },
+		data: {
+			name: event.name,
+			blogLink: event.blogLink,
+			startDate: event.startDate,
+			endDate: event.endDate,
+			public: event.public,
+		},
+	});
+
+	return updatedEvent
 }

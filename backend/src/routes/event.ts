@@ -1,7 +1,7 @@
 import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
 import { z } from 'zod';
-import { createEvent, deleteEvent, getEvents, getPublicEvents, updateEventPublicState } from '@/services/eventHandler';
+import { createEvent, deleteEvent, getEvents, getPublicEvents, updateEvent, updateEventPublicState } from '@/services/eventHandler';
 import { eventFilterSchema } from '@/schemas/event-filter';
 import { jwt } from 'hono/jwt';
 import { tryJwt, requireJwt } from '@/middlewares/auth';
@@ -85,6 +85,22 @@ eventRouter.delete('/:id', async (c: Context) => {
 	}
 
 	const updatedEvent = await deleteEvent(prisma, id);
+
+	return c.json(updatedEvent);
+});
+
+eventRouter.post('/:id', async (c: Context) => {
+	const body = await c.req.json();
+	const event = body;
+
+	const db = c.env.bloom_calendar_database;
+	const prisma = await prismaClients.fetch(db);
+
+	if (!prisma) {
+		return c.json({ error: 'Database not found' }, 500);
+	}
+
+	const updatedEvent = await updateEvent(prisma, event);
 
 	return c.json(updatedEvent);
 });
