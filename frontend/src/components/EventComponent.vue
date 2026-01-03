@@ -11,6 +11,7 @@ const props = defineProps<{
   pikminEvent: PikminEvent
   grayedOut?: boolean
   editMode?: boolean
+  loading?: boolean
 }>()
 
 const emit = defineEmits(['eventEnded', 'eventStarted', 'eventUpdated'])
@@ -158,9 +159,9 @@ async function handlePublicSwitchUpdate(state: boolean) {
 let timer: number | undefined
 watch(
   updatingPublicState,
-  (updatingPublicState) => {
+  (loading) => {
     showPublicStateLoading.value = false
-    if (!updatingPublicState) return
+    if (!loading) return
 
     clearTimeout(timer)
     timer = window.setTimeout(() => {
@@ -177,7 +178,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+  <div v-if="loading" class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+    <span class="flex items-center justify-between gap-2 mb-2">
+      <h2 class="text-xl font-bold flex-grow text-transparent">Loading Event</h2>
+      <div class="button">
+        <span class="icon flip-icon spinning-icon"></span>
+      </div>
+    </span>
+
+    <div class="flex justify-between">
+      <div class="text-sm text-transparent">Loading Event Start/End Date</div>
+      <div class="countdown text-xs rounded rounded-full text-transparent">??d ??h ??m</div>
+    </div>
+  </div>
+  <div v-else class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 v-if="!eventEditMode" class="text-xl font-bold flex-grow">
         {{ props.pikminEvent.name }}
