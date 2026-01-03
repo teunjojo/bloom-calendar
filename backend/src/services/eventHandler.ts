@@ -58,8 +58,5 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 		},
 	});
 
-	console.log('updated state');
-	console.log(updatedEvent);
-
 	return updatedEvent;
 }
