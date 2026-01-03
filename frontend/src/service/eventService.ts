@@ -19,6 +19,10 @@ export const updateEventPublicState = async (id: number, state: boolean) => {
 
 export const createEvent = async (event: PikminEvent) => {
   const response = await api.put<PikminEvent>('/events', event)
+  return response
+}
 
+export const deleteEvent = async (id: number) => {
+  const response = await api.delete<PikminEvent>(`/events/${id}`)
   return response
 }

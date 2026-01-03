@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/authStore'
 import type { PikminEvent } from '@/types/PikminEvent'
 import { onMounted, ref, watch } from 'vue'
 import SwitchComponent from './SwitchComponent.vue'
-import { updateEventPublicState } from '@/service/eventService'
+import { deleteEvent, updateEventPublicState } from '@/service/eventService'
 
 const authStore = useAuthStore()
 
@@ -142,9 +142,10 @@ function handleDeleteEventButton() {
   eventDeleteDialog.value?.showModal()
 }
 
-function handleDeleteEventConfirm() {
+async function handleDeleteEventConfirm() {
   eventDeleteDialog.value?.close()
   eventEditMode.value = false
+  await deleteEvent(props.pikminEvent.id)
   emit('eventUpdated')
 }
 
@@ -205,7 +206,7 @@ onMounted(() => {
         @click="eventEdit.public = !eventEdit.public"
       >
         <SwitchComponent
-          v-if="updatingPublicState && showPublicStateLoading || loading"
+          v-if="(updatingPublicState && showPublicStateLoading) || loading"
           :switch-state="props.pikminEvent.public"
           :states="['public', 'hidden']"
           :icon="'flip-icon spinning-icon'"

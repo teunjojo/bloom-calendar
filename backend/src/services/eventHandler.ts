@@ -62,13 +62,20 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 }
 
 export async function createEvent(prisma: PrismaClient, event: Event) {
-	const createdEvent = prisma.event.create({data: {
-		name: event.name,
-		blogLink: event.blogLink,
-		startDate: event.startDate,
-		endDate: event.endDate,
-		public: event.public,
-	}})
+	const createdEvent = prisma.event.create({
+		data: {
+			name: event.name,
+			blogLink: event.blogLink,
+			startDate: event.startDate,
+			endDate: event.endDate,
+			public: event.public,
+		},
+	});
 
-	return createdEvent
+	return createdEvent;
+}
+
+export async function deleteEvent(prisma: PrismaClient, id: number) {
+	const deletedEvent = prisma.event.delete({ where: { id } });
+	return deletedEvent
 }
