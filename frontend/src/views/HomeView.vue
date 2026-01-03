@@ -153,7 +153,7 @@ watch(
     clearTimeout(loadingCurrentEventsTimer)
     loadingCurrentEventsTimer = window.setTimeout(() => {
       showLoadingCurrentEvents.value = true
-    }, 500)
+    }, 200)
   },
   { immediate: true },
 )
@@ -170,7 +170,7 @@ watch(
     clearTimeout(loadingUpcomingEventsTimer)
     loadingUpcomingEventsTimer = window.setTimeout(() => {
       showLoadingUpcomingEvents.value = true
-    }, 500)
+    }, 200)
   },
   { immediate: true },
 )

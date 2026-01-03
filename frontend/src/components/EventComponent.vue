@@ -166,7 +166,7 @@ watch(
     clearTimeout(timer)
     timer = window.setTimeout(() => {
       showPublicStateLoading.value = true
-    }, 150)
+    }, 50)
   },
   { immediate: true },
 )
@@ -205,7 +205,7 @@ onMounted(() => {
         @click="eventEdit.public = !eventEdit.public"
       >
         <SwitchComponent
-          v-if="updatingPublicState && showPublicStateLoading"
+          v-if="updatingPublicState && showPublicStateLoading || loading"
           :switch-state="props.pikminEvent.public"
           :states="['public', 'hidden']"
           :icon="'flip-icon spinning-icon'"
