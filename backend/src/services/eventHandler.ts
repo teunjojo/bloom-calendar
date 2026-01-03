@@ -50,6 +50,9 @@ export function applyEventFilter(filter: EventFilter) {
 
 export async function updateEventPublicState(prisma: PrismaClient, _id: number, _state: boolean) {
 	const updatedEvent = await prisma.event.update({
+		include: {
+			images: true,
+		},
 		where: {
 			id: _id,
 		},
@@ -63,6 +66,9 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 
 export async function createEvent(prisma: PrismaClient, event: Event) {
 	const createdEvent = prisma.event.create({
+		include: {
+			images: true,
+		},
 		data: {
 			name: event.name,
 			blogLink: event.blogLink,
@@ -76,12 +82,20 @@ export async function createEvent(prisma: PrismaClient, event: Event) {
 }
 
 export async function deleteEvent(prisma: PrismaClient, id: number) {
-	const deletedEvent = prisma.event.delete({ where: { id } });
+	const deletedEvent = prisma.event.delete({
+		include: {
+			images: true,
+		},
+		where: { id },
+	});
 	return deletedEvent;
 }
 
 export async function updateEvent(prisma: PrismaClient, event: Event) {
 	const updatedEvent = prisma.event.update({
+		include: {
+			images: true,
+		},
 		where: { id: event.id },
 		data: {
 			name: event.name,
@@ -92,5 +106,5 @@ export async function updateEvent(prisma: PrismaClient, event: Event) {
 		},
 	});
 
-	return updatedEvent
+	return updatedEvent;
 }
