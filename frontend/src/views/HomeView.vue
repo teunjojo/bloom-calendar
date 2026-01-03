@@ -132,10 +132,10 @@ async function handleAddUpcomingEvent() {
     endDate: getLocalTimeString(endDate),
     images: [],
     public: false,
-    blogLink: 'd',
+    blogLink: '',
   }
-  await createEvent(newEvent)
-  fetchUpcomingEvents()
+  const createdEvent = await createEvent(newEvent)
+  upcomingEvents.value.push(createdEvent)
 }
 
 const showLoadingCurrentEvents = ref<boolean>(false)
