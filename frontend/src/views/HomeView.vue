@@ -116,7 +116,7 @@ function startPreciseInterval() {
   scheduleNextTick()
 }
 
-function handleAddUpcomingEvent() {
+async function handleAddUpcomingEvent() {
   const now = new Date()
   const startDate = new Date(0)
   startDate.setFullYear(now.getFullYear())
@@ -134,7 +134,7 @@ function handleAddUpcomingEvent() {
     public: false,
     blogLink: 'd',
   }
-  createEvent(newEvent)
+  await createEvent(newEvent)
   fetchUpcomingEvents()
 }
 
