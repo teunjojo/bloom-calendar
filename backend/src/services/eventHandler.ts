@@ -60,3 +60,15 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 
 	return updatedEvent;
 }
+
+export async function createEvent(prisma: PrismaClient, event: Event) {
+	const createdEvent = prisma.event.create({data: {
+		name: event.name,
+		blogLink: event.blogLink,
+		startDate: event.startDate,
+		endDate: event.endDate,
+		public: event.public,
+	}})
+
+	return createdEvent
+}

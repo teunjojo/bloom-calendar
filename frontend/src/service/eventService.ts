@@ -16,3 +16,9 @@ export const updateEventPublicState = async (id: number, state: boolean) => {
 
   return response.data
 }
+
+export const createEvent = async (event: PikminEvent) => {
+  const response = await api.put<PikminEvent>('/events', event)
+
+  return response
+}

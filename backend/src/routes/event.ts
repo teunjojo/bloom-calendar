@@ -1,7 +1,7 @@
 import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
 import { z } from 'zod';
-import { getEvents, getPublicEvents, updateEventPublicState } from '@/services/eventHandler';
+import { createEvent, getEvents, getPublicEvents, updateEventPublicState } from '@/services/eventHandler';
 import { eventFilterSchema } from '@/schemas/event-filter';
 import { jwt } from 'hono/jwt';
 import { tryJwt, requireJwt } from '@/middlewares/auth';
@@ -41,6 +41,22 @@ eventRouter.use('*', requireJwt);
 // Everything below this line requires the client to be authenticated
 //
 
+eventRouter.put('/', async (c: Context) => {
+	const body = await c.req.json();
+	const event = body;
+
+	const db = c.env.bloom_calendar_database;
+	const prisma = await prismaClients.fetch(db);
+
+	if (!prisma) {
+		return c.json({ error: 'Database not found' }, 500);
+	}
+
+	const createdEvent = await createEvent(prisma, event);
+
+	return c.json(createdEvent);
+});
+
 eventRouter.post('/:id/public', async (c: Context) => {
 	const id = parseInt(c.req.param('id'));
 	const body = await c.req.json();
@@ -57,4 +73,5 @@ eventRouter.post('/:id/public', async (c: Context) => {
 
 	return c.json(updatedEvent);
 });
+
 export default eventRouter;

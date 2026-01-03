@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue'
 
-import { getEvents } from '@/service/eventService'
+import { createEvent, getEvents } from '@/service/eventService'
 import type { PikminEvent } from '@/types/PikminEvent'
 import type { EventFilter } from '@/types/EventFilter'
 
@@ -134,11 +134,8 @@ function handleAddUpcomingEvent() {
     public: false,
     blogLink: 'd',
   }
-  console.log(getLocalTimeString(startDate))
-  console.log(getLocalTimeString(endDate))
-
-  upcomingEvents.value.push(newEvent)
-  console.log(events)
+  createEvent(newEvent)
+  fetchUpcomingEvents()
 }
 
 const showLoadingCurrentEvents = ref<boolean>(false)
