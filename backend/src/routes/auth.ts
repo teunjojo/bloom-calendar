@@ -23,7 +23,7 @@ authRouter.post('login', async (c: Context) => {
 	try {
 		const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
 
-		const cookie = setCookie(c, 'refresh_token', refreshToken, {
+		setCookie(c, 'refresh_token', refreshToken, {
 			httpOnly: true,
 			secure: false,
 			sameSite: 'strict',
