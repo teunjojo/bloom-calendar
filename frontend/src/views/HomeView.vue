@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 
 import { getEvents } from '@/service/eventService'
 import type { PikminEvent } from '@/types/PikminEvent'
@@ -21,7 +21,12 @@ const currentEventsFailed = ref<boolean>(false)
 const currentForecastFailed = ref<boolean>(false)
 const upcomingEventsFailed = ref<boolean>(false)
 
+const loadingCurrentEvents = ref<boolean>(false)
+const loadingUpcomingEvents = ref<boolean>(false)
+
 async function fetchCurrentEvents() {
+  loadingCurrentEvents.value = true
+
   const filters: EventFilter = {
     currentDate: getLocalTimeString(),
     sortBy: 'endDate',
@@ -32,6 +37,7 @@ async function fetchCurrentEvents() {
   } catch {
     currentEventsFailed.value = true
   }
+  loadingCurrentEvents.value = false
 }
 
 async function fetchCurrentForecast() {
@@ -48,6 +54,8 @@ async function fetchCurrentForecast() {
 }
 
 async function fetchUpcomingEvents() {
+  loadingUpcomingEvents.value = true
+
   const now = new Date()
   const filters: EventFilter = {
     afterDate: getLocalTimeString(),
@@ -67,6 +75,8 @@ async function fetchUpcomingEvents() {
     return eventStartDate > now
   })
   upcomingEvents.value = filteredEvents
+
+  loadingUpcomingEvents.value = false
 }
 
 function getLocalTimeString(date?: Date) {
@@ -131,6 +141,40 @@ function handleAddUpcomingEvent() {
   console.log(events)
 }
 
+const showLoadingCurrentEvents = ref<boolean>(false)
+
+let loadingCurrentEventsTimer: number | undefined
+watch(
+  loadingCurrentEvents,
+  (loading) => {
+    showLoadingCurrentEvents.value = false
+    if (!loading) return
+
+    clearTimeout(loadingCurrentEventsTimer)
+    loadingCurrentEventsTimer = window.setTimeout(() => {
+      showLoadingCurrentEvents.value = true
+    }, 500)
+  },
+  { immediate: true },
+)
+
+const showLoadingUpcomingEvents = ref<boolean>(false)
+
+let loadingUpcomingEventsTimer: number | undefined
+watch(
+  loadingCurrentEvents,
+  (loading) => {
+    showLoadingUpcomingEvents.value = false
+    if (!loading) return
+
+    clearTimeout(loadingUpcomingEventsTimer)
+    loadingUpcomingEventsTimer = window.setTimeout(() => {
+      showLoadingUpcomingEvents.value = true
+    }, 500)
+  },
+  { immediate: true },
+)
+
 onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
@@ -158,23 +202,26 @@ onMounted(async () => {
         <span class="attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
-      <EventComponent
-        v-for="event in events"
-        :key="event.id"
-        :pikminEvent="event"
-        :edit-mode="event.id === -1"
-        @event-ended="
-          () => {
-            fetchCurrentEvents()
-          }
-        "
-        @event-updated="
-          () => {
-            fetchCurrentEvents()
-            fetchUpcomingEvents()
-          }
-        "
-      />
+      <div v-else>
+        <EventComponent
+          v-for="event in events"
+          :key="event.id"
+          :pikminEvent="event"
+          :edit-mode="event.id === -1"
+          :loading="loadingCurrentEvents && showLoadingCurrentEvents"
+          @event-ended="
+            () => {
+              fetchCurrentEvents()
+            }
+          "
+          @event-updated="
+            () => {
+              fetchCurrentEvents()
+              fetchUpcomingEvents()
+            }
+          "
+        />
+      </div>
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
@@ -190,6 +237,7 @@ onMounted(async () => {
         :key="event.id"
         :pikminEvent="event"
         :grayedOut="true"
+        :loading="loadingUpcomingEvents && showLoadingUpcomingEvents"
         @event-started="
           () => {
             fetchCurrentEvents()
