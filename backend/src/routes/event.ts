@@ -26,7 +26,13 @@ eventRouter.get('/', tryJwt, async (c: Context) => {
 		return c.json({ error: 'Database not found' }, 500);
 	}
 
-	const events = await getEvents(prisma, query);
+	let events;
+
+	if (c.get('jwtPayload')) {
+		events = await getEvents(prisma, query);
+	} else {
+		events = await getPublicEvents(prisma, query);
+	}
 	return c.json(events);
 });
 
