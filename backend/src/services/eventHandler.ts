@@ -1,9 +1,19 @@
 import { Event, PrismaClient } from '@/generated/prisma';
 import { EventFilter } from '@/schemas/event-filter';
 import { applyFilter } from '@/services/filterHandler';
+import { equal } from 'hono/utils/buffer';
 
 export async function getEvents(prisma: PrismaClient, filter: EventFilter) {
 	const options = applyEventFilter(filter);
+	return await prisma.event.findMany(options);
+}
+
+export async function getPublicEvents(prisma: PrismaClient, filter: EventFilter) {
+	const options = applyEventFilter(filter);
+	options.where = {
+		...options.where,
+		public: true,
+	};
 	return await prisma.event.findMany(options);
 }
 

@@ -2,11 +2,10 @@ import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
 import { z } from 'zod';
 
-import { jwt } from 'hono/jwt';
 import type { JwtVariables } from 'hono/jwt';
-import { HTTPException } from 'hono/http-exception';
 import { newToken, signIn } from '@/services/authService';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
+import { requireJwt } from '@/middlewares/auth';
 
 type Variables = JwtVariables;
 
@@ -57,12 +56,7 @@ authRouter.post('logout', (c: Context) => {
 	return c.json({ success: true });
 });
 
-authRouter.use('*', (c, next) => {
-	const jwtMiddleware = jwt({
-		secret: (c.env as { JWT_SECRET: string }).JWT_SECRET,
-	});
-	return jwtMiddleware(c, next);
-});
+authRouter.use('*', requireJwt);
 //
 // Everything below this line requires the client to be authenticated
 //
