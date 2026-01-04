@@ -90,6 +90,7 @@ eventRouter.delete('/:id', async (c: Context) => {
 });
 
 eventRouter.post('/:id', async (c: Context) => {
+	const id = parseInt(c.req.param('id'));
 	const body = await c.req.json();
 	const event = body;
 
@@ -100,7 +101,7 @@ eventRouter.post('/:id', async (c: Context) => {
 		return c.json({ error: 'Database not found' }, 500);
 	}
 
-	const updatedEvent = await updateEvent(prisma, event);
+	const updatedEvent = await updateEvent(prisma, id, event);
 
 	return c.json(updatedEvent);
 });

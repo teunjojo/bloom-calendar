@@ -1,4 +1,5 @@
 import { Event, PrismaClient } from '@/generated/prisma';
+import { EventInput } from '@/schemas/even-input';
 import { EventFilter } from '@/schemas/event-filter';
 import { applyFilter } from '@/services/filterHandler';
 import { equal } from 'hono/utils/buffer';
@@ -64,17 +65,22 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 	return updatedEvent;
 }
 
-export async function createEvent(prisma: PrismaClient, event: Event) {
+export async function createEvent(prisma: PrismaClient, event: EventInput) {
 	const createdEvent = prisma.event.create({
 		include: {
 			images: true,
 		},
 		data: {
 			name: event.name,
-			blogLink: event.blogLink,
+			blogLink: event.blogLink || '',
 			startDate: event.startDate,
 			endDate: event.endDate,
 			public: event.public,
+			images: {
+				create: event.images.map((i) => ({
+					imageUrl: i.imageUrl,
+				})),
+			},
 		},
 	});
 
@@ -91,18 +97,31 @@ export async function deleteEvent(prisma: PrismaClient, id: number) {
 	return deletedEvent;
 }
 
-export async function updateEvent(prisma: PrismaClient, event: Event) {
+export async function updateEvent(prisma: PrismaClient, id: number, event: EventInput) {
 	const updatedEvent = prisma.event.update({
 		include: {
 			images: true,
 		},
-		where: { id: event.id },
+		where: { id: id },
 		data: {
 			name: event.name,
-			blogLink: event.blogLink,
+			blogLink: event.blogLink || '',
 			startDate: event.startDate,
 			endDate: event.endDate,
 			public: event.public,
+			images: {
+				upsert: event.images.map((i) => ({
+					where: {
+						id: i.id,
+					},
+					update: {
+						imageUrl: i.imageUrl,
+					},
+					create: {
+						imageUrl: i.imageUrl
+					}
+				})),
+			},
 		},
 	});
 
