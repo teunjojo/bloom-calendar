@@ -23,9 +23,9 @@ export const refreshAccessToken = async () => {
   }
 }
 
-export const signOut = () => {
+export const signOut = async () => {
   const authStore = useAuthStore()
-  api.post('/auth/logout')
+  await api.post('/auth/logout')
   authStore.setToken('')
 }
 

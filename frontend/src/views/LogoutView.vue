@@ -2,8 +2,8 @@
 import { onMounted } from 'vue'
 import { signOut } from '@/service/authService'
 
-onMounted(() => {
-  signOut()
+onMounted(async () => {
+  await signOut()
   window.location.href = '/'
 })
 </script>
