@@ -98,6 +98,19 @@ export async function deleteEvent(prisma: PrismaClient, id: number) {
 }
 
 export async function updateEvent(prisma: PrismaClient, id: number, event: EventInput) {
+	const existingEvent = await prisma.event.findUnique({
+		where: { id },
+		include: { images: true },
+	});
+
+	// Remove image not in the provided event
+	const existingImageIds = existingEvent?.images.map((img) => img.id) || [];
+	const newImageIds = event.images.map((img) => img.id).filter(Boolean);
+	const imagesToDelete = existingImageIds.filter((id) => !newImageIds.includes(id));
+	await prisma.image.deleteMany({
+		where: { id: { in: imagesToDelete } },
+	});
+
 	const updatedEvent = prisma.event.update({
 		include: {
 			images: true,
@@ -118,8 +131,8 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 						imageUrl: i.imageUrl,
 					},
 					create: {
-						imageUrl: i.imageUrl
-					}
+						imageUrl: i.imageUrl,
+					},
 				})),
 			},
 		},
