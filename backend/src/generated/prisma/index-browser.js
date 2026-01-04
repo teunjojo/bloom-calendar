@@ -149,7 +149,9 @@ exports.Prisma.FlowerScalarFieldEnum = {
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
-  password: 'password'
+  password: 'password',
+  password_salt: 'password_salt',
+  password_iterations: 'password_iterations'
 };
 
 exports.Prisma.SortOrder = {

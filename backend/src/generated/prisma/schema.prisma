@@ -46,7 +46,9 @@ model Flower {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  password String
+  id                  Int    @id @default(autoincrement())
+  username            String @unique
+  password            String
+  password_salt       String
+  password_iterations Int
 }

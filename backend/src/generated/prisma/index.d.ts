@@ -5752,56 +5752,72 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     id: number | null
+    password_iterations: number | null
   }
 
   export type UserSumAggregateOutputType = {
     id: number | null
+    password_iterations: number | null
   }
 
   export type UserMinAggregateOutputType = {
     id: number | null
     username: string | null
     password: string | null
+    password_salt: string | null
+    password_iterations: number | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: number | null
     username: string | null
     password: string | null
+    password_salt: string | null
+    password_iterations: number | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     username: number
     password: number
+    password_salt: number
+    password_iterations: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     id?: true
+    password_iterations?: true
   }
 
   export type UserSumAggregateInputType = {
     id?: true
+    password_iterations?: true
   }
 
   export type UserMinAggregateInputType = {
     id?: true
     username?: true
     password?: true
+    password_salt?: true
+    password_iterations?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     username?: true
     password?: true
+    password_salt?: true
+    password_iterations?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     username?: true
     password?: true
+    password_salt?: true
+    password_iterations?: true
     _all?: true
   }
 
@@ -5895,6 +5911,8 @@ export namespace Prisma {
     id: number
     username: string
     password: string
+    password_salt: string
+    password_iterations: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -5920,27 +5938,35 @@ export namespace Prisma {
     id?: boolean
     username?: boolean
     password?: boolean
+    password_salt?: boolean
+    password_iterations?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
     password?: boolean
+    password_salt?: boolean
+    password_iterations?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
     password?: boolean
+    password_salt?: boolean
+    password_iterations?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     username?: boolean
     password?: boolean
+    password_salt?: boolean
+    password_iterations?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "password", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "password" | "password_salt" | "password_iterations", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -5949,6 +5975,8 @@ export namespace Prisma {
       id: number
       username: string
       password: string
+      password_salt: string
+      password_iterations: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -6375,6 +6403,8 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'Int'>
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly password_salt: FieldRef<"User", 'String'>
+    readonly password_iterations: FieldRef<"User", 'Int'>
   }
     
 
@@ -6794,7 +6824,9 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     username: 'username',
-    password: 'password'
+    password: 'password',
+    password_salt: 'password_salt',
+    password_iterations: 'password_iterations'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -7070,12 +7102,16 @@ export namespace Prisma {
     id?: IntFilter<"User"> | number
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    password_salt?: StringFilter<"User"> | string
+    password_iterations?: IntFilter<"User"> | number
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    password_salt?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7085,12 +7121,16 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
+    password_salt?: StringFilter<"User"> | string
+    password_iterations?: IntFilter<"User"> | number
   }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    password_salt?: SortOrder
+    password_iterations?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -7105,6 +7145,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"User"> | number
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
+    password_salt?: StringWithAggregatesFilter<"User"> | string
+    password_iterations?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type EventCreateInput = {
@@ -7315,40 +7357,54 @@ export namespace Prisma {
   export type UserCreateInput = {
     username: string
     password: string
+    password_salt: string
+    password_iterations: number
   }
 
   export type UserUncheckedCreateInput = {
     id?: number
     username: string
     password: string
+    password_salt: string
+    password_iterations: number
   }
 
   export type UserUpdateInput = {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    password_salt?: StringFieldUpdateOperationsInput | string
+    password_iterations?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    password_salt?: StringFieldUpdateOperationsInput | string
+    password_iterations?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserCreateManyInput = {
     id?: number
     username: string
     password: string
+    password_salt: string
+    password_iterations: number
   }
 
   export type UserUpdateManyMutationInput = {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    password_salt?: StringFieldUpdateOperationsInput | string
+    password_iterations?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    password_salt?: StringFieldUpdateOperationsInput | string
+    password_iterations?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -7589,26 +7645,34 @@ export namespace Prisma {
     id?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    password_salt?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    password_salt?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
     password?: SortOrder
+    password_salt?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
+    password_iterations?: SortOrder
   }
 
   export type ImageCreateNestedManyWithoutEventInput = {
