@@ -195,11 +195,16 @@ onMounted(async () => {
         <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Current Events
       </span>
-      <div v-if="currentEventsFailed" class="error-message">
+      <div v-if="loadingCurrentEvents" class="flex justify-center">
+        <div class="spinner">
+          <span class="icon flip-icon spinning-icon"></span>
+        </div>
+      </div>
+      <div v-else-if="currentEventsFailed" class="error-message">
         <span class="attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
-      <div v-else>
+      <div v-else class="flex flex-col gap-2">
         <EventComponent
           v-for="event in events"
           :key="event.id"
@@ -217,37 +222,50 @@ onMounted(async () => {
               fetchUpcomingEvents()
             }
           "
+          @event-removed="() => {
+            events.splice(events.indexOf(event), 1)
+          }"
         />
       </div>
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
       </span>
-      <div v-if="upcomingEventsFailed" class="error-message">
+      <div v-if="loadingUpcomingEvents" class="flex justify-center">
+        <div class="spinner">
+          <span class="icon flip-icon spinning-icon"></span>
+        </div>
+      </div>
+      <div v-else-if="upcomingEventsFailed" class="error-message">
         <span class="attention-icon"></span>Failed to load upcoming events
       </div>
       <div v-else-if="upcomingEvents.length === 0" class="text-center italic">
         No upcoming events
       </div>
-      <EventComponent
-        v-for="event in upcomingEvents"
-        :key="event.id"
-        :pikminEvent="event"
-        :grayedOut="true"
-        :loading="loadingUpcomingEvents && showLoadingUpcomingEvents"
-        @event-started="
-          () => {
-            fetchCurrentEvents()
-            fetchUpcomingEvents()
-          }
-        "
-        @event-updated="
-          () => {
-            fetchCurrentEvents()
-            fetchUpcomingEvents()
-          }
-        "
-      />
+      <div v-else class="flex flex-col gap-2">
+        <EventComponent
+          v-for="event in upcomingEvents"
+          :key="event.id"
+          :pikminEvent="event"
+          :grayedOut="true"
+          :loading="loadingUpcomingEvents && showLoadingUpcomingEvents"
+          @event-started="
+            () => {
+              fetchCurrentEvents()
+              fetchUpcomingEvents()
+            }
+          "
+          @event-updated="
+            () => {
+              fetchCurrentEvents()
+              fetchUpcomingEvents()
+            }
+          "
+                    @event-removed="() => {
+            upcomingEvents.splice(upcomingEvents.indexOf(event), 1)
+          }"
+        />
+      </div>
       <div class="flex justify-center" @click="handleAddUpcomingEvent()">
         <button class="button button-primary">
           <span class="icon plus-icon"></span>
