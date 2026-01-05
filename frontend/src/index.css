@@ -130,6 +130,11 @@ body {
   animation: spin 1s linear infinite;
 }
 
+.attention-icon {
+  background-color: #b30000;
+  mask: url('/images/icons/attention-stroke.png') no-repeat center / contain;
+}
+
 .spinner {
   --bg: black;
   display: flex;
@@ -142,4 +147,14 @@ body {
   to {
     transform: rotate(-360deg);
   }
+}
+
+.error-message {
+  background-color: #ffe5e5;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: #b30000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

@@ -24,7 +24,9 @@ const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
 const fullscreenImageUrl = ref<string>('')
 
-const loading = ref<boolean>(props.loading || false)
+const eventLoading = ref<boolean>(props.loading || false)
+const eventError = ref<boolean>(false)
+const eventErrorMessage = ref<string>('')
 
 const eventEnded = ref<boolean>(false)
 const eventStarted = ref<boolean>(false)
@@ -132,13 +134,21 @@ function handleEditEventCancelButton() {
 
 async function handleSaveEventButton() {
   eventEditMode.value = false
-  loading.value = true
-  event.value = await updateEvent(eventEdit.value)
-  loading.value = false
+  eventLoading.value = true
+  try {
+    event.value = await updateEvent(eventEdit.value)
+  } catch {
+    eventError.value = true
+    eventErrorMessage.value = 'Failed to update event'
+    eventLoading.value = false
+    return
+  }
+  eventLoading.value = false
   if (
     event.value.startDate != props.pikminEvent.startDate ||
     event.value.endDate != props.pikminEvent.endDate
   ) {
+    emit('eventUpdated')
   }
 }
 
@@ -149,16 +159,29 @@ function handleDeleteEventButton() {
 async function handleDeleteEventConfirm() {
   eventDeleteDialog.value?.close()
   eventEditMode.value = false
-  loading.value = true
-  await deleteEvent(event.value.id)
-  loading.value = false
+  eventLoading.value = true
+  try {
+    await deleteEvent(event.value.id)
+  } catch {
+    eventError.value = true
+    eventErrorMessage.value = 'Failed to delete event'
+    eventLoading.value = false
+    return
+  }
   emit('eventRemoved')
 }
 
 async function handlePublicSwitchUpdate(state: boolean) {
   eventEdit.value.public = state
   updatingPublicState.value = true
-  event.value = await updateEventPublicState(event.value.id, state)
+  try {
+    event.value = await updateEventPublicState(event.value.id, state)
+  } catch {
+    eventError.value = true
+    eventErrorMessage.value = 'Failed to change event public status'
+    updatingPublicState.value = false
+    return
+  }
   updatingPublicState.value = false
 }
 
@@ -188,7 +211,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="loading" class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+  <div v-if="eventLoading" class="event-container" :class="{ 'grayed-out': props.grayedOut }">
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 class="text-xl font-bold flex-grow text-transparent">Loading Event</h2>
       <div class="button">
@@ -202,6 +225,9 @@ onMounted(() => {
     </div>
   </div>
   <div v-else class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+    <div v-if="eventError" class="error-message mb-3">
+      <span class="icon attention-icon"></span>An error occurred: {{ eventErrorMessage }}
+    </div>
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 v-if="!eventEditMode" class="text-xl font-bold flex-grow">
         {{ event.name }}
@@ -219,7 +245,7 @@ onMounted(() => {
           :states="['public', 'hidden']"
           @state-changed="handlePublicSwitchUpdate"
           :icon="
-            (updatingPublicState && showPublicStateLoading) || loading
+            (updatingPublicState && showPublicStateLoading) || eventLoading
               ? 'flip-icon spinning-icon'
               : 'everyone-icon'
           "

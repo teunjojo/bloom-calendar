@@ -201,7 +201,7 @@ onMounted(async () => {
         </div>
       </div>
       <div v-else-if="currentEventsFailed" class="error-message">
-        <span class="attention-icon"></span>Failed to load current events
+        <span class="icon attention-icon"></span>Failed to load current events
       </div>
       <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
       <div v-else class="flex flex-col gap-2">
@@ -345,22 +345,5 @@ onMounted(async () => {
 
 .forward-icon.primary {
   background-color: var(--primary-color);
-}
-
-.error-message {
-  background-color: #ffe5e5;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  color: #b30000;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.attention-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: #b30000;
-  mask: url('/images/icons/attention-stroke.png') no-repeat center / contain;
 }
 </style>
