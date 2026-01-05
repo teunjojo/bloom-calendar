@@ -29,7 +29,7 @@ authRouter.post('login', async (c: Context) => {
 	}
 
 	setCookie(c, 'refresh_token', refreshToken, {
-		domain:'.teunjojo.com'
+		domain:'.teunjojo.com',
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
