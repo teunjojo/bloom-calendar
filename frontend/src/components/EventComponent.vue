@@ -24,6 +24,8 @@ const remainingTime = ref<string>('')
 const isFullscreen = ref<boolean>(false)
 const fullscreenImageUrl = ref<string>('')
 
+const loading = ref<boolean>(props.loading || false)
+
 const eventEnded = ref<boolean>(false)
 const eventStarted = ref<boolean>(false)
 
@@ -121,7 +123,7 @@ function startPreciseInterval() {
 
 function handleEditEventButton() {
   eventEditMode.value = true
-  eventEdit.value = Object.assign({}, event.value)
+  eventEdit.value = JSON.parse(JSON.stringify(event.value))
 }
 
 function handleEditEventCancelButton() {
@@ -130,13 +132,13 @@ function handleEditEventCancelButton() {
 
 async function handleSaveEventButton() {
   eventEditMode.value = false
+  loading.value = true
   event.value = await updateEvent(eventEdit.value)
-
+  loading.value = false
   if (
     event.value.startDate != props.pikminEvent.startDate ||
     event.value.endDate != props.pikminEvent.endDate
   ) {
-    emit('eventUpdated')
   }
 }
 
@@ -318,7 +320,14 @@ onMounted(() => {
           "
         />
       </div>
-      <button class="button" @click="eventEdit.images.push({ id: -1, imageUrl: '' })">
+      <button
+        class="button"
+        @click="
+          () => {
+            eventEdit.images.push({ id: -1, imageUrl: '' })
+          }
+        "
+      >
         <span class="icon plus-icon"></span>
       </button>
     </div>
