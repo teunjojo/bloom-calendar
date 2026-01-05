@@ -23,17 +23,18 @@ authRouter.post('login', async (c: Context) => {
 	try {
 		const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
 
-		setCookie(c, 'refresh_token', refreshToken, {
-			httpOnly: true,
-			secure: false,
-			sameSite: 'strict',
-			maxAge: 7 * 24 * 60 * 60, // 7 days
-		});
-
 		return c.json({ accessToken });
 	} catch (e) {
-		return c.json({error: 'Invalid credentials'}, 401)
+		return c.json({ error: 'Invalid credentials' }, 401);
 	}
+
+	setCookie(c, 'refresh_token', refreshToken, {
+		domain:'.teunjojo.com'
+		httpOnly: true,
+		secure: true,
+		sameSite: 'strict',
+		maxAge: 7 * 24 * 60 * 60, // 7 days
+	});
 });
 
 authRouter.post('refresh', async (c: Context) => {
