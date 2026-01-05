@@ -14,7 +14,7 @@ const props = defineProps<{
   loading?: boolean
 }>()
 
-const emit = defineEmits(['eventEnded', 'eventStarted', 'eventUpdated'])
+const emit = defineEmits(['eventEnded', 'eventStarted', 'eventUpdated', 'eventRemoved'])
 
 const event = ref<PikminEvent>(props.pikminEvent)
 
@@ -149,8 +149,10 @@ function handleDeleteEventButton() {
 async function handleDeleteEventConfirm() {
   eventDeleteDialog.value?.close()
   eventEditMode.value = false
+  loading.value = true
   await deleteEvent(event.value.id)
-  emit('eventUpdated')
+  loading.value = false
+  emit('eventRemoved')
 }
 
 async function handlePublicSwitchUpdate(state: boolean) {
