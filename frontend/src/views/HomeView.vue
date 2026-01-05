@@ -12,6 +12,9 @@ import FlowerList from '@/components/FlowerList.vue'
 import type { ForecastFilter } from '@/types/ForecastFilter'
 import type { Forecast } from '@/types/Forecast'
 import { getForecasts } from '@/service/forecastService'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
 
 const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 const forecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
@@ -266,7 +269,7 @@ onMounted(async () => {
           }"
         />
       </div>
-      <div class="flex justify-center" @click="handleAddUpcomingEvent()">
+      <div v-if="authStore.isAuthenticated()" class="flex justify-center" @click="handleAddUpcomingEvent()">
         <button class="button button-primary">
           <span class="icon plus-icon"></span>
         </button>
