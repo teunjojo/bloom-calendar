@@ -16,7 +16,7 @@ const app = new Hono<{ Bindings: Bindings }>(); // binding env value
 app.use(
 	cors({
 		credentials: true,
-		origin: ['https://bloom-calendar.teunjojo.com', 'https://dev-bloom-calendar-frontend.teunjojo.workers.dev', 'http://localhost:8787', 'http://localhost:5173'],
+		origin: ['https://bloom-calendar.teunjojo.com', 'https://dev-bloom-calendar-frontend.teunjojo.workers.dev','https://api.bloom-calendar.teunjojo.com/', 'http://localhost:8787', 'http://localhost:5173'],
 	})
 );
 
