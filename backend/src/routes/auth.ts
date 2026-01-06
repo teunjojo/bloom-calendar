@@ -11,8 +11,13 @@ type Variables = JwtVariables;
 
 const authRouter = new Hono<{ Variables: Variables }>();
 
-authRouter.post('login', async (c: Context) => {
-	const json = (await c.req.json()) || {};
+authRouter.post('/login', async (c: Context) => {
+	let json;
+	try {
+		json = await c.req.json();
+	} catch {
+		return c.json({ error: 'Invalid JSON body' }, 400);
+	}
 
 	const username = z.string().min(1).parse(json.username);
 	const password = z.string().min(1).parse(json.password);
@@ -58,7 +63,7 @@ authRouter.post('refresh', async (c: Context) => {
 	}
 });
 
-authRouter.post('logout', (c: Context) => {
+authRouter.post('/logout', (c: Context) => {
 	deleteCookie(c, 'refresh_token');
 
 	return c.json({ success: true });
@@ -69,7 +74,7 @@ authRouter.use('*', requireJwt);
 // Everything below this line requires the client to be authenticated
 //
 
-authRouter.post('check', async (c: Context) => {
+authRouter.post('/check', async (c: Context) => {
 	return c.json({ success: true });
 });
 export default authRouter;

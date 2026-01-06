@@ -1,5 +1,4 @@
 import { HTTPException } from 'hono/http-exception';
-import bcrypt from 'bcryptjs';
 
 import { getUser } from './userService';
 import { sign, verify } from 'hono/jwt';
