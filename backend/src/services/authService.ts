@@ -14,9 +14,13 @@ export async function signIn(
 	const users = await getUser(prisma, username);
 	const user = users[0];
 
+	if (!user) {
+		throw new Error('User not found')
+	}
+
 	const passwordMatches = await verifyPassword(pass, user.password, user.password_salt, user.password_iterations);
 	if (!passwordMatches) {
-		throw new HTTPException(401);
+		throw new Error('Passwords do not match')
 	}
 	const accessPayload = { sub: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + 15 * 60 }; // 15 minutes
 	const refreshPayload = { sub: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 };
