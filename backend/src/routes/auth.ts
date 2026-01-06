@@ -12,7 +12,7 @@ type Variables = JwtVariables;
 const authRouter = new Hono<{ Variables: Variables }>();
 
 authRouter.post('login', async (c: Context) => {
-	const json = await c.req.json();
+	const json = (await c.req.json()) || {};
 
 	const username = z.string().min(1).parse(json.username);
 	const password = z.string().min(1).parse(json.password);
@@ -23,18 +23,25 @@ authRouter.post('login', async (c: Context) => {
 	try {
 		const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
 
+		setCookie(c, 'refresh_token', refreshToken, {
+			domain: '.teunjojo.com',
+			httpOnly: true,
+			secure: true,
+			sameSite: 'strict',
+			maxAge: 7 * 24 * 60 * 60, // 7 days
+		});
+
 		return c.json({ accessToken });
 	} catch (e) {
-		return c.json({ error: 'Invalid credentials' }, 401);
+		switch ((e as Error).message) {
+			case 'Passwords do not match':
+				return c.json({ error: 'Invalid credentials' }, 401);
+			case 'User not found':
+				return c.json({ error: 'Invalid credentials' }, 401);
+			default:
+				throw e;
+		}
 	}
-
-	setCookie(c, 'refresh_token', refreshToken, {
-		domain:'.teunjojo.com',
-		httpOnly: true,
-		secure: true,
-		sameSite: 'strict',
-		maxAge: 7 * 24 * 60 * 60, // 7 days
-	});
 });
 
 authRouter.post('refresh', async (c: Context) => {
