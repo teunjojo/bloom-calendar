@@ -64,7 +64,13 @@ authRouter.post('/refresh', async (c: Context) => {
 });
 
 authRouter.post('/logout', (c: Context) => {
-	deleteCookie(c, 'refresh_token');
+	deleteCookie(c, 'refresh_token', {
+		domain: '.teunjojo.com',
+		path: '/',
+		httpOnly: true,
+		secure: true,
+		sameSite: 'Strict',
+	});
 
 	return c.json({ success: true });
 });
