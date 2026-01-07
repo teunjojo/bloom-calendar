@@ -40,16 +40,18 @@ const updatingPublicState = ref<boolean>(false)
 const showPublicStateLoading = ref<boolean>(false)
 
 function formatDate(date: Date): string {
-  return date
-    .toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    })
-    .replace(',', '')
+  const datePart = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+
+  const timePart = date.toLocaleTimeString(navigator.languages, {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+
+  return `${datePart} ${timePart}`
 }
 
 function calculateRemainingTime(date: Date): string {
