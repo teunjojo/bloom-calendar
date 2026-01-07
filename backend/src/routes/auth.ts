@@ -32,7 +32,7 @@ authRouter.post('/login', async (c: Context) => {
 			domain: '.teunjojo.com',
 			httpOnly: true,
 			secure: true,
-			sameSite: 'strict',
+			sameSite: 'Strict',
 			maxAge: 7 * 24 * 60 * 60, // 7 days
 		});
 
