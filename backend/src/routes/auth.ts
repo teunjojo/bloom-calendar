@@ -29,9 +29,9 @@ authRouter.post('/login', async (c: Context) => {
 		const { accessToken, refreshToken } = await signIn(prisma, username, password, c.env.JWT_SECRET);
 
 		setCookie(c, 'refresh_token', refreshToken, {
-			domain: '.teunjojo.com',
+			domain: c.env.COOKIE_DOMAIN,
 			httpOnly: true,
-			secure: true,
+			secure: c.env.COOKIE_SECURE,
 			sameSite: 'Strict',
 			maxAge: 7 * 24 * 60 * 60, // 7 days
 		});
@@ -65,10 +65,10 @@ authRouter.post('/refresh', async (c: Context) => {
 
 authRouter.post('/logout', (c: Context) => {
 	deleteCookie(c, 'refresh_token', {
-		domain: '.teunjojo.com',
+		domain: c.env.COOKIE_DOMAIN,
 		path: '/',
 		httpOnly: true,
-		secure: true,
+		secure: c.env.COOKIE_SECURE,
 		sameSite: 'Strict',
 	});
 
