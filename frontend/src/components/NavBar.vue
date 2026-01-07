@@ -18,7 +18,7 @@ const authStore = useAuthStore()
         </RouterLink>
       </li>
       <li>
-        <a v-if="authStore.isAuthenticated()" @click="signOut()" class="big-button">Logout</a>
+        <button v-if="authStore.isAuthenticated()" @click="signOut()" class="big-button">Logout</button>
       </li>
     </ul>
   </nav>
