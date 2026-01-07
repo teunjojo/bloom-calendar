@@ -49,7 +49,7 @@ authRouter.post('/login', async (c: Context) => {
 	}
 });
 
-authRouter.post('refresh', async (c: Context) => {
+authRouter.post('/refresh', async (c: Context) => {
 	const cookie = getCookie(c, 'refresh_token');
 
 	if (!cookie) return c.json({ error: 'Cookie not set' }, 400);
