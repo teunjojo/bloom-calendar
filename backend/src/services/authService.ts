@@ -14,12 +14,12 @@ export async function signIn(
 	const user = users[0];
 
 	if (!user) {
-		throw new Error('User not found')
+		throw new Error('User not found');
 	}
 
 	const passwordMatches = await verifyPassword(pass, user.password, user.password_salt, user.password_iterations);
 	if (!passwordMatches) {
-		throw new Error('Passwords do not match')
+		throw new Error('Passwords do not match');
 	}
 	const accessPayload = { sub: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + 15 * 60 }; // 15 minutes
 	const refreshPayload = { sub: user.id, username: user.username, exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60 };
@@ -35,11 +35,17 @@ export async function newToken(refreshToken: string, jwtSecret: string): Promise
 
 	const payload = await verify(refreshToken, jwtSecret);
 
-	const accessPayload = payload;
-	const refreshPayload = payload;
+	const accessPayload = {
+		sub: payload.sub,
+		username: payload.username,
+		exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15m
+	};
 
-	accessPayload.exp = Date.now() / 1000 + 60 * 15; // 15m
-	refreshPayload.exp = Date.now() / 1000 + 60 * 60 * 24 * 7; // 7d
+	const refreshPayload = {
+		sub: payload.sub,
+		username: payload.username,
+		exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7d
+	};
 
 	const accessToken = await sign(accessPayload, jwtSecret);
 	const newRefreshToken = await sign(refreshPayload, jwtSecret);
