@@ -4,6 +4,7 @@ import type { PikminEvent } from '@/types/PikminEvent'
 import { onMounted, ref, watch } from 'vue'
 import SwitchComponent from './SwitchComponent.vue'
 import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/eventService'
+import PikminList from './PikminList.vue'
 
 const authStore = useAuthStore()
 
@@ -317,19 +318,30 @@ onMounted(() => {
       <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" />
     </div>
     <div v-if="!eventEditMode">
-      <img
-        class="event-image mt-2 rounded-lg cursor-zoom-in"
-        v-for="image in event.images"
-        :key="image.id"
-        :src="image.imageUrl"
-        @click="
-          (() => {
-            fullscreenImageUrl = image.imageUrl
-            isFullscreen = true
-          })()
-        "
-        alt="Event image"
-      />
+      <div
+        v-if="event.images.length > 0"
+        class="rounded-xl bg-indigo-300 mt-5 p-2 flex flex-col items-center gap-1"
+      >
+        <span
+          class="font-bold rounded-full border border-2 border-indigo-500 text-indigo-600 px-3 mb-2 shadow-inward"
+          >Event Images</span
+        >
+        <div class="flex flex-wrap items-center justify-around gap-2">
+          <div v-for="image in event.images" :key="image.id" class="event-image w-32">
+            <img
+              class="cursor-zoom-in rounded-xl max-w-full max-h-full shadow-xl"
+              :src="image.imageUrl"
+              @click="
+                (() => {
+                  fullscreenImageUrl = image.imageUrl
+                  isFullscreen = true
+                })()
+              "
+              alt="Event image"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div v-else class="flex flex-col items-center">
       <span class="text-lg align-center">Images</span>
@@ -367,6 +379,40 @@ onMounted(() => {
       >
         <span class="icon plus-icon"></span>
       </button>
+    </div>
+    <div
+      class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+      v-if="pikminEvent.newDecor && pikminEvent.newDecor.length > 0"
+    >
+      <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
+        >New Decor Pikmin</span
+      >
+      <div class="flex flex-wrap gap-2 justify-around">
+        <PikminList
+          v-for="decor in pikminEvent.newDecor"
+          :key="decor.id"
+          :name="decor.name"
+          :type="decor.type"
+          class="shadow-xl"
+        ></PikminList>
+      </div>
+    </div>
+    <div
+      class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+      v-if="pikminEvent.returningDecor && pikminEvent.returningDecor.length > 0"
+    >
+      <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
+        >Returning Decor Pikmin</span
+      >
+      <div class="flex flex-wrap gap-2 justify-around">
+        <PikminList
+          v-for="decor in pikminEvent.returningDecor"
+          :key="decor.id"
+          :name="decor.name"
+          :type="decor.type"
+          class="shadow-xl"
+        ></PikminList>
+      </div>
     </div>
   </div>
   <!-- fullscreen popup modal-->
