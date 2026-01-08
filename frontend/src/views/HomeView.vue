@@ -250,7 +250,6 @@ onMounted(async () => {
           v-for="event in upcomingEvents"
           :key="event.id"
           :pikminEvent="event"
-          :grayedOut="true"
           :loading="loadingUpcomingEvents && showLoadingUpcomingEvents"
           @event-started="
             () => {

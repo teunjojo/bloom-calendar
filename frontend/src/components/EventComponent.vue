@@ -9,7 +9,6 @@ const authStore = useAuthStore()
 
 const props = defineProps<{
   pikminEvent: PikminEvent
-  grayedOut?: boolean
   editMode?: boolean
   loading?: boolean
 }>()
@@ -213,7 +212,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="eventLoading" class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+  <div
+    v-if="eventLoading"
+    class="event-container"
+    :class="{ 'grayed-out': dateNow < new Date(event.startDate) }"
+  >
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 class="text-xl font-bold flex-grow text-transparent">Loading Event</h2>
       <div class="button">
@@ -226,7 +229,11 @@ onMounted(() => {
       <div class="countdown text-xs rounded rounded-full text-transparent">??d ??h ??m</div>
     </div>
   </div>
-  <div v-else class="event-container" :class="{ 'grayed-out': props.grayedOut }">
+  <div
+    v-else
+    class="event-container"
+    :class="{ 'grayed-out': dateNow < new Date(event.startDate) }"
+  >
     <div v-if="eventError" class="error-message mb-3">
       <span class="icon attention-icon"></span>An error occurred: {{ eventErrorMessage }}
     </div>
