@@ -7,17 +7,22 @@ import forecastRouter from './routes/forecast';
 import authRouter from './routes/auth';
 
 type Bindings = {
-	MY_KV: KVNamespace;
-	DB: D1Database;
+	bloom_calendar_database: D1Database;
 };
 
-const app = new Hono<{ Bindings: Bindings }>(); // binding env value
+const app = new Hono<{ Bindings: Bindings }>();
 
 app.use(
 	cors({
 		credentials: true,
-		origin: ['https://bloom-calendar.teunjojo.com', 'https://dev-bloom-calendar-frontend.teunjojo.workers.dev','https://api.bloom-calendar.teunjojo.com/', 'http://localhost:8787', 'http://localhost:5173'],
-	})
+		origin: [
+			'https://bloom-calendar.teunjojo.com',
+			'https://dev-bloom-calendar-frontend.teunjojo.workers.dev',
+			'https://api.bloom-calendar.teunjojo.com/',
+			'http://localhost:8787',
+			'http://localhost:5173',
+		],
+	}),
 );
 
 app.route('/', indexRouter);
