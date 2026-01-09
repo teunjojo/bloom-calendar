@@ -25,15 +25,13 @@ const setupCoin = () => {
   overlayImg.src = `/images/coins/${props.type}.png`
 
   let baseLoaded = false
-  let overlayLoaded = false
 
   baseImg.onload = () => {
     baseLoaded = true
-    if (overlayLoaded) drawCoin(ctx)
+    drawCoin(ctx)
   }
   overlayImg.onload = () => {
     drawCoin(ctx)
-    overlayLoaded = true
     if (baseLoaded) drawCoin(ctx)
   }
 }
