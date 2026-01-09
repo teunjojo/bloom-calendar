@@ -5,6 +5,7 @@ import indexRouter from '@/routes';
 import eventRouter from '@/routes/event';
 import forecastRouter from './routes/forecast';
 import authRouter from './routes/auth';
+import decorRouter from './routes/decor';
 
 type Bindings = {
 	bloom_calendar_database: D1Database;
@@ -29,5 +30,6 @@ app.route('/', indexRouter);
 app.route('/events', eventRouter);
 app.route('/forecasts', forecastRouter);
 app.route('/auth', authRouter);
+app.route('/decors', decorRouter)
 
 export default app;
