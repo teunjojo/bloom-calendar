@@ -2,6 +2,9 @@
   "name": "bloom-calendar-frontend",
   "version": "0.0.0",
   "private": true,
+  "workspaces": [
+    "api"
+  ],
   "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
@@ -49,6 +52,10 @@
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vitest": "^4.0.14",
-    "vue-tsc": "^3.1.5"
+    "vue-tsc": "^3.1.5",
+    "@prisma/adapter-d1": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "hono": "^4.10.8",
+    "zod": "^4.2.1"
   }
 }
