@@ -1,0 +1,24 @@
+{
+  "$schema": "api/node_modules/wrangler/config-schema.json",
+  "name": "bloom-calendar",
+  "compatibility_date": "2025-12-08",
+  "main": "api/src/worker.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+  },
+  "d1_databases": [
+    {
+      "binding": "bloom_calendar_database",
+      "database_name": "bloom_calendar_database",
+      "database_id": "b1c168c4-7f90-4a50-8511-f9da65b3f9ee",
+    },
+  ],
+  "placement": { "mode": "smart" },
+}
