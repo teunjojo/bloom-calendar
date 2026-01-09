@@ -39,6 +39,9 @@ const eventDeleteDialog = ref<HTMLDialogElement | null>(null)
 const updatingPublicState = ref<boolean>(false)
 const showPublicStateLoading = ref<boolean>(false)
 
+const savingEvent = ref<boolean>(false)
+const showSavingEvent = ref<boolean>(false)
+
 function formatDate(date: Date): string {
   const datePart = date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -135,23 +138,23 @@ function handleEditEventCancelButton() {
 }
 
 async function handleSaveEventButton() {
-  eventEditMode.value = false
-  eventLoading.value = true
+  savingEvent.value = true
   try {
     event.value = await updateEvent(eventEdit.value)
   } catch {
     eventError.value = true
     eventErrorMessage.value = 'Failed to update event'
-    eventLoading.value = false
+    savingEvent.value = false
     return
   }
-  eventLoading.value = false
+  savingEvent.value = false
   if (
     event.value.startDate != props.pikminEvent.startDate ||
     event.value.endDate != props.pikminEvent.endDate
   ) {
     emit('eventUpdated')
   }
+  eventEditMode.value = false
 }
 
 function handleDeleteEventButton() {
@@ -198,6 +201,20 @@ watch(
     timer = window.setTimeout(() => {
       showPublicStateLoading.value = true
     }, 50)
+  },
+  { immediate: true },
+)
+
+watch(
+  savingEvent,
+  (saving) => {
+    showSavingEvent.value = false
+    if (!saving) return
+
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      showSavingEvent.value = true
+    }, 100)
   },
   { immediate: true },
 )
@@ -283,7 +300,14 @@ onMounted(() => {
         <span class="icon close-icon"></span>
       </button>
       <button class="button" v-if="eventEditMode" @click="handleSaveEventButton">
-        <span class="icon save-icon"></span>
+        <span
+          class="icon"
+          :class="
+            (savingEvent && showSavingEvent) || eventLoading
+              ? 'flip-icon spinning-icon'
+              : 'save-icon'
+          "
+        ></span>
       </button>
       <a
         class="button button-outline"
