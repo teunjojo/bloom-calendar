@@ -11,13 +11,15 @@ datasource db {
 }
 
 model Event {
-  id        Int     @id @default(autoincrement())
-  name      String
-  startDate String
-  endDate   String
-  blogLink  String
-  images    Image[]
-  public    Boolean @default(false)
+  id             Int     @id @default(autoincrement())
+  name           String
+  startDate      String
+  endDate        String
+  blogLink       String
+  images         Image[]
+  public         Boolean @default(false)
+  newDecor       Decor[] @relation(name: "newDecor")
+  returningDecor Decor[] @relation(name: "returningDecor")
 }
 
 model Image {
@@ -25,6 +27,15 @@ model Image {
   imageUrl String
   event    Event  @relation(fields: [eventId], references: [id])
   eventId  Int
+}
+
+model Decor {
+  id                   Int     @id @default(autoincrement())
+  name                 String
+  type                 String
+  newDecorEvent        Event?  @relation(name: "newDecor", fields: [newDecorEventId], references: [id])
+  newDecorEventId      Int?
+  returningDecorEvents Event[] @relation(name: "returningDecor")
 }
 
 model Forecast {

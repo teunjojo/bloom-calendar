@@ -1,8 +1,7 @@
-import { Event, PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from '@/generated/prisma';
 import { EventInput } from '@/schemas/even-input';
 import { EventFilter } from '@/schemas/event-filter';
 import { applyFilter } from '@/services/filterHandler';
-import { equal } from 'hono/utils/buffer';
 
 export async function getEvents(prisma: PrismaClient, filter: EventFilter) {
 	const options = applyEventFilter(filter);
@@ -23,6 +22,8 @@ export function applyEventFilter(filter: EventFilter) {
 
 	options.include = {
 		images: true,
+		newDecor: true,
+		returningDecor: true,
 	};
 
 	if (filter.currentDate) {
@@ -53,6 +54,8 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 	const updatedEvent = await prisma.event.update({
 		include: {
 			images: true,
+			newDecor: true,
+			returningDecor: true,
 		},
 		where: {
 			id: _id,
@@ -69,6 +72,8 @@ export async function createEvent(prisma: PrismaClient, event: EventInput) {
 	const createdEvent = prisma.event.create({
 		include: {
 			images: true,
+			newDecor: true,
+			returningDecor: true,
 		},
 		data: {
 			name: event.name,
@@ -91,6 +96,8 @@ export async function deleteEvent(prisma: PrismaClient, id: number) {
 	const deletedEvent = prisma.event.delete({
 		include: {
 			images: true,
+			newDecor: true,
+			returningDecor: true,
 		},
 		where: { id },
 	});
@@ -100,7 +107,11 @@ export async function deleteEvent(prisma: PrismaClient, id: number) {
 export async function updateEvent(prisma: PrismaClient, id: number, event: EventInput) {
 	const existingEvent = await prisma.event.findUnique({
 		where: { id },
-		include: { images: true },
+		include: {
+			images: true,
+			newDecor: true,
+			returningDecor: true,
+		},
 	});
 
 	// Remove image not in the provided event
@@ -114,6 +125,8 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 	const updatedEvent = prisma.event.update({
 		include: {
 			images: true,
+			newDecor: true,
+			returningDecor: true,
 		},
 		where: { id: id },
 		data: {
