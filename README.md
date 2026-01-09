@@ -4,22 +4,47 @@ A web application to view events and forecasts for Pikmin Bloom.
 
 Live at: [https://bloom-calendar.teunjojo.com](https://bloom-calendar.teunjojo.com)
 
-## Running Locally
+## Setup
 
-### Backend
+1. Clone the repository:
 
-1. Create a `.env` file in the `backend` directory based on the `.env.example` file.
-2. Install dependencies with `npm install`.
-3. Run `npm run start:dev` to start the backend in development mode.
-4. The backend will be accessible at `http://localhost:3000`.
+   ```bash
+   git clone https://github.com/teunjojo/bloom-calendar.git
+   cd bloom-calendar
+    ```
 
-### Frontend
+2. Create a `.env` file in the root directory based on the `.env.example` file.
 
-1. Create a `.env.local` file in the `frontend` directory based on the `.env.example` file.
-2. Install dependencies with `npm install`.
-3. Run `npm run dev` to start the frontend development server.
-4. The frontend will be accessible at `http://localhost:5173`.
+3. Install dependencies:
 
-## Running Locally in Offline Mode
+   ```bash
+   npm install
+   ```
 
-To run the application in offline mode, set the `VITE_OFFLINE_MODE` variable to `true` in the `frontend/.env.local` file. This will make the frontend use static data instead of fetching from the backend API.
+4. Build the project:
+
+   ```bash
+   npm run build
+   ```
+
+## Usage
+
+### Running Locally
+
+Start the wrangler local development server by running:
+
+```bash
+npm run start
+```
+
+The application will be accessible at `http://localhost:8787`.
+
+### Running the Frontend in Development Mode (Vite)
+
+Start the Vite development server by running:
+
+```bash
+npm run dev
+```
+
+The frontend will be accessible at `http://localhost:5173`.
