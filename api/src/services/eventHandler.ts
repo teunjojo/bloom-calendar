@@ -86,6 +86,18 @@ export async function createEvent(prisma: PrismaClient, event: EventInput) {
 					imageUrl: i.imageUrl,
 				})),
 			},
+			newDecor: {
+				create: event.newDecor.map((i) => ({
+					name: i.name,
+					type: i.type,
+					newDecorEventId: event.id,
+				})),
+			},
+			returningDecor: {
+				connect: event.returningDecor.map((i) => ({
+					id: i.id,
+				})),
+			},
 		},
 	});
 
@@ -122,6 +134,14 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 		where: { id: { in: imagesToDelete } },
 	});
 
+	// Remove newDecor not in the provided event
+	const existingNewDecorIds = existingEvent?.newDecor.map((decor) => decor.id) || [];
+	const newNewDecorIds = event.newDecor.map((decor) => decor.id).filter(Boolean);
+	const newDecorToDelete = existingNewDecorIds.filter((id) => !newNewDecorIds.includes(id));
+	await prisma.decor.deleteMany({
+		where: { id: { in: newDecorToDelete } },
+	});
+
 	const updatedEvent = prisma.event.update({
 		include: {
 			images: true,
@@ -146,6 +166,26 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 					create: {
 						imageUrl: i.imageUrl,
 					},
+				})),
+			},
+			newDecor: {
+				upsert: event.newDecor.map((i) => ({
+					where: {
+						id: i.id,
+					},
+					update: {
+						name: i.name,
+						type: i.type,
+					},
+					create: {
+						name: i.name,
+						type: i.type,
+					},
+				})),
+			},
+			returningDecor: {
+				set: event.returningDecor.map((i) => ({
+					id: i.id,
 				})),
 			},
 		},
