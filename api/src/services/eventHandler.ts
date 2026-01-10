@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { Prisma, PrismaClient } from '@/generated/prisma';
 import { EventInput } from '@/schemas/even-input';
 import { EventFilter } from '@/schemas/event-filter';
 import { applyFilter } from '@/services/filterHandler';
@@ -18,7 +18,7 @@ export async function getPublicEvents(prisma: PrismaClient, filter: EventFilter)
 }
 
 export function applyEventFilter(filter: EventFilter) {
-	const options = applyFilter(filter);
+	const options: Prisma.EventFindManyArgs = applyFilter(filter);
 
 	options.include = {
 		images: true,

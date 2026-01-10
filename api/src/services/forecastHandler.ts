@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { Prisma, PrismaClient } from '@/generated/prisma';
 import { ForecastFilter } from '@/schemas/forecast-filter';
 import { applyFilter } from '@/services/filterHandler';
 
@@ -8,7 +8,7 @@ export async function getForecasts(prisma: PrismaClient, filter: ForecastFilter)
 }
 
 export function applyForecastFilter(filter: ForecastFilter) {
-	const options = applyFilter(filter);
+	const options: Prisma.ForecastFindManyArgs = applyFilter(filter);
 
 	options.include = {
 		bigFlowers: true,

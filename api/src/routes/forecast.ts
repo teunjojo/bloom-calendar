@@ -10,7 +10,7 @@ forecastRouter.get('/', async (c: Context) => {
 	let query;
 	try {
 		query = forecastFilterSchema.parse(c.req.query());
-	} catch (e: any) {
+	} catch (e) {
 		if (e instanceof z.ZodError) {
 			return c.json({ error: e.issues }, 400);
 		}
