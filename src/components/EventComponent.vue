@@ -5,6 +5,8 @@ import { onMounted, ref, watch } from 'vue'
 import SwitchComponent from './SwitchComponent.vue'
 import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/eventService'
 import PikminList from './PikminList.vue'
+import type { Decor } from '@/types/Decor'
+import { getDecors } from '@/service/decorService'
 
 const authStore = useAuthStore()
 
@@ -41,6 +43,10 @@ const showPublicStateLoading = ref<boolean>(false)
 
 const savingEvent = ref<boolean>(false)
 const showSavingEvent = ref<boolean>(false)
+
+const allDecor = ref<Decor[]>([])
+
+const selectedReturningDecor = ref<Decor | undefined>()
 
 function formatDate(date: Date): string {
   const datePart = date.toLocaleDateString('en-US', {
@@ -128,9 +134,10 @@ function startPreciseInterval() {
   scheduleNextTick()
 }
 
-function handleEditEventButton() {
+async function handleEditEventButton() {
   eventEditMode.value = true
   eventEdit.value = JSON.parse(JSON.stringify(event.value))
+  allDecor.value = await getDecors()
 }
 
 function handleEditEventCancelButton() {
@@ -367,7 +374,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-else class="flex flex-col items-center">
+    <div v-else class="flex flex-col gap-1 items-center">
       <span class="text-lg align-center">Images</span>
       <div
         class="flex gap-2 items-center justify-start w-full"
@@ -382,7 +389,7 @@ onMounted(() => {
         </button>
         <input class="w-full" type="text" v-model="image.imageUrl" />
         <img
-          class="event-image mt-2 cursor-zoom-in"
+          class="event-image cursor-zoom-in"
           style="height: 2rem"
           :src="image.imageUrl"
           @click="
@@ -404,39 +411,122 @@ onMounted(() => {
         <span class="icon plus-icon"></span>
       </button>
     </div>
-    <div
-      class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-      v-if="pikminEvent.newDecor && pikminEvent.newDecor.length > 0"
-    >
-      <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
-        >New Decor Pikmin</span
+    <div v-if="!eventEditMode">
+      <div
+        class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+        v-if="event.newDecor.length > 0"
       >
-      <div class="flex flex-wrap gap-2 justify-around">
-        <PikminList
-          v-for="decor in pikminEvent.newDecor"
-          :key="decor.id"
-          :name="decor.name"
-          :type="decor.type"
-          class="shadow-xl"
-        ></PikminList>
+        <span
+          class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
+          >New Decor Pikmin</span
+        >
+        <div class="flex flex-wrap gap-2 justify-around">
+          <PikminList
+            v-for="decor in event.newDecor"
+            :key="decor.id"
+            :name="decor.name"
+            :type="decor.type"
+            class="shadow-xl"
+          ></PikminList>
+        </div>
       </div>
     </div>
-    <div
-      class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-      v-if="pikminEvent.returningDecor && pikminEvent.returningDecor.length > 0"
-    >
-      <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
-        >Returning Decor Pikmin</span
+    <div v-else class="flex flex-col gap-1 items-center">
+      <span class="text-lg align-center">New Decor</span>
+      <div
+        class="flex gap-2 items-center justify-start w-full"
+        v-for="decor in eventEdit.newDecor"
+        :key="decor.id"
       >
-      <div class="flex flex-wrap gap-2 justify-around">
-        <PikminList
-          v-for="decor in pikminEvent.returningDecor"
-          :key="decor.id"
-          :name="decor.name"
-          :type="decor.type"
-          class="shadow-xl"
-        ></PikminList>
+        <button
+          class="button button-red"
+          @click="eventEdit.newDecor.splice(eventEdit.newDecor.indexOf(decor), 1)"
+        >
+          <span class="icon delete-icon"></span>
+        </button>
+        <input class="w-full" type="text" v-model="decor.name" />
+        <input class="w-full" type="text" v-model="decor.type" />
       </div>
+      <button
+        class="button"
+        @click="
+          () => {
+            eventEdit.newDecor.push({ id: -1, name: '', type: '', newDecorEventId: event.id })
+          }
+        "
+      >
+        <span class="icon plus-icon"></span>
+      </button>
+    </div>
+    <div v-if="!eventEditMode">
+      <div
+        class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+        v-if="event.returningDecor.length > 0"
+      >
+        <span
+          class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
+          >Returning Decor Pikmin</span
+        >
+        <div class="flex flex-wrap gap-2 justify-around">
+          <PikminList
+            v-for="decor in event.returningDecor"
+            :key="decor.id"
+            :name="decor.name"
+            :type="decor.type"
+            class="shadow-xl"
+          ></PikminList>
+        </div>
+      </div>
+    </div>
+    <div v-else class="flex flex-col gap-1 items-center">
+      <span class="text-lg align-center">Returning Decor</span>
+      <div
+        class="flex gap-2 items-center justify-start w-full"
+        v-for="decor in eventEdit.returningDecor"
+        :key="decor.id"
+      >
+        <button
+          class="button button-red"
+          @click="eventEdit.returningDecor.splice(eventEdit.returningDecor.indexOf(decor), 1)"
+        >
+          <span class="icon delete-icon"></span>
+        </button>
+        <span>{{ decor.name }}</span>
+      </div>
+      <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
+        <option :value="undefined" disabled></option>
+        <option
+          v-for="selectDecor in allDecor"
+          :key="selectDecor.id"
+          :value="selectDecor"
+          :disabled="eventEdit.returningDecor.some((decor) => decor.id === selectDecor.id)"
+        >
+          {{ selectDecor.name }}
+        </option>
+      </select>
+      <button
+        class="button"
+        @click="
+          () => {
+            if (!selectedReturningDecor) {
+              eventError = true
+              eventErrorMessage = 'No returning decor selected'
+              return
+            }
+            if (eventEdit.returningDecor.some((decor) => decor.id === selectedReturningDecor!.id)) {
+              eventError = true
+              eventErrorMessage = 'Returning decor already added'
+              return
+            }
+
+            eventEdit.returningDecor.push(selectedReturningDecor)
+            eventError = false
+            selectedReturningDecor = undefined
+          }
+        "
+      >
+        <span class="icon plus-icon"></span>
+      </button>
     </div>
   </div>
   <!-- fullscreen popup modal-->
@@ -489,7 +579,8 @@ onMounted(() => {
   color: white;
 }
 
-input {
+input,
+select {
   background: #ffffff40;
   border: solid 2px white;
   border-radius: 12px;

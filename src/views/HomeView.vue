@@ -137,7 +137,7 @@ async function handleAddUpcomingEvent() {
     public: false,
     blogLink: '',
     newDecor: [],
-    returningDecor: []
+    returningDecor: [],
   }
   const createdEvent = await createEvent(newEvent)
   upcomingEvents.value.push(createdEvent)
@@ -227,9 +227,11 @@ onMounted(async () => {
               fetchUpcomingEvents()
             }
           "
-          @event-removed="() => {
-            events.splice(events.indexOf(event), 1)
-          }"
+          @event-removed="
+            () => {
+              events.splice(events.indexOf(event), 1)
+            }
+          "
         />
       </div>
       <span class="text-xl font-bold flex items-center gap-1">
@@ -265,12 +267,18 @@ onMounted(async () => {
               fetchUpcomingEvents()
             }
           "
-                    @event-removed="() => {
-            upcomingEvents.splice(upcomingEvents.indexOf(event), 1)
-          }"
+          @event-removed="
+            () => {
+              upcomingEvents.splice(upcomingEvents.indexOf(event), 1)
+            }
+          "
         />
       </div>
-      <div v-if="authStore.isAuthenticated()" class="flex justify-center" @click="handleAddUpcomingEvent()">
+      <div
+        v-if="authStore.isAuthenticated()"
+        class="flex justify-center"
+        @click="handleAddUpcomingEvent()"
+      >
         <button class="button button-primary">
           <span class="icon plus-icon"></span>
         </button>

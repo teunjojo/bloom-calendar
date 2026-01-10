@@ -1,5 +1,5 @@
-import type { Decor } from "./Decor"
-import type { Image } from "./Image"
+import type { Decor } from './Decor'
+import type { Image } from './Image'
 
 export interface PikminEvent {
   id: number
