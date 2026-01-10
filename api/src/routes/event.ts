@@ -3,7 +3,6 @@ import prismaClients from '@/db/prisma';
 import { z } from 'zod';
 import { createEvent, deleteEvent, getEvents, getPublicEvents, updateEvent, updateEventPublicState } from '@/services/eventHandler';
 import { eventFilterSchema } from '@/schemas/event-filter';
-import { jwt } from 'hono/jwt';
 import { tryJwt, requireJwt } from '@/middlewares/auth';
 
 const eventRouter = new Hono();
@@ -12,7 +11,7 @@ eventRouter.get('/', tryJwt, async (c: Context) => {
 	let query;
 	try {
 		query = eventFilterSchema.parse(c.req.query());
-	} catch (e: any) {
+	} catch (e) {
 		if (e instanceof z.ZodError) {
 			return c.json({ error: e.issues }, 400);
 		}

@@ -58,7 +58,7 @@ authRouter.post('/refresh', async (c: Context) => {
 		const { accessToken, refreshToken } = await newToken(cookie!, c.env.JWT_SECRET);
 
 		return c.json({ accessToken, refreshToken });
-	} catch (e) {
+	} catch {
 		return c.json({ error: 'Failed to refresh token' }, 401);
 	}
 });
