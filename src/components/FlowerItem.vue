@@ -2,6 +2,8 @@
 import type { Flower } from '@/types/Flower'
 import { ref } from 'vue'
 
+const R2_BASE_URL = import.meta.env.VITE_R2_BASE_URL
+
 const props = defineProps<{
   flower: Flower
 }>()
@@ -13,7 +15,7 @@ const imageError = ref<boolean>(false)
   <div class="flower-container flex flex-col items-center">
     <img
       style="height: 5rem"
-      :src="`/images/flowers/${props.flower.slug}.png`"
+      :src="`${R2_BASE_URL}/images/flowers/${props.flower.slug}.png`"
       @error="imageError = true"
       v-if="!imageError"
     />

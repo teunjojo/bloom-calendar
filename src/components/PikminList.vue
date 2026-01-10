@@ -21,8 +21,9 @@ const setupCoin = () => {
 
   if (!ctx) return
 
-  baseImg.src = '/images/coins/base.png'
-  overlayImg.src = `/images/coins/${props.type}.png`
+  baseImg.crossOrigin = 'anonymous'
+  baseImg.src = `${import.meta.env.VITE_R2_BASE_URL}/images/coins/base.png`
+  overlayImg.src = `${import.meta.env.VITE_R2_BASE_URL}/images/coins/${props.type}.png`
 
   let baseLoaded = false
 
