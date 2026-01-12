@@ -17,22 +17,6 @@ const flowchart: Flowchart = {
   nodes: [
     {
       id: 'start',
-      description: 'Decide what colour+species of Big Flower you desire (e.g., a blue peony).',
-      next: ['find_flower'],
-    },
-    {
-      id: 'find_flower',
-      description: 'Find a Big Flower that definitely has no flowers already planted around it.',
-      next: ['check_radius'],
-    },
-    {
-      id: 'check_radius',
-      description:
-        'Make certain that all flowers planted are within the Big Flower radius - check the big flower progress as you plant.',
-      next: ['white_bloom_decision'],
-    },
-    {
-      id: 'white_bloom_decision',
       description: 'Do you want a white bloom?',
       next: [
         {
@@ -48,7 +32,7 @@ const flowchart: Flowchart = {
     {
       id: 'white_chance',
       description:
-        'You need to make a ??? bloom, which unfortunately can become any colour of the species. Multiple attempts increase chances of getting white.',
+        'There is no way to force white blooms. The color is picked based on odds unique to the species.',
       next: ['plant_156_white_check'],
     },
     {
@@ -60,7 +44,7 @@ const flowchart: Flowchart = {
           node: 'plant_156_white',
         },
         {
-          condition: 'No/Would prefer not to',
+          condition: 'No',
           node: 'alternative_no_white',
         },
       ],
@@ -73,37 +57,37 @@ const flowchart: Flowchart = {
     {
       id: 'finish_white_bloom',
       description:
-        'Finish blooming the Big Flower using any petals you wish, but without exceeding 100 of any other colour.',
+        'Finish blooming by using petals of any color or species, but without exceeding 100 of any other color.',
       next: [],
     },
     {
       id: 'plant_156_desired_colour',
-      description: 'Can you plant 156 of the desired colour+species?',
+      description: 'Can you plant 156 petals of the desired color+species?',
       next: [
         {
           condition: 'Yes',
           node: 'plant_156_colour',
         },
         {
-          condition: 'No/Would prefer not to',
+          condition: 'No',
           node: 'have_some_petals',
         },
       ],
     },
     {
       id: 'plant_156_colour',
-      description: 'Plant at least 156 of the desired colour+species.',
+      description: 'Plant at least 156 petals of the desired color+species.',
       next: ['finish_any_petals'],
     },
     {
       id: 'finish_any_petals',
-      description: 'Finish blooming the Big Flower using any other petals you wish to use.',
+      description: 'Finish blooming by using petals of any color or species',
       next: [],
     },
     {
       id: 'have_some_petals',
       description:
-        'Do you have some petals of the desired colour+species and one other petal colour of this species?',
+        'Can you plant some petals of the desired color+species and one other petal color of this species?',
       next: [
         {
           condition: 'Yes',
@@ -117,19 +101,19 @@ const flowchart: Flowchart = {
     },
     {
       id: 'plant_0_144_wrong_colour',
-      description: 'Plant 0-144 of the desired species but wrong colour. Do not exceed 144.',
+      description: 'Plant 0-144 of the desired species but wrong color. Do not exceed 144.',
       next: ['plant_desired_until_156'],
     },
     {
       id: 'plant_desired_until_156',
       description:
-        'Plant the desired colour+species until at least 156/300 are planted around the Big Flower.',
+        'Plant the desired color+species until the Big Flower has at least 156/300 flowers planted.',
       next: ['finish_with_desired_colour'],
     },
     {
       id: 'have_two_other_colours',
       description:
-        'Do you have two other petal colours of this species, enough to plant 78 to 99 of both?',
+        'Can you plant between 78-99 petals of each of two other colors of this species?',
       next: [
         {
           condition: 'Yes',
@@ -144,12 +128,12 @@ const flowchart: Flowchart = {
     {
       id: 'plant_78_99_both',
       description:
-        'Plant between 78 and 99 of both, therefore planting 156 to 198 of the variety you want. All numbers must be in these ranges.',
+        'Plant between 78-99 of both, therefore planting 156-198 total of the species you want. All numbers must be in these ranges.',
       next: ['finish_with_desired_colour'],
     },
     {
       id: 'plant_156_199_white',
-      description: 'Can you plant 156 white petals of the desired species?',
+      description: 'Can you plant at least 156 white petals of the desired species?',
       next: [
         {
           condition: 'Yes',
@@ -163,19 +147,19 @@ const flowchart: Flowchart = {
     },
     {
       id: 'finish_with_desired_colour',
-      description:
-        'Finish blooming with any petals that are the same colour that you desire the bloom to become.',
+      description: 'Finish blooming by using the desired color petals of any species',
       next: [],
     },
     {
       id: 'no_guarantee',
       description:
-        'No other way to guarantee the bloom you want. More petals can be obtained at random from mushrooms or blooming Big Flowers with normal nectar. Events and planting challenges may also offer what you need as a reward.',
+        'There is no way to force the bloom you want. More petals can be obtained by blooming Big Flowers with normal petals or destoying mushroom. Events and planting challenges may also offer what you need as a reward.',
       next: [],
     },
     {
       id: 'alternative_no_white',
-      description: 'Can you plant 156 of the species without planting more than 100 of any colour?',
+      description:
+        'Can you plant 156 petals of the species without planting more than 100 of any color?',
       next: [
         {
           condition: 'Yes',
@@ -189,12 +173,12 @@ const flowchart: Flowchart = {
     },
     {
       id: 'do_that',
-      description: 'Do that.',
+      description: 'Plant 156 of the desired species, without planting more than 100 of any color.',
       next: ['finish_with_any_white_petals'],
     },
     {
       id: 'finish_with_any_white_petals',
-      description: 'Finish blooming the Big Flower using any white petals you wish to use.',
+      description: 'Finish blooming by using white petals of any species.',
       next: [],
     },
   ],
@@ -279,9 +263,7 @@ async function traverse(nodeId: string) {
       </div>
       <button class="big-button" v-else @click="traverse('start')">Start</button>
     </div>
-    <button v-if="reachedEnd" class="big-button mt-4" @click="resetFlowchart()">
-      Reset
-    </button>
+    <button v-if="reachedEnd" class="big-button mt-4" @click="resetFlowchart()">Reset</button>
   </div>
 </template>
 
