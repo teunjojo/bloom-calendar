@@ -137,13 +137,18 @@ const flowchart: Flowchart = {
       next: [
         {
           condition: 'Yes',
-          node: 'end_finish_with_desired_colour',
+          node: 'a_plant_156-199_white_species',
         },
         {
           condition: 'No',
           node: 'end_no_guarantee',
         },
       ],
+    },
+    {
+      id: 'a_plant_156-199_white_species',
+      description: 'Plant 156-199 white petals of the desired species. Do not exceed 199',
+      next: ['end_finish_with_desired_colour'],
     },
     {
       id: 'end_finish_with_desired_colour',
