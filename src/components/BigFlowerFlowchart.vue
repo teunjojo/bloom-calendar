@@ -21,163 +21,163 @@ const flowchart: Flowchart = {
       next: [
         {
           condition: 'Yes',
-          node: 'white_chance',
+          node: 'info_white_unforceable',
         },
         {
           condition: 'No',
-          node: 'plant_156_desired_colour',
+          node: 'q_have_156_desired_colour',
         },
       ],
     },
     {
-      id: 'white_chance',
+      id: 'info_white_unforceable',
       description:
         'There is no way to force white blooms. The color is picked based on odds unique to the species.',
-      next: ['plant_156_white_check'],
+      next: ['q_have_156_white_species'],
     },
     {
-      id: 'plant_156_white_check',
+      id: 'q_have_156_white_species',
       description: 'Can you plant 156 of the desired white species?',
       next: [
         {
           condition: 'Yes',
-          node: 'plant_156_white',
+          node: 'a_plant_156_white_species',
         },
         {
           condition: 'No',
-          node: 'alternative_no_white',
+          node: 'q_alt_no_white_limit',
         },
       ],
     },
     {
-      id: 'plant_156_white',
+      id: 'a_plant_156_white_species',
       description: 'Plant at least 156 of the desired white species.',
-      next: ['finish_white_bloom'],
+      next: ['end_finish_white_limited'],
     },
     {
-      id: 'finish_white_bloom',
+      id: 'end_finish_white_limited',
       description:
         'Finish blooming by using petals of any color or species, but without exceeding 100 of any other color.',
       next: [],
     },
     {
-      id: 'plant_156_desired_colour',
+      id: 'q_have_156_desired_colour',
       description: 'Can you plant 156 petals of the desired color+species?',
       next: [
         {
           condition: 'Yes',
-          node: 'plant_156_colour',
+          node: 'a_plant_156_desired_colour',
         },
         {
           condition: 'No',
-          node: 'have_some_petals',
+          node: 'q_have_partial_and_other_colour',
         },
       ],
     },
     {
-      id: 'plant_156_colour',
+      id: 'a_plant_156_desired_colour',
       description: 'Plant at least 156 petals of the desired color+species.',
-      next: ['finish_any_petals'],
+      next: ['end_finish_any_petals'],
     },
     {
-      id: 'finish_any_petals',
+      id: 'end_finish_any_petals',
       description: 'Finish blooming by using petals of any color or species',
       next: [],
     },
     {
-      id: 'have_some_petals',
+      id: 'q_have_partial_and_other_colour',
       description:
         'Can you plant some petals of the desired color+species and one other petal color of this species?',
       next: [
         {
           condition: 'Yes',
-          node: 'plant_0_144_wrong_colour',
+          node: 'a_plant_wrong_colour_limited',
         },
         {
           condition: 'No',
-          node: 'have_two_other_colours',
+          node: 'q_have_two_other_colours',
         },
       ],
     },
     {
-      id: 'plant_0_144_wrong_colour',
+      id: 'a_plant_wrong_colour_limited',
       description: 'Plant 0-144 of the desired species but wrong color. Do not exceed 144.',
-      next: ['plant_desired_until_156'],
+      next: ['a_plant_desired_until_156'],
     },
     {
-      id: 'plant_desired_until_156',
+      id: 'a_plant_desired_until_156',
       description:
         'Plant the desired color+species until the Big Flower has at least 156/300 flowers planted.',
-      next: ['finish_with_desired_colour'],
+      next: ['end_finish_with_desired_colour'],
     },
     {
-      id: 'have_two_other_colours',
+      id: 'q_have_two_other_colours',
       description:
         'Can you plant between 78-99 petals of each of two other colors of this species?',
       next: [
         {
           condition: 'Yes',
-          node: 'plant_78_99_both',
+          node: 'a_plant_two_colours_balanced',
         },
         {
           condition: 'No',
-          node: 'plant_156_199_white',
+          node: 'q_have_156_white_petals',
         },
       ],
     },
     {
-      id: 'plant_78_99_both',
+      id: 'a_plant_two_colours_balanced',
       description:
         'Plant between 78-99 of both, therefore planting 156-198 total of the species you want. All numbers must be in these ranges.',
-      next: ['finish_with_desired_colour'],
+      next: ['end_finish_with_desired_colour'],
     },
     {
-      id: 'plant_156_199_white',
+      id: 'q_have_156_white_petals',
       description: 'Can you plant at least 156 white petals of the desired species?',
       next: [
         {
           condition: 'Yes',
-          node: 'finish_with_desired_colour',
+          node: 'end_finish_with_desired_colour',
         },
         {
           condition: 'No',
-          node: 'no_guarantee',
+          node: 'end_no_guarantee',
         },
       ],
     },
     {
-      id: 'finish_with_desired_colour',
+      id: 'end_finish_with_desired_colour',
       description: 'Finish blooming by using the desired color petals of any species',
       next: [],
     },
     {
-      id: 'no_guarantee',
+      id: 'end_no_guarantee',
       description:
-        'There is no way to force the bloom you want. More petals can be obtained by blooming Big Flowers with normal petals or destoying mushroom. Events and planting challenges may also offer what you need as a reward.',
+        'There is no way to force the bloom you want. More petals can be obtained by blooming Big Flowers with normal petals or destroying mushrooms. Events and planting challenges may also offer what you need as a reward.',
       next: [],
     },
     {
-      id: 'alternative_no_white',
+      id: 'q_alt_no_white_limit',
       description:
         'Can you plant 156 petals of the species without planting more than 100 of any color?',
       next: [
         {
           condition: 'Yes',
-          node: 'do_that',
+          node: 'a_plant_species_color_limited',
         },
         {
           condition: 'No',
-          node: 'no_guarantee',
+          node: 'end_no_guarantee',
         },
       ],
     },
     {
-      id: 'do_that',
+      id: 'a_plant_species_color_limited',
       description: 'Plant 156 of the desired species, without planting more than 100 of any color.',
-      next: ['finish_with_any_white_petals'],
+      next: ['end_finish_with_any_white'],
     },
     {
-      id: 'finish_with_any_white_petals',
+      id: 'end_finish_with_any_white',
       description: 'Finish blooming by using white petals of any species.',
       next: [],
     },
