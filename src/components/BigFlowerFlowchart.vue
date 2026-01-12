@@ -17,6 +17,11 @@ const flowchart: Flowchart = {
   nodes: [
     {
       id: 'start',
+      description: 'Find a Big Flower with 0/300 flowers planted.',
+      next: ['q_white_bloom']
+    },
+    {
+      id: 'q_white_bloom',
       description: 'Do you want a white bloom?',
       next: [
         {
