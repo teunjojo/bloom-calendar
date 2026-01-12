@@ -87,7 +87,7 @@ const flowchart: Flowchart = {
     {
       id: 'q_have_partial_and_other_colour',
       description:
-        'Can you plant some petals of the desired color+species and one other petal color of this species?',
+        'Can you plant some petals of the desired color+species and at least one other petal color of this species?',
       next: [
         {
           condition: 'Yes',
@@ -152,7 +152,7 @@ const flowchart: Flowchart = {
     },
     {
       id: 'end_finish_with_desired_colour',
-      description: 'Finish blooming by using the desired color petals of any species',
+      description: 'Finish blooming by planting the desired color petals of any species',
       next: [],
     },
     {
