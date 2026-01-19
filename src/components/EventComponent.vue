@@ -48,7 +48,10 @@ const allDecor = ref<Decor[]>([])
 
 const selectedReturningDecor = ref<Decor | undefined>()
 
-function formatDate(date: Date): string {
+function formatDate(date: Date, endDate: boolean): string {
+  if (endDate) {
+    date.setTime(date.getTime() - 1000)
+  }
   const datePart = date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -331,7 +334,7 @@ onMounted(() => {
         v-if="new Date(event.startDate) < dateNow && new Date(event.endDate) > dateNow"
         class="text-sm"
       >
-        Until {{ formatDate(new Date(event.endDate)) }}
+        Until {{ formatDate(new Date(event.endDate), true) }}
       </div>
       <div v-else-if="new Date(event.startDate) > dateNow" class="text-sm">
         From {{ formatDate(new Date(event.startDate)) }}
