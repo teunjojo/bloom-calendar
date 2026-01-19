@@ -48,7 +48,7 @@ const allDecor = ref<Decor[]>([])
 
 const selectedReturningDecor = ref<Decor | undefined>()
 
-function formatDate(date: Date, endDate: boolean): string {
+function formatDate(date: Date, endDate?: boolean): string {
   if (endDate) {
     date.setTime(date.getTime() - 1000)
   }
