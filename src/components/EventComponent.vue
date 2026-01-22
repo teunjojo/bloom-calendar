@@ -50,7 +50,7 @@ const selectedReturningDecor = ref<Decor | undefined>()
 
 function formatDate(date: Date, endDate?: boolean): string {
   if (endDate) {
-    date.setTime(date.getTime() - 1000)
+    date.setTime(date.getTime() - 1)
   }
   const datePart = date.toLocaleDateString('en-US', {
     year: 'numeric',
