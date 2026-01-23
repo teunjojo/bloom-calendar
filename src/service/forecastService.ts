@@ -9,6 +9,13 @@ export const getForecasts = async (filters: ForecastFilter = {}): Promise<Foreca
   return response.data
 }
 
+export const updateForecastPublicState = async (id: number, state: boolean) => {
+  const response = await api.post<Forecast>(`/forecasts/${id}/public`, {
+    state: state,
+  })
+  return response.data
+}
+
 export const createForecast = async (event: Forecast) => {
   const response = await api.put<Forecast>('/forecasts', event)
   return response.data

@@ -4,6 +4,7 @@ import type { Forecast } from '@/types/Forecast'
 import FlowerList from '@/components/FlowerList.vue'
 import { useAuthStore } from '@/stores/authStore'
 import SwitchComponent from './SwitchComponent.vue'
+import { updateForecastPublicState } from '@/service/forecastService'
 
 const authStore = useAuthStore()
 
@@ -62,7 +63,7 @@ async function handlePublicSwitchUpdate(state: boolean) {
   forecastEdit.value.public = state
   updatingPublicState.value = true
   try {
-    //forecast.value = await updateEventPublicState(forecast.value.id, state)
+    forecast.value = await updateForecastPublicState(forecast.value.id, state)
   } catch {
     forecastError.value = true
     forecastErrorMessage.value = 'Failed to change event public status'
