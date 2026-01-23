@@ -69,8 +69,6 @@ async function fetchUpcomingEvents() {
   const now = new Date()
   const filters: EventFilter = {
     afterDate: getLocalTimeString(),
-    sortBy: 'endDate',
-    sortOrder: 'ASC',
   }
 
   let nextWeekEvents: PikminEvent[] = []
@@ -93,10 +91,9 @@ async function fetchUpcomingForecast() {
   loadingUpcomingForecast.value = true
 
   const now = new Date()
+ const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
   const filters: ForecastFilter = {
-    afterDate: getLocalTimeString(),
-    sortBy: 'endDate',
-    sortOrder: 'ASC',
+    currentDate: getLocalTimeString(nextMonth),
   }
 
   let upcomingForecasts: Forecast[] = []
@@ -190,7 +187,7 @@ async function handleAddUpcomingForecast() {
   endDate.setMinutes(-1)
   const newForecast: Forecast = {
     id: 0,
-    name: 'New Event',
+    name: 'New Forecast',
     date: '',
     bigFlowers: [],
     flowerOfTheMonth: {

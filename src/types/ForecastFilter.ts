@@ -1,4 +1,5 @@
-import type { EventFilter } from './EventFilter'
+import type { Filter } from './Filter'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ForecastFilter extends EventFilter {}
+export interface ForecastFilter extends Filter {
+  currentDate?: string
+}
