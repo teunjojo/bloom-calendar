@@ -1,7 +1,7 @@
 import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
 import { z } from 'zod';
-import { createForecast, getForecasts, updateForecastPublicState } from '@/services/forecastHandler';
+import { createForecast, getForecasts, getPublicForecasts, updateForecastPublicState } from '@/services/forecastHandler';
 import { forecastFilterSchema } from '@/schemas/forecast-filter';
 import { tryJwt, requireJwt } from '@/middlewares/auth';
 
@@ -25,7 +25,13 @@ forecastRouter.get('/', tryJwt, async (c: Context) => {
 		return c.json({ error: 'Database not found' }, 500);
 	}
 
-	const forecasts = await getForecasts(prisma, query);
+	let forecasts;
+
+	if (c.get('jwtPayload')) {
+		forecasts = await getForecasts(prisma, query);
+	} else {
+		forecasts = await getPublicForecasts(prisma, query);
+	}
 	return c.json(forecasts);
 });
 

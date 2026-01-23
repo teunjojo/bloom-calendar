@@ -8,6 +8,15 @@ export async function getForecasts(prisma: PrismaClient, filter: ForecastFilter)
 	return await prisma.forecast.findMany(options);
 }
 
+export async function getPublicForecasts(prisma: PrismaClient, filter: ForecastFilter) {
+	const options = applyForecastFilter(filter);
+	options.where = {
+		...options.where,
+		public: true,
+	};
+	return await prisma.forecast.findMany(options);
+}
+
 export function applyForecastFilter(filter: ForecastFilter) {
 	const options: Prisma.ForecastFindManyArgs = applyFilter(filter);
 
