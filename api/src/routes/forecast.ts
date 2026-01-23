@@ -1,7 +1,7 @@
 import { Context, Hono } from 'hono';
 import prismaClients from '@/db/prisma';
 import { z } from 'zod';
-import { createForecast, getForecasts } from '@/services/forecastHandler';
+import { createForecast, getForecasts, updateForecastPublicState } from '@/services/forecastHandler';
 import { forecastFilterSchema } from '@/schemas/forecast-filter';
 import { tryJwt, requireJwt } from '@/middlewares/auth';
 
@@ -49,4 +49,22 @@ forecastRouter.put('/', async (c: Context) => {
 
 	return c.json(createdForecast);
 });
+
+forecastRouter.post('/:id/public', async (c: Context) => {
+	const id = parseInt(c.req.param('id'));
+	const body = await c.req.json();
+	const state = body.state;
+
+	const db = c.env.bloom_calendar_database;
+	const prisma = await prismaClients.fetch(db);
+
+	if (!prisma) {
+		return c.json({ error: 'Database not found' }, 500);
+	}
+
+	const updatedForecast = await updateForecastPublicState(prisma, id, state);
+
+	return c.json(updatedForecast);
+});
+
 export default forecastRouter;

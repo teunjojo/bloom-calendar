@@ -27,6 +27,23 @@ export function applyForecastFilter(filter: ForecastFilter) {
 	return options;
 }
 
+export async function updateForecastPublicState(prisma: PrismaClient, _id: number, _state: boolean) {
+	const updatedEvent = await prisma.forecast.update({
+		include: {
+bigFlowers: true,
+flowerOfTheMonth: true
+		},
+		where: {
+			id: _id,
+		},
+		data: {
+			public: _state,
+		},
+	});
+
+	return updatedEvent;
+}
+
 export async function createForecast(prisma: PrismaClient, forecast: ForecastInput) {
 	const createdEvent = prisma.forecast.create({
 		include: {
