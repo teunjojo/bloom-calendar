@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import type { Forecast } from '@/types/Forecast'
 import FlowerList from '@/components/FlowerList.vue'
 import { useAuthStore } from '@/stores/authStore'
+import SwitchComponent from './SwitchComponent.vue'
 
 const authStore = useAuthStore()
 
@@ -22,6 +23,9 @@ const forecastError = ref<boolean>(false)
 const forecastErrorMessage = ref<string>('')
 
 const forecast = ref<Forecast>(props.forecast)
+
+const updatingPublicState = ref<boolean>(false)
+const showPublicStateLoading = ref<boolean>(false)
 
 const savingForecast = ref<boolean>(false)
 const showSavingForecast = ref<boolean>(false)
@@ -52,6 +56,20 @@ async function handleSaveForecastButton() {
   forecastEditMode.value = false
 }
 
+async function handlePublicSwitchUpdate(state: boolean) {
+  forecastEdit.value.public = state
+  updatingPublicState.value = true
+  try {
+    //forecast.value = await updateEventPublicState(forecast.value.id, state)
+  } catch {
+    forecastError.value = true
+    forecastErrorMessage.value = 'Failed to change event public status'
+    updatingPublicState.value = false
+    return
+  }
+  updatingPublicState.value = false
+}
+
 let timer: number | undefined
 watch(
   savingForecast,
@@ -74,6 +92,22 @@ watch(
       <h2 class="text-xl font-bold flex-grow">
         {{ forecast.name }}
       </h2>
+      <div
+        class="flex gap-2 flex-col"
+        v-if="authStore.isAuthenticated() && !forecastEditMode"
+        @click="forecastEdit.public = !forecastEdit.public"
+      >
+        <SwitchComponent
+          :switch-state="forecast.public"
+          :states="['public', 'hidden']"
+          @state-changed="handlePublicSwitchUpdate"
+          :icon="
+            (updatingPublicState && showPublicStateLoading) || forecastLoading
+              ? 'flip-icon spinning-icon'
+              : 'everyone-icon'
+          "
+        ></SwitchComponent>
+      </div>
       <button
         class="button"
         v-if="authStore.isAuthenticated() && !forecastEditMode"
