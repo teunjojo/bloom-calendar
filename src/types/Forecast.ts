@@ -1,7 +1,7 @@
 import type { Flower } from "./Flower"
 
 export interface Forecast {
-  id: string
+  id: number
   name: string
   date: string
   blogLink?: string
