@@ -8,24 +8,28 @@ import type { EventFilter } from '@/types/EventFilter'
 import EventComponent from '@/components/EventComponent.vue'
 import BigFlowerFlowchart from '@/components/BigFlowerFlowchart.vue'
 
-import FlowerList from '@/components/FlowerList.vue'
 import type { ForecastFilter } from '@/types/ForecastFilter'
 import type { Forecast } from '@/types/Forecast'
 import { getForecasts } from '@/service/forecastService'
 import { useAuthStore } from '@/stores/authStore'
+import ForecastComponent from '@/components/ForecastComponent.vue'
 
 const authStore = useAuthStore()
 
-const events: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
-const forecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
+const currentEvents: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
 const upcomingEvents: Ref<PikminEvent[]> = ref<PikminEvent[]>([])
+const currentForecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
+const upcomingForecast: Ref<Forecast> = ref<Forecast>({} as Forecast)
 
 const currentEventsFailed = ref<boolean>(false)
-const currentForecastFailed = ref<boolean>(false)
 const upcomingEventsFailed = ref<boolean>(false)
+const currentForecastFailed = ref<boolean>(false)
+const upcomingForecastFailed = ref<boolean>(false)
 
 const loadingCurrentEvents = ref<boolean>(false)
 const loadingUpcomingEvents = ref<boolean>(false)
+const loadingCurrentForecast = ref<boolean>(false)
+const loadingUpcomingForecast = ref<boolean>(false)
 
 async function fetchCurrentEvents() {
   loadingCurrentEvents.value = true
@@ -36,7 +40,7 @@ async function fetchCurrentEvents() {
     sortOrder: 'ASC',
   }
   try {
-    events.value = await getEvents(filters)
+    currentEvents.value = await getEvents(filters)
   } catch {
     currentEventsFailed.value = true
   }
@@ -50,7 +54,7 @@ async function fetchCurrentForecast() {
     sortOrder: 'ASC',
   }
   try {
-    forecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
+    currentForecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
   } catch {
     currentForecastFailed.value = true
   }
@@ -100,8 +104,8 @@ function startPreciseInterval() {
     const delay = next - now
 
     setTimeout(() => {
-      if (forecast.value.id) {
-        const [year, month] = forecast.value.date.split('-').map(Number)
+      if (currentForecast.value.id) {
+        const [year, month] = currentForecast.value.date.split('-').map(Number)
 
         if (year && month) {
           const endDate = new Date(year, month, 0, 23, 59, 59)
@@ -120,6 +124,30 @@ function startPreciseInterval() {
 }
 
 async function handleAddUpcomingEvent() {
+  const now = new Date()
+  const startDate = new Date(0)
+  startDate.setFullYear(now.getFullYear())
+  startDate.setMonth(now.getMonth() + 1)
+  startDate.setDate(1)
+  const endDate = new Date(startDate)
+  endDate.setMonth(now.getMonth() + 2)
+  endDate.setMinutes(-1)
+  const newEvent: PikminEvent = {
+    id: 0,
+    name: 'New Event',
+    startDate: getLocalTimeString(startDate),
+    endDate: getLocalTimeString(endDate),
+    images: [],
+    public: false,
+    blogLink: '',
+    newDecor: [],
+    returningDecor: [],
+  }
+  const createdEvent = await createEvent(newEvent)
+  upcomingEvents.value.push(createdEvent)
+}
+
+async function handleAddUpcomingForecast() {
   const now = new Date()
   const startDate = new Date(0)
   startDate.setFullYear(now.getFullYear())
@@ -177,6 +205,9 @@ watch(
   { immediate: true },
 )
 
+const showLoadingCurrentForecast = ref<boolean>(false)
+const showLoadingUpcomingForecast = ref<boolean>(false)
+
 onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
@@ -194,10 +225,10 @@ onMounted(async () => {
         alt="Flower Icon"
         class="w-10 h-10 absolute self-end"
         style="transform: translate(-1rem, 25%) rotate(10deg)"
-        v-if="events.length > 0"
+        v-if="currentEvents.length > 0"
       />
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
+        <img class="invert" style="height: 2rem" src="/images/icons/special.png" />
         Current Events
       </span>
       <div v-if="loadingCurrentEvents" class="flex justify-center">
@@ -208,10 +239,10 @@ onMounted(async () => {
       <div v-else-if="currentEventsFailed" class="error-message">
         <span class="icon attention-icon"></span>Failed to load current events
       </div>
-      <div v-else-if="events.length === 0" class="text-center italic">No current events</div>
+      <div v-else-if="currentEvents.length === 0" class="text-center italic">No current events</div>
       <div v-else class="flex flex-col gap-2">
         <EventComponent
-          v-for="event in events"
+          v-for="event in currentEvents"
           :key="event.id"
           :pikminEvent="event"
           :edit-mode="event.id === -1"
@@ -229,13 +260,13 @@ onMounted(async () => {
           "
           @event-removed="
             () => {
-              events.splice(events.indexOf(event), 1)
+              currentEvents.splice(currentEvents.indexOf(event), 1)
             }
           "
         />
       </div>
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="special-icon" style="height: 2rem" src="/images/icons/special.png" />
+        <img class="invert" style="height: 2rem" src="/images/icons/special.png" />
         Upcoming Events
       </span>
       <div v-if="loadingUpcomingEvents" class="flex justify-center">
@@ -284,42 +315,62 @@ onMounted(async () => {
         </button>
       </div>
     </div>
-    <div class="forecast flex flex-col gap-2 p-4 w-96">
-      <span class="flex items-center justify-between gap-2 mb-2">
-        <h2 class="text-xl font-bold flex items-center gap-1">
-          <img class="weather-icon" style="height: 2rem" src="/images/icons/weather.png" />
-          Forecast: {{ forecast.name }}
-        </h2>
-        <a
-          class="blog-link"
-          v-if="forecast.blogLink"
-          :href="forecast.blogLink"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="icon forward-icon"></span>
-        </a>
+
+    <div class="forecast-list flex flex-col gap-2 p-4 w-96">
+      <span class="text-xl font-bold flex items-center gap-1">
+        <img class="invert" style="height: 2rem;--bg:black" src="/images/icons/weather.png" />
+        Current Forecast
       </span>
-      <div v-if="currentForecastFailed" class="error-message">
-        <span class="attention-icon"></span>Failed to load current forecast
+      <div v-if="loadingCurrentForecast" class="flex justify-center">
+        <div class="spinner">
+          <span class="icon flip-icon spinning-icon"></span>
+        </div>
       </div>
-      <div v-else-if="!forecast.id" class="text-center italic">No current forecast</div>
-      <FlowerList
-        v-if="forecast.flowerOfTheMonth"
-        class="flower-of-the-month"
-        :flowers="[forecast.flowerOfTheMonth]"
-        name="Flower of the Month"
-      />
-      <FlowerList
-        v-if="forecast.bigFlowers"
-        class="big-flower-forecast"
-        :flowers="forecast.bigFlowers"
-        name="Big Flowers"
-      />
+      <div v-else-if="currentForecastFailed" class="error-message">
+        <span class="icon attention-icon"></span>Failed to load forecast
+      </div>
+      <div v-else-if="!currentForecast.id" class="text-center italic">No current forecasts</div>
+      <div v-else class="flex flex-col gap-2">
+        <ForecastComponent
+          :forecast="currentForecast"
+          :loading="loadingCurrentForecast && showLoadingCurrentForecast"
+        />
+      </div>
+      <span class="text-xl font-bold flex items-center gap-1">
+        <img class="invert" style="height: 2rem" src="/images/icons/weather.png" />
+        Upcoming Forecast
+      </span>
+      <div v-if="loadingUpcomingForecast" class="flex justify-center">
+        <div class="spinner">
+          <span class="icon flip-icon spinning-icon"></span>
+        </div>
+      </div>
+      <div v-else-if="upcomingForecastFailed" class="error-message">
+        <span class="attention-icon"></span>Failed to load upcoming events
+      </div>
+      <div v-else-if="!upcomingForecast.id" class="text-center italic">
+        No upcoming forecast
+      </div>
+      <div v-else class="flex flex-col gap-2">
+        <ForecastComponent
+          :forecast="upcomingForecast"
+          :loading="loadingUpcomingForecast && showLoadingUpcomingForecast"
+        />
+      </div>
+      <div
+        v-if="authStore.isAuthenticated()"
+        class="flex justify-center"
+        @click="handleAddUpcomingForecast()"
+      >
+        <button class="button button-primary">
+          <span class="icon plus-icon"></span>
+        </button>
+      </div>
     </div>
+
     <div class="flowchart flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="special-icon" style="height: 2rem" src="/images/icons/flower.png" />
+        <img class="invert" style="height: 2rem" src="/images/icons/flower.png" />
         Big Flower Blooming Guide
       </span>
       <BigFlowerFlowchart />
@@ -329,30 +380,10 @@ onMounted(async () => {
 
 <style scoped>
 .event-list,
-.forecast,
+.forecast-list,
 .flowchart {
   background-color: #fff;
   border-radius: 1rem;
-}
-
-.special-icon,
-.weather-icon {
-  filter: invert(1);
-}
-
-.big-flower-forecast {
-  background: linear-gradient(135deg, var(--tertiary-color), var(--tertiary-color-dark));
-  color: white;
-}
-
-.flower-of-the-month {
-  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color-dark));
-  color: white;
-}
-
-.flower-container img {
-  border-radius: 0.5rem;
-  background: white;
 }
 
 .forward-icon.primary {
