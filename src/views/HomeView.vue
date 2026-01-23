@@ -10,7 +10,7 @@ import BigFlowerFlowchart from '@/components/BigFlowerFlowchart.vue'
 
 import type { ForecastFilter } from '@/types/ForecastFilter'
 import type { Forecast } from '@/types/Forecast'
-import { getForecasts } from '@/service/forecastService'
+import { createForecast, getForecasts } from '@/service/forecastService'
 import { useAuthStore } from '@/stores/authStore'
 import ForecastComponent from '@/components/ForecastComponent.vue'
 
@@ -91,7 +91,7 @@ async function fetchUpcomingForecast() {
   loadingUpcomingForecast.value = true
 
   const now = new Date()
- const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
   const filters: ForecastFilter = {
     currentDate: getLocalTimeString(nextMonth),
   }
@@ -191,8 +191,7 @@ async function handleAddUpcomingForecast() {
     },
     blogLink: '',
   }
-  //const createdForecast = await createForecast(newForecast)
-  upcomingForecast.value = newForecast
+  upcomingForecast.value = await createForecast(newForecast)
 }
 
 const showLoadingCurrentEvents = ref<boolean>(false)
