@@ -5,6 +5,7 @@ export async function tryJwt(c: Context, next: Next) {
 	try {
 		const jwtMiddleware = jwt({
 			secret: (c.env as { JWT_SECRET: string }).JWT_SECRET,
+			alg: 'HS256',
 		});
 		await jwtMiddleware(c, next);
 	} catch {
@@ -15,6 +16,7 @@ export async function tryJwt(c: Context, next: Next) {
 export async function requireJwt(c: Context, next: Next) {
 	const jwtMiddleware = jwt({
 		secret: (c.env as { JWT_SECRET: string }).JWT_SECRET,
+		alg: 'HS256',
 	});
 	return jwtMiddleware(c, next);
 }

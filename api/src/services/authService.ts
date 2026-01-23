@@ -8,7 +8,7 @@ export async function signIn(
 	prisma: PrismaClient,
 	username: string,
 	pass: string,
-	jwtSecret: string
+	jwtSecret: string,
 ): Promise<{ accessToken: string; refreshToken: string }> {
 	const users = await getUser(prisma, username);
 	const user = users[0];
@@ -33,7 +33,7 @@ export async function signIn(
 export async function newToken(refreshToken: string, jwtSecret: string): Promise<{ accessToken: string; refreshToken: string }> {
 	if (refreshToken.length == 0) throw new HTTPException(401);
 
-	const payload = await verify(refreshToken, jwtSecret);
+	const payload = await verify(refreshToken, jwtSecret, { alg: 'HS256' });
 
 	const accessPayload = {
 		sub: payload.sub,
@@ -68,7 +68,7 @@ async function verifyPassword(password: string, storedHash: string, storedSalt: 
 			hash: 'SHA-256',
 		},
 		key,
-		256
+		256,
 	);
 
 	const computed = new Uint8Array(bits);
