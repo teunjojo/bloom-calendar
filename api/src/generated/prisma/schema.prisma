@@ -46,6 +46,7 @@ model Forecast {
   flowerOfTheMonthId Int
   blogLink           String
   name               String
+  public             Boolean  @default(false)
 }
 
 model Flower {

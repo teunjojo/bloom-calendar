@@ -18,6 +18,7 @@
       "binding": "bloom_calendar_database",
       "database_name": "bloom_calendar_database",
       "database_id": "b1c168c4-7f90-4a50-8511-f9da65b3f9ee",
+      "migrations_dir": "api/migrations/"
     },
   ],
   "placement": { "mode": "smart" },

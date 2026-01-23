@@ -270,8 +270,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.1.0
-   * Query Engine version: ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba
+   * Prisma Client JS version: 7.3.0
+   * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
    */
   export type PrismaVersion = {
     client: string
@@ -4864,6 +4864,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number | null
     blogLink: string | null
     name: string | null
+    public: boolean | null
   }
 
   export type ForecastMaxAggregateOutputType = {
@@ -4872,6 +4873,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number | null
     blogLink: string | null
     name: string | null
+    public: boolean | null
   }
 
   export type ForecastCountAggregateOutputType = {
@@ -4880,6 +4882,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number
     blogLink: number
     name: number
+    public: number
     _all: number
   }
 
@@ -4900,6 +4903,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: true
     blogLink?: true
     name?: true
+    public?: true
   }
 
   export type ForecastMaxAggregateInputType = {
@@ -4908,6 +4912,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: true
     blogLink?: true
     name?: true
+    public?: true
   }
 
   export type ForecastCountAggregateInputType = {
@@ -4916,6 +4921,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: true
     blogLink?: true
     name?: true
+    public?: true
     _all?: true
   }
 
@@ -5011,6 +5017,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number
     blogLink: string
     name: string
+    public: boolean
     _count: ForecastCountAggregateOutputType | null
     _avg: ForecastAvgAggregateOutputType | null
     _sum: ForecastSumAggregateOutputType | null
@@ -5038,6 +5045,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: boolean
     blogLink?: boolean
     name?: boolean
+    public?: boolean
     bigFlowers?: boolean | Forecast$bigFlowersArgs<ExtArgs>
     flowerOfTheMonth?: boolean | FlowerDefaultArgs<ExtArgs>
     _count?: boolean | ForecastCountOutputTypeDefaultArgs<ExtArgs>
@@ -5049,6 +5057,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: boolean
     blogLink?: boolean
     name?: boolean
+    public?: boolean
     flowerOfTheMonth?: boolean | FlowerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["forecast"]>
 
@@ -5058,6 +5067,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: boolean
     blogLink?: boolean
     name?: boolean
+    public?: boolean
     flowerOfTheMonth?: boolean | FlowerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["forecast"]>
 
@@ -5067,9 +5077,10 @@ export namespace Prisma {
     flowerOfTheMonthId?: boolean
     blogLink?: boolean
     name?: boolean
+    public?: boolean
   }
 
-  export type ForecastOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "flowerOfTheMonthId" | "blogLink" | "name", ExtArgs["result"]["forecast"]>
+  export type ForecastOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date" | "flowerOfTheMonthId" | "blogLink" | "name" | "public", ExtArgs["result"]["forecast"]>
   export type ForecastInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bigFlowers?: boolean | Forecast$bigFlowersArgs<ExtArgs>
     flowerOfTheMonth?: boolean | FlowerDefaultArgs<ExtArgs>
@@ -5094,6 +5105,7 @@ export namespace Prisma {
       flowerOfTheMonthId: number
       blogLink: string
       name: string
+      public: boolean
     }, ExtArgs["result"]["forecast"]>
     composites: {}
   }
@@ -5524,6 +5536,7 @@ export namespace Prisma {
     readonly flowerOfTheMonthId: FieldRef<"Forecast", 'Int'>
     readonly blogLink: FieldRef<"Forecast", 'String'>
     readonly name: FieldRef<"Forecast", 'String'>
+    readonly public: FieldRef<"Forecast", 'Boolean'>
   }
     
 
@@ -8142,7 +8155,8 @@ export namespace Prisma {
     date: 'date',
     flowerOfTheMonthId: 'flowerOfTheMonthId',
     blogLink: 'blogLink',
-    name: 'name'
+    name: 'name',
+    public: 'public'
   };
 
   export type ForecastScalarFieldEnum = (typeof ForecastScalarFieldEnum)[keyof typeof ForecastScalarFieldEnum]
@@ -8399,6 +8413,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFilter<"Forecast"> | number
     blogLink?: StringFilter<"Forecast"> | string
     name?: StringFilter<"Forecast"> | string
+    public?: BoolFilter<"Forecast"> | boolean
     bigFlowers?: FlowerListRelationFilter
     flowerOfTheMonth?: XOR<FlowerScalarRelationFilter, FlowerWhereInput>
   }
@@ -8409,6 +8424,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: SortOrder
     blogLink?: SortOrder
     name?: SortOrder
+    public?: SortOrder
     bigFlowers?: FlowerOrderByRelationAggregateInput
     flowerOfTheMonth?: FlowerOrderByWithRelationInput
   }
@@ -8422,6 +8438,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFilter<"Forecast"> | number
     blogLink?: StringFilter<"Forecast"> | string
     name?: StringFilter<"Forecast"> | string
+    public?: BoolFilter<"Forecast"> | boolean
     bigFlowers?: FlowerListRelationFilter
     flowerOfTheMonth?: XOR<FlowerScalarRelationFilter, FlowerWhereInput>
   }, "id">
@@ -8432,6 +8449,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: SortOrder
     blogLink?: SortOrder
     name?: SortOrder
+    public?: SortOrder
     _count?: ForecastCountOrderByAggregateInput
     _avg?: ForecastAvgOrderByAggregateInput
     _max?: ForecastMaxOrderByAggregateInput
@@ -8448,6 +8466,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntWithAggregatesFilter<"Forecast"> | number
     blogLink?: StringWithAggregatesFilter<"Forecast"> | string
     name?: StringWithAggregatesFilter<"Forecast"> | string
+    public?: BoolWithAggregatesFilter<"Forecast"> | boolean
   }
 
   export type FlowerWhereInput = {
@@ -8717,6 +8736,7 @@ export namespace Prisma {
     date: string
     blogLink: string
     name: string
+    public?: boolean
     bigFlowers?: FlowerCreateNestedManyWithoutBigFlowerForecastsInput
     flowerOfTheMonth: FlowerCreateNestedOneWithoutFlowerOfTheMonthForecastsInput
   }
@@ -8727,6 +8747,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number
     blogLink: string
     name: string
+    public?: boolean
     bigFlowers?: FlowerUncheckedCreateNestedManyWithoutBigFlowerForecastsInput
   }
 
@@ -8734,6 +8755,7 @@ export namespace Prisma {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     bigFlowers?: FlowerUpdateManyWithoutBigFlowerForecastsNestedInput
     flowerOfTheMonth?: FlowerUpdateOneRequiredWithoutFlowerOfTheMonthForecastsNestedInput
   }
@@ -8744,6 +8766,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFieldUpdateOperationsInput | number
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     bigFlowers?: FlowerUncheckedUpdateManyWithoutBigFlowerForecastsNestedInput
   }
 
@@ -8753,12 +8776,14 @@ export namespace Prisma {
     flowerOfTheMonthId: number
     blogLink: string
     name: string
+    public?: boolean
   }
 
   export type ForecastUpdateManyMutationInput = {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForecastUncheckedUpdateManyInput = {
@@ -8767,6 +8792,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFieldUpdateOperationsInput | number
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type FlowerCreateInput = {
@@ -9127,6 +9153,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: SortOrder
     blogLink?: SortOrder
     name?: SortOrder
+    public?: SortOrder
   }
 
   export type ForecastAvgOrderByAggregateInput = {
@@ -9140,6 +9167,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: SortOrder
     blogLink?: SortOrder
     name?: SortOrder
+    public?: SortOrder
   }
 
   export type ForecastMinOrderByAggregateInput = {
@@ -9148,6 +9176,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: SortOrder
     blogLink?: SortOrder
     name?: SortOrder
+    public?: SortOrder
   }
 
   export type ForecastSumOrderByAggregateInput = {
@@ -10075,6 +10104,7 @@ export namespace Prisma {
     date: string
     blogLink: string
     name: string
+    public?: boolean
     bigFlowers?: FlowerCreateNestedManyWithoutBigFlowerForecastsInput
   }
 
@@ -10083,6 +10113,7 @@ export namespace Prisma {
     date: string
     blogLink: string
     name: string
+    public?: boolean
     bigFlowers?: FlowerUncheckedCreateNestedManyWithoutBigFlowerForecastsInput
   }
 
@@ -10099,6 +10130,7 @@ export namespace Prisma {
     date: string
     blogLink: string
     name: string
+    public?: boolean
     flowerOfTheMonth: FlowerCreateNestedOneWithoutFlowerOfTheMonthForecastsInput
   }
 
@@ -10108,6 +10140,7 @@ export namespace Prisma {
     flowerOfTheMonthId: number
     blogLink: string
     name: string
+    public?: boolean
   }
 
   export type ForecastCreateOrConnectWithoutBigFlowersInput = {
@@ -10140,6 +10173,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFilter<"Forecast"> | number
     blogLink?: StringFilter<"Forecast"> | string
     name?: StringFilter<"Forecast"> | string
+    public?: BoolFilter<"Forecast"> | boolean
   }
 
   export type ForecastUpsertWithWhereUniqueWithoutBigFlowersInput = {
@@ -10276,12 +10310,14 @@ export namespace Prisma {
     date: string
     blogLink: string
     name: string
+    public?: boolean
   }
 
   export type ForecastUpdateWithoutFlowerOfTheMonthInput = {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     bigFlowers?: FlowerUpdateManyWithoutBigFlowerForecastsNestedInput
   }
 
@@ -10290,6 +10326,7 @@ export namespace Prisma {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     bigFlowers?: FlowerUncheckedUpdateManyWithoutBigFlowerForecastsNestedInput
   }
 
@@ -10298,12 +10335,14 @@ export namespace Prisma {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForecastUpdateWithoutBigFlowersInput = {
     date?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
     flowerOfTheMonth?: FlowerUpdateOneRequiredWithoutFlowerOfTheMonthForecastsNestedInput
   }
 
@@ -10313,6 +10352,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFieldUpdateOperationsInput | number
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForecastUncheckedUpdateManyWithoutBigFlowersInput = {
@@ -10321,6 +10361,7 @@ export namespace Prisma {
     flowerOfTheMonthId?: IntFieldUpdateOperationsInput | number
     blogLink?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    public?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
