@@ -190,6 +190,7 @@ async function handleAddUpcomingForecast() {
       slug: 'new-flower',
     },
     blogLink: '',
+    public: false,
   }
   upcomingForecast.value = await createForecast(newForecast)
 }

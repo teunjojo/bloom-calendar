@@ -9,8 +9,8 @@ const authStore = useAuthStore()
 
 const props = defineProps<{
   forecast: Forecast
-  loading: boolean
-  editMode: boolean
+  loading?: boolean
+  editMode?: boolean
 }>()
 
 const emit = defineEmits(['forecastUpdated', 'forecastRemoved'])
