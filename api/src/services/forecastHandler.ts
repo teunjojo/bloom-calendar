@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from '@/generated/prisma';
 import { ForecastFilter } from '@/schemas/forecast-filter';
+import { ForecastInput } from '@/schemas/forecast-input';
 import { applyFilter } from '@/services/filterHandler';
 
 export async function getForecasts(prisma: PrismaClient, filter: ForecastFilter) {
@@ -24,4 +25,36 @@ export function applyForecastFilter(filter: ForecastFilter) {
 	}
 
 	return options;
+}
+
+export async function createForecast(prisma: PrismaClient, forecast: ForecastInput) {
+	const createdEvent = prisma.forecast.create({
+		include: {
+			bigFlowers: true,
+			flowerOfTheMonth: true,
+		},
+		data: {
+			name: forecast.name,
+			blogLink: forecast.blogLink || '',
+			date: forecast.date.slice(0, 7),
+			bigFlowers: {
+				connect: forecast.bigFlowers.map((i) => ({
+					id: i.id,
+				})),
+			},
+			flowerOfTheMonth: {
+				connectOrCreate: {
+					where: {
+						slug: forecast.flowerOfTheMonth.slug,
+					},
+					create: {
+						name: forecast.flowerOfTheMonth.name,
+						slug: forecast.flowerOfTheMonth.slug,
+					},
+				},
+			},
+		},
+	});
+
+	return createdEvent;
 }
