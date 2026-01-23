@@ -1,21 +1,103 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Forecast } from '@/types/Forecast'
 import FlowerList from '@/components/FlowerList.vue'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
 
 const props = defineProps<{
   forecast: Forecast
+  loading: boolean
+  editMode: boolean
 }>()
 
+const emit = defineEmits(['forecastUpdated'])
+
+const forecastEditMode = ref<boolean>(props.editMode || false)
+const forecastEdit = ref<Forecast>({} as Forecast)
+
+const forecastLoading = ref<boolean>(props.loading || false)
+const forecastError = ref<boolean>(false)
+const forecastErrorMessage = ref<string>('')
+
 const forecast = ref<Forecast>(props.forecast)
+
+const savingForecast = ref<boolean>(false)
+const showSavingForecast = ref<boolean>(false)
+
+async function handleEditForecastButton() {
+  forecastEditMode.value = true
+  forecastEdit.value = JSON.parse(JSON.stringify(forecast.value))
+}
+
+async function handleEditForecastCancelButton() {
+  forecastEditMode.value = false
+}
+
+async function handleSaveForecastButton() {
+  savingForecast.value = true
+  try {
+    //forecast.value = await updateEvent(forecastEdit.value)
+  } catch {
+    forecastError.value = true
+    forecastErrorMessage.value = 'Failed to update event'
+    savingForecast.value = false
+    return
+  }
+  savingForecast.value = false
+  if (forecast.value.date != props.forecast.date) {
+    emit('forecastUpdated')
+  }
+  forecastEditMode.value = false
+}
+
+let timer: number | undefined
+watch(
+  savingForecast,
+  (saving) => {
+    showSavingForecast.value = false
+    if (!saving) return
+
+    clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      showSavingForecast.value = true
+    }, 100)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="forecast">
     <span class="flex items-center justify-between gap-2 mb-2">
-      <h2 class="text-xl font-bold flex items-center gap-1">
+      <h2 class="text-xl font-bold flex-grow">
         {{ forecast.name }}
       </h2>
+      <button
+        class="button"
+        v-if="authStore.isAuthenticated() && !forecastEditMode"
+        @click="handleEditForecastButton()"
+      >
+        <span class="icon edit-icon"></span>
+      </button>
+      <button
+        class="button"
+        v-if="authStore.isAuthenticated() && forecastEditMode"
+        @click="handleEditForecastCancelButton()"
+      >
+        <span class="icon close-icon"></span>
+      </button>
+      <button class="button" v-if="forecastEditMode" @click="handleSaveForecastButton">
+        <span
+          class="icon"
+          :class="
+            (savingForecast && showSavingForecast) || forecastLoading
+              ? 'flip-icon spinning-icon'
+              : 'save-icon'
+          "
+        ></span>
+      </button>
       <a
         class="button button-outline"
         v-if="forecast.blogLink"
