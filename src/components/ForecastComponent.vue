@@ -13,10 +13,12 @@ const props = defineProps<{
   editMode: boolean
 }>()
 
-const emit = defineEmits(['forecastUpdated'])
+const emit = defineEmits(['forecastUpdated', 'forecastRemoved'])
 
 const forecastEditMode = ref<boolean>(props.editMode || false)
 const forecastEdit = ref<Forecast>({} as Forecast)
+
+const forecastDeleteDialog = ref<HTMLDialogElement | null>(null)
 
 const forecastLoading = ref<boolean>(props.loading || false)
 const forecastError = ref<boolean>(false)
@@ -70,6 +72,25 @@ async function handlePublicSwitchUpdate(state: boolean) {
   updatingPublicState.value = false
 }
 
+function handleDeleteForecastButton() {
+  forecastDeleteDialog.value?.showModal()
+}
+
+async function handleDeleteForecastConfirm() {
+  forecastDeleteDialog.value?.close()
+  forecastEditMode.value = false
+  forecastLoading.value = true
+  try {
+    //await deleteEvent(forecast.value.id)
+  } catch {
+    forecastError.value = true
+    forecastErrorMessage.value = 'Failed to delete event'
+    forecastLoading.value = false
+    return
+  }
+  emit('forecastRemoved')
+}
+
 let timer: number | undefined
 watch(
   savingForecast,
@@ -108,6 +129,13 @@ watch(
           "
         ></SwitchComponent>
       </div>
+      <button
+        class="button button-red"
+        v-if="authStore.isAuthenticated() && forecastEditMode"
+        @click="handleDeleteForecastButton()"
+      >
+        <span class="icon delete-icon"></span>
+      </button>
       <button
         class="button"
         v-if="authStore.isAuthenticated() && !forecastEditMode"
@@ -158,6 +186,30 @@ watch(
       />
     </div>
   </div>
+
+  <!-- delete forecast dialog modal -->
+  <dialog ref="forecastDeleteDialog" class="dialog" closedby="any">
+    <div class="flex flex-col items-center">
+      <span class="text-xl">Are you sure you want to:</span>
+      <span class="font-bold">
+        Delete <span class="code-block">{{ forecast.name }}</span>
+      </span>
+    </div>
+    <div class="flex justify-around pt-3">
+      <div class="flex flex-col items-center">
+        <button class="button button-red" @click="handleDeleteForecastConfirm()">
+          <span class="icon delete-icon"></span>
+        </button>
+        <span>Yes</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <button class="button" @click="forecastDeleteDialog?.close()">
+          <span class="icon close-icon"></span>
+        </button>
+        <span>No</span>
+      </div>
+    </div>
+  </dialog>
 </template>
 
 <style scoped>
@@ -171,5 +223,19 @@ watch(
 .flower-container img {
   border-radius: 0.5rem;
   background: white;
+}
+
+.dialog {
+  background: var(--primary-color);
+  box-shadow: 0px 0px 12px black;
+  border-radius: 12px;
+  padding: 1rem;
+  color: white;
+}
+
+.code-block {
+  background: #00000040;
+  padding: 3px;
+  border-radius: 3px;
 }
 </style>
