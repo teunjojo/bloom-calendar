@@ -178,17 +178,11 @@ async function handleAddUpcomingEvent() {
 
 async function handleAddUpcomingForecast() {
   const now = new Date()
-  const startDate = new Date(0)
-  startDate.setFullYear(now.getFullYear())
-  startDate.setMonth(now.getMonth() + 1)
-  startDate.setDate(1)
-  const endDate = new Date(startDate)
-  endDate.setMonth(now.getMonth() + 2)
-  endDate.setMinutes(-1)
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
   const newForecast: Forecast = {
     id: 0,
     name: 'New Forecast',
-    date: '',
+    date: getLocalTimeString(nextMonth),
     bigFlowers: [],
     flowerOfTheMonth: {
       id: 0,
