@@ -48,6 +48,8 @@ async function fetchCurrentEvents() {
 }
 
 async function fetchCurrentForecast() {
+  loadingCurrentForecast.value = true
+
   const filters: ForecastFilter = {
     currentDate: getLocalTimeString(),
     sortBy: 'date',
@@ -58,6 +60,7 @@ async function fetchCurrentForecast() {
   } catch {
     currentForecastFailed.value = true
   }
+  loadingCurrentForecast.value = false
 }
 
 async function fetchUpcomingEvents() {
@@ -84,6 +87,35 @@ async function fetchUpcomingEvents() {
   upcomingEvents.value = filteredEvents
 
   loadingUpcomingEvents.value = false
+}
+
+async function fetchUpcomingForecast() {
+  loadingUpcomingForecast.value = true
+
+  const now = new Date()
+  const filters: ForecastFilter = {
+    afterDate: getLocalTimeString(),
+    sortBy: 'endDate',
+    sortOrder: 'ASC',
+  }
+
+  let upcomingForecasts: Forecast[] = []
+  try {
+    upcomingForecasts = await getForecasts(filters)
+  } catch {
+    upcomingForecastFailed.value = true
+  }
+
+  const filteredEvents = upcomingForecasts.filter((forecast) => {
+    const eventStartDate = new Date(forecast.date)
+    return eventStartDate > now
+  })
+
+  if (filteredEvents[0] != undefined) {
+    upcomingForecast.value = filteredEvents[0]
+  }
+
+  loadingUpcomingForecast.value = false
 }
 
 function getLocalTimeString(date?: Date) {
@@ -156,19 +188,20 @@ async function handleAddUpcomingForecast() {
   const endDate = new Date(startDate)
   endDate.setMonth(now.getMonth() + 2)
   endDate.setMinutes(-1)
-  const newEvent: PikminEvent = {
+  const newForecast: Forecast = {
     id: 0,
     name: 'New Event',
-    startDate: getLocalTimeString(startDate),
-    endDate: getLocalTimeString(endDate),
-    images: [],
-    public: false,
+    date: '',
+    bigFlowers: [],
+    flowerOfTheMonth: {
+      id: 0,
+      name: 'New flower',
+      slug: 'new-flower',
+    },
     blogLink: '',
-    newDecor: [],
-    returningDecor: [],
   }
-  const createdEvent = await createEvent(newEvent)
-  upcomingEvents.value.push(createdEvent)
+  //const createdForecast = await createForecast(newForecast)
+  upcomingForecast.value = newForecast
 }
 
 const showLoadingCurrentEvents = ref<boolean>(false)
@@ -212,6 +245,7 @@ onMounted(async () => {
   fetchCurrentEvents()
   fetchCurrentForecast()
   fetchUpcomingEvents()
+  fetchUpcomingForecast()
 
   startPreciseInterval()
 })
@@ -275,7 +309,7 @@ onMounted(async () => {
         </div>
       </div>
       <div v-else-if="upcomingEventsFailed" class="error-message">
-        <span class="attention-icon"></span>Failed to load upcoming events
+        <span class="icon attention-icon"></span>Failed to load upcoming events
       </div>
       <div v-else-if="upcomingEvents.length === 0" class="text-center italic">
         No upcoming events
@@ -318,7 +352,7 @@ onMounted(async () => {
 
     <div class="forecast-list flex flex-col gap-2 p-4 w-96">
       <span class="text-xl font-bold flex items-center gap-1">
-        <img class="invert" style="height: 2rem;--bg:black" src="/images/icons/weather.png" />
+        <img class="invert" style="height: 2rem; --bg: black" src="/images/icons/weather.png" />
         Current Forecast
       </span>
       <div v-if="loadingCurrentForecast" class="flex justify-center">
@@ -327,7 +361,7 @@ onMounted(async () => {
         </div>
       </div>
       <div v-else-if="currentForecastFailed" class="error-message">
-        <span class="icon attention-icon"></span>Failed to load forecast
+        <span class="icon attention-icon"></span>Failed to load current forecast
       </div>
       <div v-else-if="!currentForecast.id" class="text-center italic">No current forecasts</div>
       <div v-else class="flex flex-col gap-2">
@@ -346,11 +380,9 @@ onMounted(async () => {
         </div>
       </div>
       <div v-else-if="upcomingForecastFailed" class="error-message">
-        <span class="attention-icon"></span>Failed to load upcoming events
+        <span class="icon attention-icon"></span>Failed to load upcoming forecast
       </div>
-      <div v-else-if="!upcomingForecast.id" class="text-center italic">
-        No upcoming forecast
-      </div>
+      <div v-else-if="!upcomingForecast.id" class="text-center italic">No upcoming forecast</div>
       <div v-else class="flex flex-col gap-2">
         <ForecastComponent
           :forecast="upcomingForecast"
