@@ -1,4 +1,4 @@
-import type { Flower } from "./Flower"
+import type { Flower } from './Flower'
 
 export interface Forecast {
   id: number
@@ -7,4 +7,5 @@ export interface Forecast {
   blogLink?: string
   bigFlowers: Flower[]
   flowerOfTheMonth: Flower
+  public: boolean
 }
