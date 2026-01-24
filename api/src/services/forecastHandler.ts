@@ -118,3 +118,14 @@ export async function updateForecast(prisma: PrismaClient, id: number, forecast:
 
 	return updatedForecast;
 }
+
+export async function deleteForecast(prisma: PrismaClient, id: number) {
+	const deletedForecast = prisma.forecast.delete({
+		include: {
+			bigFlowers: true,
+			flowerOfTheMonth: true,
+		},
+		where: { id },
+	});
+	return deletedForecast;
+}
