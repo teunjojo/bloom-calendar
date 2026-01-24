@@ -5,6 +5,7 @@ import FlowerList from '@/components/FlowerList.vue'
 import { useAuthStore } from '@/stores/authStore'
 import SwitchComponent from './SwitchComponent.vue'
 import { updateForecast, updateForecastPublicState } from '@/service/forecastService'
+import type { Flower } from '@/types/Flower'
 
 const authStore = useAuthStore()
 
@@ -33,9 +34,14 @@ const showPublicStateLoading = ref<boolean>(false)
 const savingForecast = ref<boolean>(false)
 const showSavingForecast = ref<boolean>(false)
 
+const allFlowers = ref<Flower[]>([])
+
+const selectedBigFlower = ref<Flower | undefined>()
+
 async function handleEditForecastButton() {
   forecastEditMode.value = true
   forecastEdit.value = JSON.parse(JSON.stringify(forecast.value))
+  allFlowers.value = [{ id: 5, name: 'Camellia', slug: 'camellia' }]
 }
 
 async function handleEditForecastCancelButton() {
@@ -176,18 +182,70 @@ watch(
     </span>
 
     <div class="flex flex-col items-stretch justify-between gap-2 mb-2">
-      <FlowerList
-        v-if="forecast.flowerOfTheMonth"
-        class=""
-        :flowers="[forecast.flowerOfTheMonth]"
-        name="Flower of the Month"
-      />
-      <FlowerList
-        v-if="forecast.bigFlowers"
-        class="big-flower-forecast"
-        :flowers="forecast.bigFlowers"
-        name="Big Flowers"
-      />
+        <FlowerList
+          v-if="forecast.flowerOfTheMonth"
+          class=""
+          :flowers="[forecast.flowerOfTheMonth]"
+          name="Flower of the Month"
+        />
+      <div v-if="!forecastEditMode">
+        <FlowerList
+          v-if="forecast.bigFlowers"
+          class="big-flower-forecast"
+          :flowers="forecast.bigFlowers"
+          name="Big Flowers"
+        />
+      </div>
+      <div v-else class="flex flex-col gap-1 items-center">
+        <span class="text-lg align-center">Big Flowers</span>
+        <div
+          class="flex gap-2 items-center justify-start w-full"
+          v-for="flower in forecastEdit.bigFlowers"
+          :key="flower.id"
+        >
+          <button
+            class="button button-red"
+            @click="forecastEdit.bigFlowers.splice(forecastEdit.bigFlowers.indexOf(flower), 1)"
+          >
+            <span class="icon delete-icon"></span>
+          </button>
+          <span>{{ flower.name }}</span>
+        </div>
+        <select class="w-full" name="selectedDecor" v-model="selectedBigFlower">
+          <option :value="undefined" disabled></option>
+          <option
+            v-for="selectFlower in allFlowers"
+            :key="selectFlower.id"
+            :value="selectFlower"
+            :disabled="forecastEdit.bigFlowers.some((flower) => flower.id === selectFlower.id)"
+          >
+            {{ selectFlower.name }}
+          </option>
+        </select>
+        <button
+          class="button"
+          @click="
+            () => {
+              if (!selectedBigFlower) {
+                forecastError = true
+                forecastErrorMessage = 'No returning decor selected'
+                return
+              }
+              if (forecastEdit.bigFlowers.some((flower) => flower.id === selectedBigFlower!.id)) {
+                forecastError = true
+                forecastErrorMessage = 'Returning decor already added'
+                return
+              }
+
+              forecastEdit.bigFlowers.push(selectedBigFlower)
+              forecastError = false
+              selectedBigFlower = undefined
+            }
+          "
+        >
+          <span class="icon plus-icon"></span>
+        </button>
+      </div>
     </div>
   </div>
 
