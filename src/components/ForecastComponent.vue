@@ -4,7 +4,7 @@ import type { Forecast } from '@/types/Forecast'
 import FlowerList from '@/components/FlowerList.vue'
 import { useAuthStore } from '@/stores/authStore'
 import SwitchComponent from './SwitchComponent.vue'
-import { updateForecastPublicState } from '@/service/forecastService'
+import { updateForecast, updateForecastPublicState } from '@/service/forecastService'
 
 const authStore = useAuthStore()
 
@@ -45,7 +45,7 @@ async function handleEditForecastCancelButton() {
 async function handleSaveForecastButton() {
   savingForecast.value = true
   try {
-    //forecast.value = await updateEvent(forecastEdit.value)
+    forecast.value = await updateForecast(forecastEdit.value)
   } catch {
     forecastError.value = true
     forecastErrorMessage.value = 'Failed to update event'
@@ -111,8 +111,11 @@ watch(
 <template>
   <div class="forecast">
     <span class="flex items-center justify-between gap-2 mb-2">
-      <h2 class="text-xl font-bold flex-grow">
+      <h2 v-if="!forecastEditMode" class="text-xl font-bold flex-grow">
         {{ forecast.name }}
+      </h2>
+      <h2 v-else class="text-xl font-bold flex-grow">
+        <input type="text" class="w-full" v-model="forecastEdit.name" />
       </h2>
       <div
         class="flex gap-2 flex-col"
@@ -238,5 +241,13 @@ watch(
   background: #00000040;
   padding: 3px;
   border-radius: 3px;
+}
+
+input,
+select {
+  background: #ffffff40;
+  border: solid 2px white;
+  border-radius: 12px;
+  padding: 0;
 }
 </style>
