@@ -118,6 +118,43 @@ watch(
   },
   { immediate: true },
 )
+
+const draggingIndex = ref<number | null>(null)
+
+function onDragStart(e: DragEvent, index: number) {
+  draggingIndex.value = index
+  try {
+    e.dataTransfer?.setData('text/plain', String(index))
+    e.dataTransfer!.effectAllowed = 'move'
+  } catch {}
+}
+
+function onDragOver(e: DragEvent) {
+  e.preventDefault()
+  try {
+    e.dataTransfer!.dropEffect = 'move'
+  } catch {}
+}
+
+function onDrop(e: DragEvent, targetIndex: number, array: unknown[]) {
+  e.preventDefault()
+  const from =
+    draggingIndex.value !== null
+      ? draggingIndex.value
+      : Number(e.dataTransfer?.getData('text/plain'))
+  if (isNaN(from) || from === targetIndex) {
+    draggingIndex.value = null
+    return
+  }
+
+  const item = array.splice(from, 1)[0]
+  array.splice(targetIndex, 0, item)
+  draggingIndex.value = null
+}
+
+function onDragEnd() {
+  draggingIndex.value = null
+}
 </script>
 
 <template>
@@ -209,8 +246,13 @@ watch(
         <span class="text-lg align-center">Big Flowers</span>
         <div
           class="flex gap-2 items-center justify-start w-full"
-          v-for="flower in forecastEdit.bigFlowers"
+          v-for="(flower, index) in forecastEdit.bigFlowers"
           :key="flower.id"
+          draggable="true"
+          @dragstart="onDragStart($event, index)"
+          @dragover.prevent="onDragOver($event)"
+          @drop="onDrop($event, index, forecastEdit.bigFlowers)"
+          @dragend="onDragEnd"
         >
           <button
             class="button button-red"
