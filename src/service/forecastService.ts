@@ -20,3 +20,8 @@ export const createForecast = async (event: Forecast) => {
   const response = await api.put<Forecast>('/forecasts', event)
   return response.data
 }
+
+export const updateForecast = async (event: Forecast): Promise<Forecast> => {
+  const response = await api.post<Forecast>(`/forecasts/${event.id}`, event)
+  return response.data
+}
