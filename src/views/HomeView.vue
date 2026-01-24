@@ -181,7 +181,7 @@ async function handleAddUpcomingForecast() {
   const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
   const newForecast: Forecast = {
     id: 0,
-    name: 'New Forecast',
+    name: nextMonth.toLocaleString('default', { month: 'long' }),
     date: getLocalTimeString(nextMonth),
     bigFlowers: [],
     flowerOfTheMonth: {
