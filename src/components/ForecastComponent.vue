@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/authStore'
 import SwitchComponent from './SwitchComponent.vue'
 import { updateForecast, updateForecastPublicState } from '@/service/forecastService'
 import type { Flower } from '@/types/Flower'
+import { getFlowers } from '@/service/flowerService'
 
 const authStore = useAuthStore()
 
@@ -41,7 +42,7 @@ const selectedBigFlower = ref<Flower | undefined>()
 async function handleEditForecastButton() {
   forecastEditMode.value = true
   forecastEdit.value = JSON.parse(JSON.stringify(forecast.value))
-  allFlowers.value = [{ id: 5, name: 'Camellia', slug: 'camellia' }]
+  allFlowers.value = await getFlowers()
 }
 
 async function handleEditForecastCancelButton() {
