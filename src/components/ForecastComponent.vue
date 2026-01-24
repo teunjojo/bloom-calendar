@@ -188,12 +188,15 @@ watch(
     </span>
 
     <div class="flex flex-col items-stretch justify-between gap-2 mb-2">
+      <div v-if="!forecastEditMode">
         <FlowerList
           v-if="forecast.flowerOfTheMonth"
           class=""
           :flowers="[forecast.flowerOfTheMonth]"
           name="Flower of the Month"
         />
+      </div>
+      <div v-else></div>
       <div v-if="!forecastEditMode">
         <FlowerList
           v-if="forecast.bigFlowers"
