@@ -99,10 +99,20 @@ export async function updateForecast(prisma: PrismaClient, id: number, forecast:
 			public: forecast.public,
 			bigFlowers: {
 				set: forecast.bigFlowers.map((i) => ({
-					id: i.id
+					id: i.id,
 				})),
 			},
-			flowerOfTheMonthId: forecast.flowerOfTheMonth.id
+			flowerOfTheMonth: {
+				connectOrCreate: {
+					where: {
+						id: forecast.flowerOfTheMonth.id,
+					},
+					create: {
+						name: forecast.flowerOfTheMonth.name,
+						slug: forecast.flowerOfTheMonth.slug,
+					},
+				},
+			},
 		},
 	});
 
