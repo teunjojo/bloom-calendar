@@ -4,7 +4,11 @@ import type { Forecast } from '@/types/Forecast'
 import FlowerList from '@/components/FlowerList.vue'
 import { useAuthStore } from '@/stores/authStore'
 import SwitchComponent from './SwitchComponent.vue'
-import { updateForecast, updateForecastPublicState } from '@/service/forecastService'
+import {
+  deleteForecast,
+  updateForecast,
+  updateForecastPublicState,
+} from '@/service/forecastService'
 import type { Flower } from '@/types/Flower'
 import { getFlowers } from '@/service/flowerService'
 
@@ -89,13 +93,14 @@ async function handleDeleteForecastConfirm() {
   forecastEditMode.value = false
   forecastLoading.value = true
   try {
-    //await deleteEvent(forecast.value.id)
+    await deleteForecast(forecast.value.id)
   } catch {
     forecastError.value = true
     forecastErrorMessage.value = 'Failed to delete event'
     forecastLoading.value = false
     return
   }
+  forecast.value = {} as Forecast
   emit('forecastRemoved')
 }
 

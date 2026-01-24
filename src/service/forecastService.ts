@@ -25,3 +25,8 @@ export const updateForecast = async (event: Forecast): Promise<Forecast> => {
   const response = await api.post<Forecast>(`/forecasts/${event.id}`, event)
   return response.data
 }
+
+export const deleteForecast = async (id: number) => {
+  const response = await api.delete<Forecast>(`/forecasts/${id}`)
+  return response.data
+}
