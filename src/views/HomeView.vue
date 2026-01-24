@@ -378,6 +378,11 @@ onMounted(async () => {
         <ForecastComponent
           :forecast="upcomingForecast"
           :loading="loadingUpcomingForecast && showLoadingUpcomingForecast"
+          @forecast-removed="
+            () => {
+              upcomingForecast = {} as Forecast
+            }
+          "
         />
       </div>
       <div
