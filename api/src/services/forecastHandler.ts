@@ -39,8 +39,8 @@ export function applyForecastFilter(filter: ForecastFilter) {
 export async function updateForecastPublicState(prisma: PrismaClient, _id: number, _state: boolean) {
 	const updatedEvent = await prisma.forecast.update({
 		include: {
-bigFlowers: true,
-flowerOfTheMonth: true
+			bigFlowers: true,
+			flowerOfTheMonth: true,
 		},
 		where: {
 			id: _id,
@@ -83,4 +83,28 @@ export async function createForecast(prisma: PrismaClient, forecast: ForecastInp
 	});
 
 	return createdEvent;
+}
+
+export async function updateForecast(prisma: PrismaClient, id: number, forecast: ForecastInput) {
+	const updatedForecast = prisma.forecast.update({
+		include: {
+			bigFlowers: true,
+			flowerOfTheMonth: true,
+		},
+		where: { id: id },
+		data: {
+			name: forecast.name,
+			blogLink: forecast.blogLink || '',
+			date: forecast.date,
+			public: forecast.public,
+			bigFlowers: {
+				set: forecast.bigFlowers.map((i) => ({
+					id: i.id
+				})),
+			},
+			flowerOfTheMonthId: forecast.flowerOfTheMonth.id
+		},
+	});
+
+	return updatedForecast;
 }
