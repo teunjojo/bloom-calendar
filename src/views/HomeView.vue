@@ -186,8 +186,8 @@ async function handleAddUpcomingForecast() {
     bigFlowers: [],
     flowerOfTheMonth: {
       id: 0,
-      name: 'New flower',
-      slug: 'new-flower',
+      name: '',
+      slug: 'normal',
     },
     blogLink: '',
     public: false,
@@ -386,7 +386,7 @@ onMounted(async () => {
         />
       </div>
       <div
-        v-if="authStore.isAuthenticated()"
+        v-if="authStore.isAuthenticated() && !upcomingForecast.id"
         class="flex justify-center"
         @click="handleAddUpcomingForecast()"
       >
