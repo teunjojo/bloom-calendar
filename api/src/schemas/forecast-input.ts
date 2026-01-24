@@ -17,6 +17,7 @@ export const ForecastInputSchema = z.object({
 		name: z.string(),
 		slug: z.string(),
 	}),
+	public: z.boolean(),
 });
 
 export type ForecastInput = z.infer<typeof ForecastInputSchema>;
