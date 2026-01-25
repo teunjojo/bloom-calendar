@@ -86,7 +86,7 @@ export async function createForecast(prisma: PrismaClient, forecast: ForecastInp
 }
 
 export async function updateForecast(prisma: PrismaClient, id: number, forecast: ForecastInput) {
-	const updatedForecast = prisma.forecast.update({
+	const updatedForecast = await prisma.forecast.update({
 		include: {
 			bigFlowers: true,
 			flowerOfTheMonth: true,
@@ -103,13 +103,9 @@ export async function updateForecast(prisma: PrismaClient, id: number, forecast:
 				})),
 			},
 			flowerOfTheMonth: {
-				upsert: {
+				connectOrCreate: {
 					where: {
 						id: forecast.flowerOfTheMonth.id,
-					},
-					update: {
-						name: forecast.flowerOfTheMonth.name,
-						slug: forecast.flowerOfTheMonth.slug,
 					},
 					create: {
 						name: forecast.flowerOfTheMonth.name,
@@ -119,6 +115,18 @@ export async function updateForecast(prisma: PrismaClient, id: number, forecast:
 			},
 		},
 	});
+
+	const updatedFlowerOfTheMonth = await prisma.flower.update({
+		where: {
+			id: forecast.flowerOfTheMonth.id
+		},
+		data: {
+			name: forecast.flowerOfTheMonth.name,
+			slug: forecast.flowerOfTheMonth.slug
+		}
+	})
+
+	updatedForecast.flowerOfTheMonth = updatedFlowerOfTheMonth
 
 	return updatedForecast;
 }
