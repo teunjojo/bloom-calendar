@@ -64,6 +64,7 @@ async function handleSaveForecastButton() {
     savingForecast.value = false
     return
   }
+  forecastError.value = false
   savingForecast.value = false
   if (forecast.value.date != props.forecast.date) {
     emit('forecastUpdated')
