@@ -46,6 +46,7 @@ const selectedBigFlower = ref<Flower | undefined>()
 async function handleEditForecastButton() {
   forecastEditMode.value = true
   forecastEdit.value = JSON.parse(JSON.stringify(forecast.value))
+  selectedFlowerId.value = forecastEdit.value.flowerOfTheMonth.id
   allFlowers.value = await getFlowers()
 }
 
@@ -155,10 +156,26 @@ function onDrop(e: DragEvent, targetIndex: number, array: unknown[]) {
 function onDragEnd() {
   draggingIndex.value = null
 }
+
+const selectedFlowerId = ref<number>()
+watch(selectedFlowerId, (id) => {
+  if (id === 0) {
+    forecastEdit.value.flowerOfTheMonth = { id: 0, name: 'New Flower', slug: 'new-flower' }
+  } else {
+    const flower = allFlowers.value.find((f) => f.id === id)
+    if (!flower) {
+      return
+    }
+    forecastEdit.value.flowerOfTheMonth = flower
+  }
+})
 </script>
 
 <template>
   <div class="forecast">
+    <div v-if="forecastError" class="error-message mb-3">
+      <span class="icon attention-icon"></span>An error occurred: {{ forecastErrorMessage }}
+    </div>
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 v-if="!forecastEditMode" class="text-xl font-bold flex-grow">
         {{ forecast.name }}
@@ -233,7 +250,23 @@ function onDragEnd() {
           name="Flower of the Month"
         />
       </div>
-      <div v-else></div>
+      <div v-else class="flex flex-col gap-1 items-center">
+        <span class="text-lg align-center">Flower of the Month</span>
+        <div class="flex gap-2 items-center justify-start w-full"></div>
+        <div>
+          <div class="flex gap-2 items-center justify-start w-full">
+            <input class="w-full" type="text" v-model="forecastEdit.flowerOfTheMonth.name" />
+            <input class="w-full" type="text" v-model="forecastEdit.flowerOfTheMonth.slug" />
+          </div>
+        </div>
+        <select v-model="selectedFlowerId">
+          <option :value="undefined" disabled></option>
+          <option v-for="flower in allFlowers" :key="flower.id" :value="flower.id">
+            {{ selectedFlowerId === flower.id ? forecastEdit.flowerOfTheMonth.name : flower.name }}
+          </option>
+          <option :value="0">+</option>
+        </select>
+      </div>
       <div v-if="!forecastEditMode">
         <FlowerList
           v-if="forecast.bigFlowers"
