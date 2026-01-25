@@ -103,9 +103,13 @@ export async function updateForecast(prisma: PrismaClient, id: number, forecast:
 				})),
 			},
 			flowerOfTheMonth: {
-				connectOrCreate: {
+				upsert: {
 					where: {
 						id: forecast.flowerOfTheMonth.id,
+					},
+					update: {
+						name: forecast.flowerOfTheMonth.name,
+						slug: forecast.flowerOfTheMonth.slug,
 					},
 					create: {
 						name: forecast.flowerOfTheMonth.name,
