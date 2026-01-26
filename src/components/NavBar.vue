@@ -21,6 +21,16 @@ const showFeedbackAlert = ref<boolean>(true)
           </RouterLink>
         </li>
         <li>
+          <a class="big-button button-primary button-outline" href="https://www.pikminwiki.com/">
+            <img
+              src="https://pikmin.wiki.gallery/images/f/f0/Wiki.svg"
+              style="height: 2rem"
+              class="drop-shadow"
+            />
+            <span>Pikipedia</span>
+          </a>
+        </li>
+        <li>
           <button v-if="authStore.isAuthenticated()" @click="signOut()" class="big-button">
             Logout
           </button>
@@ -49,7 +59,7 @@ const showFeedbackAlert = ref<boolean>(true)
         </span>
         <button
           class="icon close-icon"
-          style="--bg: white; height: 1rem; width: 1rem;"
+          style="--bg: white; height: 1rem; width: 1rem"
           @click="showFeedbackAlert = false"
         ></button>
       </div>
