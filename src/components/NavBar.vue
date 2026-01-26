@@ -23,9 +23,8 @@ const showFeedbackAlert = ref<boolean>(true)
         <li>
           <a class="big-button button-primary button-outline" href="https://www.pikminwiki.com/">
             <img
-              src="https://pikmin.wiki.gallery/images/f/f0/Wiki.svg"
+              src="https://pikmin.wiki.gallery/images/c/c1/Wiki-icon.svg"
               style="height: 2rem"
-              class="drop-shadow"
             />
             <span>Pikipedia</span>
           </a>
