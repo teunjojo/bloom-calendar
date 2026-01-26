@@ -36,19 +36,33 @@ body {
 }
 
 .button {
+  --hover: white;
   --bg: var(--gray-200);
   --color: black;
   border-radius: 100vw;
   height: 2.5rem;
   font-size: 1rem;
   background: var(--bg);
-  color: vaR(--color);
+  color: var(--color);
   transition: all 0.25s ease-in-out;
   @apply aspect-square flex items-center justify-center;
 }
 
+.big-button {
+  @apply button;
+  --bg: var(--primary-color);
+  --color: #fff;
+  padding: 0.5rem 1rem;
+  aspect-ratio: unset;
+  font-weight: bold;
+}
+
 .button:hover {
-  background: color-mix(in hsl, var(--bg) 80%, white);
+  background: color-mix(in hsl, var(--bg) 80%, var(--hover));
+}
+
+.button-outline:hover {
+  background: color-mix(in hsl, var(--bg) 50%, var(--hover));
 }
 
 .button .icon {
@@ -56,11 +70,12 @@ body {
 }
 
 .button-outline {
-  --color: white;
+  --hover: transparent;
+  --color: var(--bg);
   --bg: transparent;
   background: transparent;
   border: 2px solid var(--color);
-  @apply aspect-square flex items-center justify-center;
+  @apply flex items-center justify-center;
 }
 
 .button-primary {
@@ -68,16 +83,11 @@ body {
 }
 
 .button-primary .icon {
-  --color: white;
+  --color: #fff;
 }
 
-.big-button {
-  @apply button;
-  --bg: var(--primary-color);
-  --color: white;
-  padding: 0.5rem 1rem;
-  aspect-ratio: unset;
-  font-weight: bold;
+.button-white {
+  --bg: #fff;
 }
 
 .button-red {

@@ -320,7 +320,7 @@ onMounted(() => {
         ></span>
       </button>
       <a
-        class="button button-outline"
+        class="button button-outline button-white"
         v-if="event.blogLink && !eventEditMode"
         :href="event.blogLink"
         target="_blank"

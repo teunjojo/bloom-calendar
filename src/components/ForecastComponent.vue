@@ -232,7 +232,7 @@ watch(selectedFlowerId, (id) => {
         ></span>
       </button>
       <a
-        class="button button-outline"
+        class="button button-outline button-white"
         v-if="forecast.blogLink"
         :href="forecast.blogLink"
         target="_blank"
