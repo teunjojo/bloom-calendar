@@ -530,7 +530,9 @@ onMounted(() => {
           v-for="selectDecor in allDecor"
           :key="selectDecor.id"
           :value="selectDecor"
-          :disabled="eventEdit.eventDecor.some((decor) => decor.id === selectDecor.id)"
+          :disabled="
+            eventEdit.eventDecor.some((eventDecor) => eventDecor.decor.id === selectDecor.id)
+          "
         >
           {{ selectDecor.name }}
         </option>
@@ -547,7 +549,7 @@ onMounted(() => {
             if (
               eventEdit.eventDecor
                 .filter((eventDecor) => eventDecor.status === 'RETURNING')
-                .some((decor) => decor.id === selectedReturningDecor!.id)
+                .some((eventDecor) => eventDecor.decor.id === selectedReturningDecor!.id)
             ) {
               eventError = true
               eventErrorMessage = 'Returning decor already added'
