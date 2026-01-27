@@ -188,9 +188,13 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 					},
 					update: {
 						decor: {
-							connectOrCreate: {
+							upsert: {
 								where: {
 									id: i.decor.id,
+								},
+								update: {
+									name: i.decor.name,
+									type: i.decor.type,
 								},
 								create: {
 									name: i.decor.name,
