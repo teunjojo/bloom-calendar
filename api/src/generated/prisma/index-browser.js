@@ -135,8 +135,15 @@ exports.Prisma.ImageScalarFieldEnum = {
 exports.Prisma.DecorScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  type: 'type',
-  newDecorEventId: 'newDecorEventId'
+  type: 'type'
+};
+
+exports.Prisma.EventDecorScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  decorId: 'decorId',
+  overview: 'overview',
+  status: 'status'
 };
 
 exports.Prisma.ForecastScalarFieldEnum = {
@@ -167,16 +174,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
 
 exports.Prisma.ModelName = {
   Event: 'Event',
   Image: 'Image',
   Decor: 'Decor',
+  EventDecor: 'EventDecor',
   Forecast: 'Forecast',
   Flower: 'Flower',
   User: 'User'

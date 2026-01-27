@@ -29,6 +29,11 @@ export type Image = $Result.DefaultSelection<Prisma.$ImagePayload>
  */
 export type Decor = $Result.DefaultSelection<Prisma.$DecorPayload>
 /**
+ * Model EventDecor
+ * 
+ */
+export type EventDecor = $Result.DefaultSelection<Prisma.$EventDecorPayload>
+/**
  * Model Forecast
  * 
  */
@@ -190,6 +195,16 @@ export class PrismaClient<
     * ```
     */
   get decor(): Prisma.DecorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventDecor`: Exposes CRUD operations for the **EventDecor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventDecors
+    * const eventDecors = await prisma.eventDecor.findMany()
+    * ```
+    */
+  get eventDecor(): Prisma.EventDecorDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.forecast`: Exposes CRUD operations for the **Forecast** model.
@@ -657,6 +672,7 @@ export namespace Prisma {
     Event: 'Event',
     Image: 'Image',
     Decor: 'Decor',
+    EventDecor: 'EventDecor',
     Forecast: 'Forecast',
     Flower: 'Flower',
     User: 'User'
@@ -675,7 +691,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "event" | "image" | "decor" | "forecast" | "flower" | "user"
+      modelProps: "event" | "image" | "decor" | "eventDecor" | "forecast" | "flower" | "user"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -898,6 +914,80 @@ export namespace Prisma {
           count: {
             args: Prisma.DecorCountArgs<ExtArgs>
             result: $Utils.Optional<DecorCountAggregateOutputType> | number
+          }
+        }
+      }
+      EventDecor: {
+        payload: Prisma.$EventDecorPayload<ExtArgs>
+        fields: Prisma.EventDecorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventDecorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventDecorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          findFirst: {
+            args: Prisma.EventDecorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventDecorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          findMany: {
+            args: Prisma.EventDecorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>[]
+          }
+          create: {
+            args: Prisma.EventDecorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          createMany: {
+            args: Prisma.EventDecorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventDecorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>[]
+          }
+          delete: {
+            args: Prisma.EventDecorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          update: {
+            args: Prisma.EventDecorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventDecorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventDecorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventDecorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventDecorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventDecorPayload>
+          }
+          aggregate: {
+            args: Prisma.EventDecorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventDecor>
+          }
+          groupBy: {
+            args: Prisma.EventDecorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventDecorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventDecorCountArgs<ExtArgs>
+            result: $Utils.Optional<EventDecorCountAggregateOutputType> | number
           }
         }
       }
@@ -1234,6 +1324,7 @@ export namespace Prisma {
     event?: EventOmit
     image?: ImageOmit
     decor?: DecorOmit
+    eventDecor?: EventDecorOmit
     forecast?: ForecastOmit
     flower?: FlowerOmit
     user?: UserOmit
@@ -1318,14 +1409,12 @@ export namespace Prisma {
 
   export type EventCountOutputType = {
     images: number
-    newDecor: number
-    returningDecor: number
+    eventDecor: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | EventCountOutputTypeCountImagesArgs
-    newDecor?: boolean | EventCountOutputTypeCountNewDecorArgs
-    returningDecor?: boolean | EventCountOutputTypeCountReturningDecorArgs
+    eventDecor?: boolean | EventCountOutputTypeCountEventDecorArgs
   }
 
   // Custom InputTypes
@@ -1349,15 +1438,8 @@ export namespace Prisma {
   /**
    * EventCountOutputType without action
    */
-  export type EventCountOutputTypeCountNewDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DecorWhereInput
-  }
-
-  /**
-   * EventCountOutputType without action
-   */
-  export type EventCountOutputTypeCountReturningDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DecorWhereInput
+  export type EventCountOutputTypeCountEventDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventDecorWhereInput
   }
 
 
@@ -1366,11 +1448,11 @@ export namespace Prisma {
    */
 
   export type DecorCountOutputType = {
-    returningDecorEvents: number
+    eventDecor: number
   }
 
   export type DecorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    returningDecorEvents?: boolean | DecorCountOutputTypeCountReturningDecorEventsArgs
+    eventDecor?: boolean | DecorCountOutputTypeCountEventDecorArgs
   }
 
   // Custom InputTypes
@@ -1387,8 +1469,8 @@ export namespace Prisma {
   /**
    * DecorCountOutputType without action
    */
-  export type DecorCountOutputTypeCountReturningDecorEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EventWhereInput
+  export type DecorCountOutputTypeCountEventDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventDecorWhereInput
   }
 
 
@@ -1674,8 +1756,7 @@ export namespace Prisma {
     blogLink?: boolean
     public?: boolean
     images?: boolean | Event$imagesArgs<ExtArgs>
-    newDecor?: boolean | Event$newDecorArgs<ExtArgs>
-    returningDecor?: boolean | Event$returningDecorArgs<ExtArgs>
+    eventDecor?: boolean | Event$eventDecorArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -1709,8 +1790,7 @@ export namespace Prisma {
   export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "startDate" | "endDate" | "blogLink" | "public", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | Event$imagesArgs<ExtArgs>
-    newDecor?: boolean | Event$newDecorArgs<ExtArgs>
-    returningDecor?: boolean | Event$returningDecorArgs<ExtArgs>
+    eventDecor?: boolean | Event$eventDecorArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1720,8 +1800,7 @@ export namespace Prisma {
     name: "Event"
     objects: {
       images: Prisma.$ImagePayload<ExtArgs>[]
-      newDecor: Prisma.$DecorPayload<ExtArgs>[]
-      returningDecor: Prisma.$DecorPayload<ExtArgs>[]
+      eventDecor: Prisma.$EventDecorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2125,8 +2204,7 @@ export namespace Prisma {
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     images<T extends Event$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Event$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    newDecor<T extends Event$newDecorArgs<ExtArgs> = {}>(args?: Subset<T, Event$newDecorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DecorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    returningDecor<T extends Event$returningDecorArgs<ExtArgs> = {}>(args?: Subset<T, Event$returningDecorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DecorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventDecor<T extends Event$eventDecorArgs<ExtArgs> = {}>(args?: Subset<T, Event$eventDecorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2572,51 +2650,27 @@ export namespace Prisma {
   }
 
   /**
-   * Event.newDecor
+   * Event.eventDecor
    */
-  export type Event$newDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Event$eventDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Decor
+     * Select specific fields to fetch from the EventDecor
      */
-    select?: DecorSelect<ExtArgs> | null
+    select?: EventDecorSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Decor
+     * Omit specific fields from the EventDecor
      */
-    omit?: DecorOmit<ExtArgs> | null
+    omit?: EventDecorOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DecorInclude<ExtArgs> | null
-    where?: DecorWhereInput
-    orderBy?: DecorOrderByWithRelationInput | DecorOrderByWithRelationInput[]
-    cursor?: DecorWhereUniqueInput
+    include?: EventDecorInclude<ExtArgs> | null
+    where?: EventDecorWhereInput
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    cursor?: EventDecorWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: DecorScalarFieldEnum | DecorScalarFieldEnum[]
-  }
-
-  /**
-   * Event.returningDecor
-   */
-  export type Event$returningDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Decor
-     */
-    select?: DecorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Decor
-     */
-    omit?: DecorOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DecorInclude<ExtArgs> | null
-    where?: DecorWhereInput
-    orderBy?: DecorOrderByWithRelationInput | DecorOrderByWithRelationInput[]
-    cursor?: DecorWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DecorScalarFieldEnum | DecorScalarFieldEnum[]
+    distinct?: EventDecorScalarFieldEnum | EventDecorScalarFieldEnum[]
   }
 
   /**
@@ -3720,66 +3774,56 @@ export namespace Prisma {
 
   export type DecorAvgAggregateOutputType = {
     id: number | null
-    newDecorEventId: number | null
   }
 
   export type DecorSumAggregateOutputType = {
     id: number | null
-    newDecorEventId: number | null
   }
 
   export type DecorMinAggregateOutputType = {
     id: number | null
     name: string | null
     type: string | null
-    newDecorEventId: number | null
   }
 
   export type DecorMaxAggregateOutputType = {
     id: number | null
     name: string | null
     type: string | null
-    newDecorEventId: number | null
   }
 
   export type DecorCountAggregateOutputType = {
     id: number
     name: number
     type: number
-    newDecorEventId: number
     _all: number
   }
 
 
   export type DecorAvgAggregateInputType = {
     id?: true
-    newDecorEventId?: true
   }
 
   export type DecorSumAggregateInputType = {
     id?: true
-    newDecorEventId?: true
   }
 
   export type DecorMinAggregateInputType = {
     id?: true
     name?: true
     type?: true
-    newDecorEventId?: true
   }
 
   export type DecorMaxAggregateInputType = {
     id?: true
     name?: true
     type?: true
-    newDecorEventId?: true
   }
 
   export type DecorCountAggregateInputType = {
     id?: true
     name?: true
     type?: true
-    newDecorEventId?: true
     _all?: true
   }
 
@@ -3873,7 +3917,6 @@ export namespace Prisma {
     id: number
     name: string
     type: string
-    newDecorEventId: number | null
     _count: DecorCountAggregateOutputType | null
     _avg: DecorAvgAggregateOutputType | null
     _sum: DecorSumAggregateOutputType | null
@@ -3899,9 +3942,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    newDecorEventId?: boolean
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
-    returningDecorEvents?: boolean | Decor$returningDecorEventsArgs<ExtArgs>
+    eventDecor?: boolean | Decor$eventDecorArgs<ExtArgs>
     _count?: boolean | DecorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["decor"]>
 
@@ -3909,49 +3950,37 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     type?: boolean
-    newDecorEventId?: boolean
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
   }, ExtArgs["result"]["decor"]>
 
   export type DecorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     type?: boolean
-    newDecorEventId?: boolean
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
   }, ExtArgs["result"]["decor"]>
 
   export type DecorSelectScalar = {
     id?: boolean
     name?: boolean
     type?: boolean
-    newDecorEventId?: boolean
   }
 
-  export type DecorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "newDecorEventId", ExtArgs["result"]["decor"]>
+  export type DecorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type", ExtArgs["result"]["decor"]>
   export type DecorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
-    returningDecorEvents?: boolean | Decor$returningDecorEventsArgs<ExtArgs>
+    eventDecor?: boolean | Decor$eventDecorArgs<ExtArgs>
     _count?: boolean | DecorCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type DecorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
-  }
-  export type DecorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    newDecorEvent?: boolean | Decor$newDecorEventArgs<ExtArgs>
-  }
+  export type DecorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DecorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $DecorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Decor"
     objects: {
-      newDecorEvent: Prisma.$EventPayload<ExtArgs> | null
-      returningDecorEvents: Prisma.$EventPayload<ExtArgs>[]
+      eventDecor: Prisma.$EventDecorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       type: string
-      newDecorEventId: number | null
     }, ExtArgs["result"]["decor"]>
     composites: {}
   }
@@ -4346,8 +4375,7 @@ export namespace Prisma {
    */
   export interface Prisma__DecorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    newDecorEvent<T extends Decor$newDecorEventArgs<ExtArgs> = {}>(args?: Subset<T, Decor$newDecorEventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    returningDecorEvents<T extends Decor$returningDecorEventsArgs<ExtArgs> = {}>(args?: Subset<T, Decor$returningDecorEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventDecor<T extends Decor$eventDecorArgs<ExtArgs> = {}>(args?: Subset<T, Decor$eventDecorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4380,7 +4408,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Decor", 'Int'>
     readonly name: FieldRef<"Decor", 'String'>
     readonly type: FieldRef<"Decor", 'String'>
-    readonly newDecorEventId: FieldRef<"Decor", 'Int'>
   }
     
 
@@ -4628,10 +4655,6 @@ export namespace Prisma {
      * The data used to create many Decors.
      */
     data: DecorCreateManyInput | DecorCreateManyInput[]
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DecorIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4702,10 +4725,6 @@ export namespace Prisma {
      * Limit how many Decors to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DecorIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4775,46 +4794,27 @@ export namespace Prisma {
   }
 
   /**
-   * Decor.newDecorEvent
+   * Decor.eventDecor
    */
-  export type Decor$newDecorEventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Decor$eventDecorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Event
+     * Select specific fields to fetch from the EventDecor
      */
-    select?: EventSelect<ExtArgs> | null
+    select?: EventDecorSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Event
+     * Omit specific fields from the EventDecor
      */
-    omit?: EventOmit<ExtArgs> | null
+    omit?: EventDecorOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: EventInclude<ExtArgs> | null
-    where?: EventWhereInput
-  }
-
-  /**
-   * Decor.returningDecorEvents
-   */
-  export type Decor$returningDecorEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Event
-     */
-    select?: EventSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Event
-     */
-    omit?: EventOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EventInclude<ExtArgs> | null
-    where?: EventWhereInput
-    orderBy?: EventOrderByWithRelationInput | EventOrderByWithRelationInput[]
-    cursor?: EventWhereUniqueInput
+    include?: EventDecorInclude<ExtArgs> | null
+    where?: EventDecorWhereInput
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    cursor?: EventDecorWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
+    distinct?: EventDecorScalarFieldEnum | EventDecorScalarFieldEnum[]
   }
 
   /**
@@ -4833,6 +4833,1112 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DecorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventDecor
+   */
+
+  export type AggregateEventDecor = {
+    _count: EventDecorCountAggregateOutputType | null
+    _avg: EventDecorAvgAggregateOutputType | null
+    _sum: EventDecorSumAggregateOutputType | null
+    _min: EventDecorMinAggregateOutputType | null
+    _max: EventDecorMaxAggregateOutputType | null
+  }
+
+  export type EventDecorAvgAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    decorId: number | null
+  }
+
+  export type EventDecorSumAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    decorId: number | null
+  }
+
+  export type EventDecorMinAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    decorId: number | null
+    overview: string | null
+    status: string | null
+  }
+
+  export type EventDecorMaxAggregateOutputType = {
+    id: number | null
+    eventId: number | null
+    decorId: number | null
+    overview: string | null
+    status: string | null
+  }
+
+  export type EventDecorCountAggregateOutputType = {
+    id: number
+    eventId: number
+    decorId: number
+    overview: number
+    status: number
+    _all: number
+  }
+
+
+  export type EventDecorAvgAggregateInputType = {
+    id?: true
+    eventId?: true
+    decorId?: true
+  }
+
+  export type EventDecorSumAggregateInputType = {
+    id?: true
+    eventId?: true
+    decorId?: true
+  }
+
+  export type EventDecorMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    decorId?: true
+    overview?: true
+    status?: true
+  }
+
+  export type EventDecorMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    decorId?: true
+    overview?: true
+    status?: true
+  }
+
+  export type EventDecorCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    decorId?: true
+    overview?: true
+    status?: true
+    _all?: true
+  }
+
+  export type EventDecorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventDecor to aggregate.
+     */
+    where?: EventDecorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventDecors to fetch.
+     */
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventDecorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventDecors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventDecors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventDecors
+    **/
+    _count?: true | EventDecorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventDecorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventDecorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventDecorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventDecorMaxAggregateInputType
+  }
+
+  export type GetEventDecorAggregateType<T extends EventDecorAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventDecor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventDecor[P]>
+      : GetScalarType<T[P], AggregateEventDecor[P]>
+  }
+
+
+
+
+  export type EventDecorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventDecorWhereInput
+    orderBy?: EventDecorOrderByWithAggregationInput | EventDecorOrderByWithAggregationInput[]
+    by: EventDecorScalarFieldEnum[] | EventDecorScalarFieldEnum
+    having?: EventDecorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventDecorCountAggregateInputType | true
+    _avg?: EventDecorAvgAggregateInputType
+    _sum?: EventDecorSumAggregateInputType
+    _min?: EventDecorMinAggregateInputType
+    _max?: EventDecorMaxAggregateInputType
+  }
+
+  export type EventDecorGroupByOutputType = {
+    id: number
+    eventId: number
+    decorId: number
+    overview: string
+    status: string
+    _count: EventDecorCountAggregateOutputType | null
+    _avg: EventDecorAvgAggregateOutputType | null
+    _sum: EventDecorSumAggregateOutputType | null
+    _min: EventDecorMinAggregateOutputType | null
+    _max: EventDecorMaxAggregateOutputType | null
+  }
+
+  type GetEventDecorGroupByPayload<T extends EventDecorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventDecorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventDecorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventDecorGroupByOutputType[P]>
+            : GetScalarType<T[P], EventDecorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventDecorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    decorId?: boolean
+    overview?: boolean
+    status?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventDecor"]>
+
+  export type EventDecorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    decorId?: boolean
+    overview?: boolean
+    status?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventDecor"]>
+
+  export type EventDecorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    decorId?: boolean
+    overview?: boolean
+    status?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventDecor"]>
+
+  export type EventDecorSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    decorId?: boolean
+    overview?: boolean
+    status?: boolean
+  }
+
+  export type EventDecorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "decorId" | "overview" | "status", ExtArgs["result"]["eventDecor"]>
+  export type EventDecorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }
+  export type EventDecorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }
+  export type EventDecorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+    decor?: boolean | DecorDefaultArgs<ExtArgs>
+  }
+
+  export type $EventDecorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventDecor"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+      decor: Prisma.$DecorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      eventId: number
+      decorId: number
+      overview: string
+      status: string
+    }, ExtArgs["result"]["eventDecor"]>
+    composites: {}
+  }
+
+  type EventDecorGetPayload<S extends boolean | null | undefined | EventDecorDefaultArgs> = $Result.GetResult<Prisma.$EventDecorPayload, S>
+
+  type EventDecorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventDecorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventDecorCountAggregateInputType | true
+    }
+
+  export interface EventDecorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventDecor'], meta: { name: 'EventDecor' } }
+    /**
+     * Find zero or one EventDecor that matches the filter.
+     * @param {EventDecorFindUniqueArgs} args - Arguments to find a EventDecor
+     * @example
+     * // Get one EventDecor
+     * const eventDecor = await prisma.eventDecor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventDecorFindUniqueArgs>(args: SelectSubset<T, EventDecorFindUniqueArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventDecor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventDecorFindUniqueOrThrowArgs} args - Arguments to find a EventDecor
+     * @example
+     * // Get one EventDecor
+     * const eventDecor = await prisma.eventDecor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventDecorFindUniqueOrThrowArgs>(args: SelectSubset<T, EventDecorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventDecor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorFindFirstArgs} args - Arguments to find a EventDecor
+     * @example
+     * // Get one EventDecor
+     * const eventDecor = await prisma.eventDecor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventDecorFindFirstArgs>(args?: SelectSubset<T, EventDecorFindFirstArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventDecor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorFindFirstOrThrowArgs} args - Arguments to find a EventDecor
+     * @example
+     * // Get one EventDecor
+     * const eventDecor = await prisma.eventDecor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventDecorFindFirstOrThrowArgs>(args?: SelectSubset<T, EventDecorFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventDecors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventDecors
+     * const eventDecors = await prisma.eventDecor.findMany()
+     * 
+     * // Get first 10 EventDecors
+     * const eventDecors = await prisma.eventDecor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventDecorWithIdOnly = await prisma.eventDecor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventDecorFindManyArgs>(args?: SelectSubset<T, EventDecorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventDecor.
+     * @param {EventDecorCreateArgs} args - Arguments to create a EventDecor.
+     * @example
+     * // Create one EventDecor
+     * const EventDecor = await prisma.eventDecor.create({
+     *   data: {
+     *     // ... data to create a EventDecor
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventDecorCreateArgs>(args: SelectSubset<T, EventDecorCreateArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventDecors.
+     * @param {EventDecorCreateManyArgs} args - Arguments to create many EventDecors.
+     * @example
+     * // Create many EventDecors
+     * const eventDecor = await prisma.eventDecor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventDecorCreateManyArgs>(args?: SelectSubset<T, EventDecorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventDecors and returns the data saved in the database.
+     * @param {EventDecorCreateManyAndReturnArgs} args - Arguments to create many EventDecors.
+     * @example
+     * // Create many EventDecors
+     * const eventDecor = await prisma.eventDecor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventDecors and only return the `id`
+     * const eventDecorWithIdOnly = await prisma.eventDecor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventDecorCreateManyAndReturnArgs>(args?: SelectSubset<T, EventDecorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventDecor.
+     * @param {EventDecorDeleteArgs} args - Arguments to delete one EventDecor.
+     * @example
+     * // Delete one EventDecor
+     * const EventDecor = await prisma.eventDecor.delete({
+     *   where: {
+     *     // ... filter to delete one EventDecor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventDecorDeleteArgs>(args: SelectSubset<T, EventDecorDeleteArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventDecor.
+     * @param {EventDecorUpdateArgs} args - Arguments to update one EventDecor.
+     * @example
+     * // Update one EventDecor
+     * const eventDecor = await prisma.eventDecor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventDecorUpdateArgs>(args: SelectSubset<T, EventDecorUpdateArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventDecors.
+     * @param {EventDecorDeleteManyArgs} args - Arguments to filter EventDecors to delete.
+     * @example
+     * // Delete a few EventDecors
+     * const { count } = await prisma.eventDecor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventDecorDeleteManyArgs>(args?: SelectSubset<T, EventDecorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventDecors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventDecors
+     * const eventDecor = await prisma.eventDecor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventDecorUpdateManyArgs>(args: SelectSubset<T, EventDecorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventDecors and returns the data updated in the database.
+     * @param {EventDecorUpdateManyAndReturnArgs} args - Arguments to update many EventDecors.
+     * @example
+     * // Update many EventDecors
+     * const eventDecor = await prisma.eventDecor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventDecors and only return the `id`
+     * const eventDecorWithIdOnly = await prisma.eventDecor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventDecorUpdateManyAndReturnArgs>(args: SelectSubset<T, EventDecorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventDecor.
+     * @param {EventDecorUpsertArgs} args - Arguments to update or create a EventDecor.
+     * @example
+     * // Update or create a EventDecor
+     * const eventDecor = await prisma.eventDecor.upsert({
+     *   create: {
+     *     // ... data to create a EventDecor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventDecor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventDecorUpsertArgs>(args: SelectSubset<T, EventDecorUpsertArgs<ExtArgs>>): Prisma__EventDecorClient<$Result.GetResult<Prisma.$EventDecorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventDecors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorCountArgs} args - Arguments to filter EventDecors to count.
+     * @example
+     * // Count the number of EventDecors
+     * const count = await prisma.eventDecor.count({
+     *   where: {
+     *     // ... the filter for the EventDecors we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventDecorCountArgs>(
+      args?: Subset<T, EventDecorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventDecorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventDecor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventDecorAggregateArgs>(args: Subset<T, EventDecorAggregateArgs>): Prisma.PrismaPromise<GetEventDecorAggregateType<T>>
+
+    /**
+     * Group by EventDecor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventDecorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventDecorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventDecorGroupByArgs['orderBy'] }
+        : { orderBy?: EventDecorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventDecorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventDecorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventDecor model
+   */
+  readonly fields: EventDecorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventDecor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventDecorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    decor<T extends DecorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DecorDefaultArgs<ExtArgs>>): Prisma__DecorClient<$Result.GetResult<Prisma.$DecorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventDecor model
+   */
+  interface EventDecorFieldRefs {
+    readonly id: FieldRef<"EventDecor", 'Int'>
+    readonly eventId: FieldRef<"EventDecor", 'Int'>
+    readonly decorId: FieldRef<"EventDecor", 'Int'>
+    readonly overview: FieldRef<"EventDecor", 'String'>
+    readonly status: FieldRef<"EventDecor", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventDecor findUnique
+   */
+  export type EventDecorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventDecor to fetch.
+     */
+    where: EventDecorWhereUniqueInput
+  }
+
+  /**
+   * EventDecor findUniqueOrThrow
+   */
+  export type EventDecorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventDecor to fetch.
+     */
+    where: EventDecorWhereUniqueInput
+  }
+
+  /**
+   * EventDecor findFirst
+   */
+  export type EventDecorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventDecor to fetch.
+     */
+    where?: EventDecorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventDecors to fetch.
+     */
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventDecors.
+     */
+    cursor?: EventDecorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventDecors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventDecors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventDecors.
+     */
+    distinct?: EventDecorScalarFieldEnum | EventDecorScalarFieldEnum[]
+  }
+
+  /**
+   * EventDecor findFirstOrThrow
+   */
+  export type EventDecorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventDecor to fetch.
+     */
+    where?: EventDecorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventDecors to fetch.
+     */
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventDecors.
+     */
+    cursor?: EventDecorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventDecors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventDecors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventDecors.
+     */
+    distinct?: EventDecorScalarFieldEnum | EventDecorScalarFieldEnum[]
+  }
+
+  /**
+   * EventDecor findMany
+   */
+  export type EventDecorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter, which EventDecors to fetch.
+     */
+    where?: EventDecorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventDecors to fetch.
+     */
+    orderBy?: EventDecorOrderByWithRelationInput | EventDecorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventDecors.
+     */
+    cursor?: EventDecorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventDecors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventDecors.
+     */
+    skip?: number
+    distinct?: EventDecorScalarFieldEnum | EventDecorScalarFieldEnum[]
+  }
+
+  /**
+   * EventDecor create
+   */
+  export type EventDecorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventDecor.
+     */
+    data: XOR<EventDecorCreateInput, EventDecorUncheckedCreateInput>
+  }
+
+  /**
+   * EventDecor createMany
+   */
+  export type EventDecorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventDecors.
+     */
+    data: EventDecorCreateManyInput | EventDecorCreateManyInput[]
+  }
+
+  /**
+   * EventDecor createManyAndReturn
+   */
+  export type EventDecorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventDecors.
+     */
+    data: EventDecorCreateManyInput | EventDecorCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventDecor update
+   */
+  export type EventDecorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventDecor.
+     */
+    data: XOR<EventDecorUpdateInput, EventDecorUncheckedUpdateInput>
+    /**
+     * Choose, which EventDecor to update.
+     */
+    where: EventDecorWhereUniqueInput
+  }
+
+  /**
+   * EventDecor updateMany
+   */
+  export type EventDecorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventDecors.
+     */
+    data: XOR<EventDecorUpdateManyMutationInput, EventDecorUncheckedUpdateManyInput>
+    /**
+     * Filter which EventDecors to update
+     */
+    where?: EventDecorWhereInput
+    /**
+     * Limit how many EventDecors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventDecor updateManyAndReturn
+   */
+  export type EventDecorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * The data used to update EventDecors.
+     */
+    data: XOR<EventDecorUpdateManyMutationInput, EventDecorUncheckedUpdateManyInput>
+    /**
+     * Filter which EventDecors to update
+     */
+    where?: EventDecorWhereInput
+    /**
+     * Limit how many EventDecors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventDecor upsert
+   */
+  export type EventDecorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventDecor to update in case it exists.
+     */
+    where: EventDecorWhereUniqueInput
+    /**
+     * In case the EventDecor found by the `where` argument doesn't exist, create a new EventDecor with this data.
+     */
+    create: XOR<EventDecorCreateInput, EventDecorUncheckedCreateInput>
+    /**
+     * In case the EventDecor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventDecorUpdateInput, EventDecorUncheckedUpdateInput>
+  }
+
+  /**
+   * EventDecor delete
+   */
+  export type EventDecorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
+    /**
+     * Filter which EventDecor to delete.
+     */
+    where: EventDecorWhereUniqueInput
+  }
+
+  /**
+   * EventDecor deleteMany
+   */
+  export type EventDecorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventDecors to delete
+     */
+    where?: EventDecorWhereInput
+    /**
+     * Limit how many EventDecors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventDecor without action
+   */
+  export type EventDecorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventDecor
+     */
+    select?: EventDecorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventDecor
+     */
+    omit?: EventDecorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventDecorInclude<ExtArgs> | null
   }
 
 
@@ -8143,11 +9249,21 @@ export namespace Prisma {
   export const DecorScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    type: 'type',
-    newDecorEventId: 'newDecorEventId'
+    type: 'type'
   };
 
   export type DecorScalarFieldEnum = (typeof DecorScalarFieldEnum)[keyof typeof DecorScalarFieldEnum]
+
+
+  export const EventDecorScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    decorId: 'decorId',
+    overview: 'overview',
+    status: 'status'
+  };
+
+  export type EventDecorScalarFieldEnum = (typeof EventDecorScalarFieldEnum)[keyof typeof EventDecorScalarFieldEnum]
 
 
   export const ForecastScalarFieldEnum: {
@@ -8188,14 +9304,6 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -8245,8 +9353,7 @@ export namespace Prisma {
     blogLink?: StringFilter<"Event"> | string
     public?: BoolFilter<"Event"> | boolean
     images?: ImageListRelationFilter
-    newDecor?: DecorListRelationFilter
-    returningDecor?: DecorListRelationFilter
+    eventDecor?: EventDecorListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -8257,8 +9364,7 @@ export namespace Prisma {
     blogLink?: SortOrder
     public?: SortOrder
     images?: ImageOrderByRelationAggregateInput
-    newDecor?: DecorOrderByRelationAggregateInput
-    returningDecor?: DecorOrderByRelationAggregateInput
+    eventDecor?: EventDecorOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -8272,8 +9378,7 @@ export namespace Prisma {
     blogLink?: StringFilter<"Event"> | string
     public?: BoolFilter<"Event"> | boolean
     images?: ImageListRelationFilter
-    newDecor?: DecorListRelationFilter
-    returningDecor?: DecorListRelationFilter
+    eventDecor?: EventDecorListRelationFilter
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -8356,18 +9461,14 @@ export namespace Prisma {
     id?: IntFilter<"Decor"> | number
     name?: StringFilter<"Decor"> | string
     type?: StringFilter<"Decor"> | string
-    newDecorEventId?: IntNullableFilter<"Decor"> | number | null
-    newDecorEvent?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
-    returningDecorEvents?: EventListRelationFilter
+    eventDecor?: EventDecorListRelationFilter
   }
 
   export type DecorOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    newDecorEventId?: SortOrderInput | SortOrder
-    newDecorEvent?: EventOrderByWithRelationInput
-    returningDecorEvents?: EventOrderByRelationAggregateInput
+    eventDecor?: EventDecorOrderByRelationAggregateInput
   }
 
   export type DecorWhereUniqueInput = Prisma.AtLeast<{
@@ -8377,16 +9478,13 @@ export namespace Prisma {
     NOT?: DecorWhereInput | DecorWhereInput[]
     name?: StringFilter<"Decor"> | string
     type?: StringFilter<"Decor"> | string
-    newDecorEventId?: IntNullableFilter<"Decor"> | number | null
-    newDecorEvent?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
-    returningDecorEvents?: EventListRelationFilter
+    eventDecor?: EventDecorListRelationFilter
   }, "id">
 
   export type DecorOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    newDecorEventId?: SortOrderInput | SortOrder
     _count?: DecorCountOrderByAggregateInput
     _avg?: DecorAvgOrderByAggregateInput
     _max?: DecorMaxOrderByAggregateInput
@@ -8401,7 +9499,66 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Decor"> | number
     name?: StringWithAggregatesFilter<"Decor"> | string
     type?: StringWithAggregatesFilter<"Decor"> | string
-    newDecorEventId?: IntNullableWithAggregatesFilter<"Decor"> | number | null
+  }
+
+  export type EventDecorWhereInput = {
+    AND?: EventDecorWhereInput | EventDecorWhereInput[]
+    OR?: EventDecorWhereInput[]
+    NOT?: EventDecorWhereInput | EventDecorWhereInput[]
+    id?: IntFilter<"EventDecor"> | number
+    eventId?: IntFilter<"EventDecor"> | number
+    decorId?: IntFilter<"EventDecor"> | number
+    overview?: StringFilter<"EventDecor"> | string
+    status?: StringFilter<"EventDecor"> | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    decor?: XOR<DecorScalarRelationFilter, DecorWhereInput>
+  }
+
+  export type EventDecorOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+    overview?: SortOrder
+    status?: SortOrder
+    event?: EventOrderByWithRelationInput
+    decor?: DecorOrderByWithRelationInput
+  }
+
+  export type EventDecorWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: EventDecorWhereInput | EventDecorWhereInput[]
+    OR?: EventDecorWhereInput[]
+    NOT?: EventDecorWhereInput | EventDecorWhereInput[]
+    eventId?: IntFilter<"EventDecor"> | number
+    decorId?: IntFilter<"EventDecor"> | number
+    overview?: StringFilter<"EventDecor"> | string
+    status?: StringFilter<"EventDecor"> | string
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    decor?: XOR<DecorScalarRelationFilter, DecorWhereInput>
+  }, "id">
+
+  export type EventDecorOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+    overview?: SortOrder
+    status?: SortOrder
+    _count?: EventDecorCountOrderByAggregateInput
+    _avg?: EventDecorAvgOrderByAggregateInput
+    _max?: EventDecorMaxOrderByAggregateInput
+    _min?: EventDecorMinOrderByAggregateInput
+    _sum?: EventDecorSumOrderByAggregateInput
+  }
+
+  export type EventDecorScalarWhereWithAggregatesInput = {
+    AND?: EventDecorScalarWhereWithAggregatesInput | EventDecorScalarWhereWithAggregatesInput[]
+    OR?: EventDecorScalarWhereWithAggregatesInput[]
+    NOT?: EventDecorScalarWhereWithAggregatesInput | EventDecorScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EventDecor"> | number
+    eventId?: IntWithAggregatesFilter<"EventDecor"> | number
+    decorId?: IntWithAggregatesFilter<"EventDecor"> | number
+    overview?: StringWithAggregatesFilter<"EventDecor"> | string
+    status?: StringWithAggregatesFilter<"EventDecor"> | string
   }
 
   export type ForecastWhereInput = {
@@ -8580,8 +9737,7 @@ export namespace Prisma {
     blogLink: string
     public?: boolean
     images?: ImageCreateNestedManyWithoutEventInput
-    newDecor?: DecorCreateNestedManyWithoutNewDecorEventInput
-    returningDecor?: DecorCreateNestedManyWithoutReturningDecorEventsInput
+    eventDecor?: EventDecorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -8592,8 +9748,7 @@ export namespace Prisma {
     blogLink: string
     public?: boolean
     images?: ImageUncheckedCreateNestedManyWithoutEventInput
-    newDecor?: DecorUncheckedCreateNestedManyWithoutNewDecorEventInput
-    returningDecor?: DecorUncheckedCreateNestedManyWithoutReturningDecorEventsInput
+    eventDecor?: EventDecorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -8603,8 +9758,7 @@ export namespace Prisma {
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUpdateManyWithoutEventNestedInput
-    newDecor?: DecorUpdateManyWithoutNewDecorEventNestedInput
-    returningDecor?: DecorUpdateManyWithoutReturningDecorEventsNestedInput
+    eventDecor?: EventDecorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -8615,8 +9769,7 @@ export namespace Prisma {
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUncheckedUpdateManyWithoutEventNestedInput
-    newDecor?: DecorUncheckedUpdateManyWithoutNewDecorEventNestedInput
-    returningDecor?: DecorUncheckedUpdateManyWithoutReturningDecorEventsNestedInput
+    eventDecor?: EventDecorUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -8686,38 +9839,33 @@ export namespace Prisma {
   export type DecorCreateInput = {
     name: string
     type: string
-    newDecorEvent?: EventCreateNestedOneWithoutNewDecorInput
-    returningDecorEvents?: EventCreateNestedManyWithoutReturningDecorInput
+    eventDecor?: EventDecorCreateNestedManyWithoutDecorInput
   }
 
   export type DecorUncheckedCreateInput = {
     id?: number
     name: string
     type: string
-    newDecorEventId?: number | null
-    returningDecorEvents?: EventUncheckedCreateNestedManyWithoutReturningDecorInput
+    eventDecor?: EventDecorUncheckedCreateNestedManyWithoutDecorInput
   }
 
   export type DecorUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    newDecorEvent?: EventUpdateOneWithoutNewDecorNestedInput
-    returningDecorEvents?: EventUpdateManyWithoutReturningDecorNestedInput
+    eventDecor?: EventDecorUpdateManyWithoutDecorNestedInput
   }
 
   export type DecorUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    newDecorEventId?: NullableIntFieldUpdateOperationsInput | number | null
-    returningDecorEvents?: EventUncheckedUpdateManyWithoutReturningDecorNestedInput
+    eventDecor?: EventDecorUncheckedUpdateManyWithoutDecorNestedInput
   }
 
   export type DecorCreateManyInput = {
     id?: number
     name: string
     type: string
-    newDecorEventId?: number | null
   }
 
   export type DecorUpdateManyMutationInput = {
@@ -8729,7 +9877,57 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    newDecorEventId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type EventDecorCreateInput = {
+    overview: string
+    status: string
+    event: EventCreateNestedOneWithoutEventDecorInput
+    decor: DecorCreateNestedOneWithoutEventDecorInput
+  }
+
+  export type EventDecorUncheckedCreateInput = {
+    id?: number
+    eventId: number
+    decorId: number
+    overview: string
+    status: string
+  }
+
+  export type EventDecorUpdateInput = {
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    event?: EventUpdateOneRequiredWithoutEventDecorNestedInput
+    decor?: DecorUpdateOneRequiredWithoutEventDecorNestedInput
+  }
+
+  export type EventDecorUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    decorId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EventDecorCreateManyInput = {
+    id?: number
+    eventId: number
+    decorId: number
+    overview: string
+    status: string
+  }
+
+  export type EventDecorUpdateManyMutationInput = {
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EventDecorUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
+    decorId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForecastCreateInput = {
@@ -8931,17 +10129,17 @@ export namespace Prisma {
     none?: ImageWhereInput
   }
 
-  export type DecorListRelationFilter = {
-    every?: DecorWhereInput
-    some?: DecorWhereInput
-    none?: DecorWhereInput
+  export type EventDecorListRelationFilter = {
+    every?: EventDecorWhereInput
+    some?: EventDecorWhereInput
+    none?: EventDecorWhereInput
   }
 
   export type ImageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type DecorOrderByRelationAggregateInput = {
+  export type EventDecorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9054,82 +10252,71 @@ export namespace Prisma {
     eventId?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type EventNullableScalarRelationFilter = {
-    is?: EventWhereInput | null
-    isNot?: EventWhereInput | null
-  }
-
-  export type EventListRelationFilter = {
-    every?: EventWhereInput
-    some?: EventWhereInput
-    none?: EventWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type EventOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type DecorCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    newDecorEventId?: SortOrder
   }
 
   export type DecorAvgOrderByAggregateInput = {
     id?: SortOrder
-    newDecorEventId?: SortOrder
   }
 
   export type DecorMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    newDecorEventId?: SortOrder
   }
 
   export type DecorMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     type?: SortOrder
-    newDecorEventId?: SortOrder
   }
 
   export type DecorSumOrderByAggregateInput = {
     id?: SortOrder
-    newDecorEventId?: SortOrder
   }
 
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+  export type DecorScalarRelationFilter = {
+    is?: DecorWhereInput
+    isNot?: DecorWhereInput
+  }
+
+  export type EventDecorCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+    overview?: SortOrder
+    status?: SortOrder
+  }
+
+  export type EventDecorAvgOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+  }
+
+  export type EventDecorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+    overview?: SortOrder
+    status?: SortOrder
+  }
+
+  export type EventDecorMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
+    overview?: SortOrder
+    status?: SortOrder
+  }
+
+  export type EventDecorSumOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    decorId?: SortOrder
   }
 
   export type FlowerListRelationFilter = {
@@ -9261,17 +10448,11 @@ export namespace Prisma {
     connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
   }
 
-  export type DecorCreateNestedManyWithoutNewDecorEventInput = {
-    create?: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput> | DecorCreateWithoutNewDecorEventInput[] | DecorUncheckedCreateWithoutNewDecorEventInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutNewDecorEventInput | DecorCreateOrConnectWithoutNewDecorEventInput[]
-    createMany?: DecorCreateManyNewDecorEventInputEnvelope
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-  }
-
-  export type DecorCreateNestedManyWithoutReturningDecorEventsInput = {
-    create?: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput> | DecorCreateWithoutReturningDecorEventsInput[] | DecorUncheckedCreateWithoutReturningDecorEventsInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutReturningDecorEventsInput | DecorCreateOrConnectWithoutReturningDecorEventsInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
+  export type EventDecorCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput> | EventDecorCreateWithoutEventInput[] | EventDecorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutEventInput | EventDecorCreateOrConnectWithoutEventInput[]
+    createMany?: EventDecorCreateManyEventInputEnvelope
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
   }
 
   export type ImageUncheckedCreateNestedManyWithoutEventInput = {
@@ -9281,17 +10462,11 @@ export namespace Prisma {
     connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
   }
 
-  export type DecorUncheckedCreateNestedManyWithoutNewDecorEventInput = {
-    create?: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput> | DecorCreateWithoutNewDecorEventInput[] | DecorUncheckedCreateWithoutNewDecorEventInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutNewDecorEventInput | DecorCreateOrConnectWithoutNewDecorEventInput[]
-    createMany?: DecorCreateManyNewDecorEventInputEnvelope
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-  }
-
-  export type DecorUncheckedCreateNestedManyWithoutReturningDecorEventsInput = {
-    create?: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput> | DecorCreateWithoutReturningDecorEventsInput[] | DecorUncheckedCreateWithoutReturningDecorEventsInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutReturningDecorEventsInput | DecorCreateOrConnectWithoutReturningDecorEventsInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
+  export type EventDecorUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput> | EventDecorCreateWithoutEventInput[] | EventDecorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutEventInput | EventDecorCreateOrConnectWithoutEventInput[]
+    createMany?: EventDecorCreateManyEventInputEnvelope
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9316,31 +10491,18 @@ export namespace Prisma {
     deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
   }
 
-  export type DecorUpdateManyWithoutNewDecorEventNestedInput = {
-    create?: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput> | DecorCreateWithoutNewDecorEventInput[] | DecorUncheckedCreateWithoutNewDecorEventInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutNewDecorEventInput | DecorCreateOrConnectWithoutNewDecorEventInput[]
-    upsert?: DecorUpsertWithWhereUniqueWithoutNewDecorEventInput | DecorUpsertWithWhereUniqueWithoutNewDecorEventInput[]
-    createMany?: DecorCreateManyNewDecorEventInputEnvelope
-    set?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    disconnect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    delete?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    update?: DecorUpdateWithWhereUniqueWithoutNewDecorEventInput | DecorUpdateWithWhereUniqueWithoutNewDecorEventInput[]
-    updateMany?: DecorUpdateManyWithWhereWithoutNewDecorEventInput | DecorUpdateManyWithWhereWithoutNewDecorEventInput[]
-    deleteMany?: DecorScalarWhereInput | DecorScalarWhereInput[]
-  }
-
-  export type DecorUpdateManyWithoutReturningDecorEventsNestedInput = {
-    create?: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput> | DecorCreateWithoutReturningDecorEventsInput[] | DecorUncheckedCreateWithoutReturningDecorEventsInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutReturningDecorEventsInput | DecorCreateOrConnectWithoutReturningDecorEventsInput[]
-    upsert?: DecorUpsertWithWhereUniqueWithoutReturningDecorEventsInput | DecorUpsertWithWhereUniqueWithoutReturningDecorEventsInput[]
-    set?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    disconnect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    delete?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    update?: DecorUpdateWithWhereUniqueWithoutReturningDecorEventsInput | DecorUpdateWithWhereUniqueWithoutReturningDecorEventsInput[]
-    updateMany?: DecorUpdateManyWithWhereWithoutReturningDecorEventsInput | DecorUpdateManyWithWhereWithoutReturningDecorEventsInput[]
-    deleteMany?: DecorScalarWhereInput | DecorScalarWhereInput[]
+  export type EventDecorUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput> | EventDecorCreateWithoutEventInput[] | EventDecorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutEventInput | EventDecorCreateOrConnectWithoutEventInput[]
+    upsert?: EventDecorUpsertWithWhereUniqueWithoutEventInput | EventDecorUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventDecorCreateManyEventInputEnvelope
+    set?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    disconnect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    delete?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    update?: EventDecorUpdateWithWhereUniqueWithoutEventInput | EventDecorUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventDecorUpdateManyWithWhereWithoutEventInput | EventDecorUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -9365,31 +10527,18 @@ export namespace Prisma {
     deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
   }
 
-  export type DecorUncheckedUpdateManyWithoutNewDecorEventNestedInput = {
-    create?: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput> | DecorCreateWithoutNewDecorEventInput[] | DecorUncheckedCreateWithoutNewDecorEventInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutNewDecorEventInput | DecorCreateOrConnectWithoutNewDecorEventInput[]
-    upsert?: DecorUpsertWithWhereUniqueWithoutNewDecorEventInput | DecorUpsertWithWhereUniqueWithoutNewDecorEventInput[]
-    createMany?: DecorCreateManyNewDecorEventInputEnvelope
-    set?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    disconnect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    delete?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    update?: DecorUpdateWithWhereUniqueWithoutNewDecorEventInput | DecorUpdateWithWhereUniqueWithoutNewDecorEventInput[]
-    updateMany?: DecorUpdateManyWithWhereWithoutNewDecorEventInput | DecorUpdateManyWithWhereWithoutNewDecorEventInput[]
-    deleteMany?: DecorScalarWhereInput | DecorScalarWhereInput[]
-  }
-
-  export type DecorUncheckedUpdateManyWithoutReturningDecorEventsNestedInput = {
-    create?: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput> | DecorCreateWithoutReturningDecorEventsInput[] | DecorUncheckedCreateWithoutReturningDecorEventsInput[]
-    connectOrCreate?: DecorCreateOrConnectWithoutReturningDecorEventsInput | DecorCreateOrConnectWithoutReturningDecorEventsInput[]
-    upsert?: DecorUpsertWithWhereUniqueWithoutReturningDecorEventsInput | DecorUpsertWithWhereUniqueWithoutReturningDecorEventsInput[]
-    set?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    disconnect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    delete?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    connect?: DecorWhereUniqueInput | DecorWhereUniqueInput[]
-    update?: DecorUpdateWithWhereUniqueWithoutReturningDecorEventsInput | DecorUpdateWithWhereUniqueWithoutReturningDecorEventsInput[]
-    updateMany?: DecorUpdateManyWithWhereWithoutReturningDecorEventsInput | DecorUpdateManyWithWhereWithoutReturningDecorEventsInput[]
-    deleteMany?: DecorScalarWhereInput | DecorScalarWhereInput[]
+  export type EventDecorUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput> | EventDecorCreateWithoutEventInput[] | EventDecorUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutEventInput | EventDecorCreateOrConnectWithoutEventInput[]
+    upsert?: EventDecorUpsertWithWhereUniqueWithoutEventInput | EventDecorUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventDecorCreateManyEventInputEnvelope
+    set?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    disconnect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    delete?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    update?: EventDecorUpdateWithWhereUniqueWithoutEventInput | EventDecorUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventDecorUpdateManyWithWhereWithoutEventInput | EventDecorUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
   }
 
   export type EventCreateNestedOneWithoutImagesInput = {
@@ -9406,66 +10555,74 @@ export namespace Prisma {
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutImagesInput, EventUpdateWithoutImagesInput>, EventUncheckedUpdateWithoutImagesInput>
   }
 
-  export type EventCreateNestedOneWithoutNewDecorInput = {
-    create?: XOR<EventCreateWithoutNewDecorInput, EventUncheckedCreateWithoutNewDecorInput>
-    connectOrCreate?: EventCreateOrConnectWithoutNewDecorInput
+  export type EventDecorCreateNestedManyWithoutDecorInput = {
+    create?: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput> | EventDecorCreateWithoutDecorInput[] | EventDecorUncheckedCreateWithoutDecorInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutDecorInput | EventDecorCreateOrConnectWithoutDecorInput[]
+    createMany?: EventDecorCreateManyDecorInputEnvelope
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+  }
+
+  export type EventDecorUncheckedCreateNestedManyWithoutDecorInput = {
+    create?: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput> | EventDecorCreateWithoutDecorInput[] | EventDecorUncheckedCreateWithoutDecorInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutDecorInput | EventDecorCreateOrConnectWithoutDecorInput[]
+    createMany?: EventDecorCreateManyDecorInputEnvelope
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+  }
+
+  export type EventDecorUpdateManyWithoutDecorNestedInput = {
+    create?: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput> | EventDecorCreateWithoutDecorInput[] | EventDecorUncheckedCreateWithoutDecorInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutDecorInput | EventDecorCreateOrConnectWithoutDecorInput[]
+    upsert?: EventDecorUpsertWithWhereUniqueWithoutDecorInput | EventDecorUpsertWithWhereUniqueWithoutDecorInput[]
+    createMany?: EventDecorCreateManyDecorInputEnvelope
+    set?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    disconnect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    delete?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    update?: EventDecorUpdateWithWhereUniqueWithoutDecorInput | EventDecorUpdateWithWhereUniqueWithoutDecorInput[]
+    updateMany?: EventDecorUpdateManyWithWhereWithoutDecorInput | EventDecorUpdateManyWithWhereWithoutDecorInput[]
+    deleteMany?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
+  }
+
+  export type EventDecorUncheckedUpdateManyWithoutDecorNestedInput = {
+    create?: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput> | EventDecorCreateWithoutDecorInput[] | EventDecorUncheckedCreateWithoutDecorInput[]
+    connectOrCreate?: EventDecorCreateOrConnectWithoutDecorInput | EventDecorCreateOrConnectWithoutDecorInput[]
+    upsert?: EventDecorUpsertWithWhereUniqueWithoutDecorInput | EventDecorUpsertWithWhereUniqueWithoutDecorInput[]
+    createMany?: EventDecorCreateManyDecorInputEnvelope
+    set?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    disconnect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    delete?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    connect?: EventDecorWhereUniqueInput | EventDecorWhereUniqueInput[]
+    update?: EventDecorUpdateWithWhereUniqueWithoutDecorInput | EventDecorUpdateWithWhereUniqueWithoutDecorInput[]
+    updateMany?: EventDecorUpdateManyWithWhereWithoutDecorInput | EventDecorUpdateManyWithWhereWithoutDecorInput[]
+    deleteMany?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
+  }
+
+  export type EventCreateNestedOneWithoutEventDecorInput = {
+    create?: XOR<EventCreateWithoutEventDecorInput, EventUncheckedCreateWithoutEventDecorInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEventDecorInput
     connect?: EventWhereUniqueInput
   }
 
-  export type EventCreateNestedManyWithoutReturningDecorInput = {
-    create?: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput> | EventCreateWithoutReturningDecorInput[] | EventUncheckedCreateWithoutReturningDecorInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutReturningDecorInput | EventCreateOrConnectWithoutReturningDecorInput[]
-    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  export type DecorCreateNestedOneWithoutEventDecorInput = {
+    create?: XOR<DecorCreateWithoutEventDecorInput, DecorUncheckedCreateWithoutEventDecorInput>
+    connectOrCreate?: DecorCreateOrConnectWithoutEventDecorInput
+    connect?: DecorWhereUniqueInput
   }
 
-  export type EventUncheckedCreateNestedManyWithoutReturningDecorInput = {
-    create?: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput> | EventCreateWithoutReturningDecorInput[] | EventUncheckedCreateWithoutReturningDecorInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutReturningDecorInput | EventCreateOrConnectWithoutReturningDecorInput[]
-    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-  }
-
-  export type EventUpdateOneWithoutNewDecorNestedInput = {
-    create?: XOR<EventCreateWithoutNewDecorInput, EventUncheckedCreateWithoutNewDecorInput>
-    connectOrCreate?: EventCreateOrConnectWithoutNewDecorInput
-    upsert?: EventUpsertWithoutNewDecorInput
-    disconnect?: EventWhereInput | boolean
-    delete?: EventWhereInput | boolean
+  export type EventUpdateOneRequiredWithoutEventDecorNestedInput = {
+    create?: XOR<EventCreateWithoutEventDecorInput, EventUncheckedCreateWithoutEventDecorInput>
+    connectOrCreate?: EventCreateOrConnectWithoutEventDecorInput
+    upsert?: EventUpsertWithoutEventDecorInput
     connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutNewDecorInput, EventUpdateWithoutNewDecorInput>, EventUncheckedUpdateWithoutNewDecorInput>
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEventDecorInput, EventUpdateWithoutEventDecorInput>, EventUncheckedUpdateWithoutEventDecorInput>
   }
 
-  export type EventUpdateManyWithoutReturningDecorNestedInput = {
-    create?: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput> | EventCreateWithoutReturningDecorInput[] | EventUncheckedCreateWithoutReturningDecorInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutReturningDecorInput | EventCreateOrConnectWithoutReturningDecorInput[]
-    upsert?: EventUpsertWithWhereUniqueWithoutReturningDecorInput | EventUpsertWithWhereUniqueWithoutReturningDecorInput[]
-    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    update?: EventUpdateWithWhereUniqueWithoutReturningDecorInput | EventUpdateWithWhereUniqueWithoutReturningDecorInput[]
-    updateMany?: EventUpdateManyWithWhereWithoutReturningDecorInput | EventUpdateManyWithWhereWithoutReturningDecorInput[]
-    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type EventUncheckedUpdateManyWithoutReturningDecorNestedInput = {
-    create?: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput> | EventCreateWithoutReturningDecorInput[] | EventUncheckedCreateWithoutReturningDecorInput[]
-    connectOrCreate?: EventCreateOrConnectWithoutReturningDecorInput | EventCreateOrConnectWithoutReturningDecorInput[]
-    upsert?: EventUpsertWithWhereUniqueWithoutReturningDecorInput | EventUpsertWithWhereUniqueWithoutReturningDecorInput[]
-    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-    update?: EventUpdateWithWhereUniqueWithoutReturningDecorInput | EventUpdateWithWhereUniqueWithoutReturningDecorInput[]
-    updateMany?: EventUpdateManyWithWhereWithoutReturningDecorInput | EventUpdateManyWithWhereWithoutReturningDecorInput[]
-    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  export type DecorUpdateOneRequiredWithoutEventDecorNestedInput = {
+    create?: XOR<DecorCreateWithoutEventDecorInput, DecorUncheckedCreateWithoutEventDecorInput>
+    connectOrCreate?: DecorCreateOrConnectWithoutEventDecorInput
+    upsert?: DecorUpsertWithoutEventDecorInput
+    connect?: DecorWhereUniqueInput
+    update?: XOR<XOR<DecorUpdateToOneWithWhereWithoutEventDecorInput, DecorUpdateWithoutEventDecorInput>, DecorUncheckedUpdateWithoutEventDecorInput>
   }
 
   export type FlowerCreateNestedManyWithoutBigFlowerForecastsInput = {
@@ -9682,44 +10839,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ImageCreateWithoutEventInput = {
     imageUrl: string
   }
@@ -9738,44 +10857,26 @@ export namespace Prisma {
     data: ImageCreateManyEventInput | ImageCreateManyEventInput[]
   }
 
-  export type DecorCreateWithoutNewDecorEventInput = {
-    name: string
-    type: string
-    returningDecorEvents?: EventCreateNestedManyWithoutReturningDecorInput
+  export type EventDecorCreateWithoutEventInput = {
+    overview: string
+    status: string
+    decor: DecorCreateNestedOneWithoutEventDecorInput
   }
 
-  export type DecorUncheckedCreateWithoutNewDecorEventInput = {
+  export type EventDecorUncheckedCreateWithoutEventInput = {
     id?: number
-    name: string
-    type: string
-    returningDecorEvents?: EventUncheckedCreateNestedManyWithoutReturningDecorInput
+    decorId: number
+    overview: string
+    status: string
   }
 
-  export type DecorCreateOrConnectWithoutNewDecorEventInput = {
-    where: DecorWhereUniqueInput
-    create: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput>
+  export type EventDecorCreateOrConnectWithoutEventInput = {
+    where: EventDecorWhereUniqueInput
+    create: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput>
   }
 
-  export type DecorCreateManyNewDecorEventInputEnvelope = {
-    data: DecorCreateManyNewDecorEventInput | DecorCreateManyNewDecorEventInput[]
-  }
-
-  export type DecorCreateWithoutReturningDecorEventsInput = {
-    name: string
-    type: string
-    newDecorEvent?: EventCreateNestedOneWithoutNewDecorInput
-  }
-
-  export type DecorUncheckedCreateWithoutReturningDecorEventsInput = {
-    id?: number
-    name: string
-    type: string
-    newDecorEventId?: number | null
-  }
-
-  export type DecorCreateOrConnectWithoutReturningDecorEventsInput = {
-    where: DecorWhereUniqueInput
-    create: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput>
+  export type EventDecorCreateManyEventInputEnvelope = {
+    data: EventDecorCreateManyEventInput | EventDecorCreateManyEventInput[]
   }
 
   export type ImageUpsertWithWhereUniqueWithoutEventInput = {
@@ -9803,46 +10904,31 @@ export namespace Prisma {
     eventId?: IntFilter<"Image"> | number
   }
 
-  export type DecorUpsertWithWhereUniqueWithoutNewDecorEventInput = {
-    where: DecorWhereUniqueInput
-    update: XOR<DecorUpdateWithoutNewDecorEventInput, DecorUncheckedUpdateWithoutNewDecorEventInput>
-    create: XOR<DecorCreateWithoutNewDecorEventInput, DecorUncheckedCreateWithoutNewDecorEventInput>
+  export type EventDecorUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventDecorWhereUniqueInput
+    update: XOR<EventDecorUpdateWithoutEventInput, EventDecorUncheckedUpdateWithoutEventInput>
+    create: XOR<EventDecorCreateWithoutEventInput, EventDecorUncheckedCreateWithoutEventInput>
   }
 
-  export type DecorUpdateWithWhereUniqueWithoutNewDecorEventInput = {
-    where: DecorWhereUniqueInput
-    data: XOR<DecorUpdateWithoutNewDecorEventInput, DecorUncheckedUpdateWithoutNewDecorEventInput>
+  export type EventDecorUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventDecorWhereUniqueInput
+    data: XOR<EventDecorUpdateWithoutEventInput, EventDecorUncheckedUpdateWithoutEventInput>
   }
 
-  export type DecorUpdateManyWithWhereWithoutNewDecorEventInput = {
-    where: DecorScalarWhereInput
-    data: XOR<DecorUpdateManyMutationInput, DecorUncheckedUpdateManyWithoutNewDecorEventInput>
+  export type EventDecorUpdateManyWithWhereWithoutEventInput = {
+    where: EventDecorScalarWhereInput
+    data: XOR<EventDecorUpdateManyMutationInput, EventDecorUncheckedUpdateManyWithoutEventInput>
   }
 
-  export type DecorScalarWhereInput = {
-    AND?: DecorScalarWhereInput | DecorScalarWhereInput[]
-    OR?: DecorScalarWhereInput[]
-    NOT?: DecorScalarWhereInput | DecorScalarWhereInput[]
-    id?: IntFilter<"Decor"> | number
-    name?: StringFilter<"Decor"> | string
-    type?: StringFilter<"Decor"> | string
-    newDecorEventId?: IntNullableFilter<"Decor"> | number | null
-  }
-
-  export type DecorUpsertWithWhereUniqueWithoutReturningDecorEventsInput = {
-    where: DecorWhereUniqueInput
-    update: XOR<DecorUpdateWithoutReturningDecorEventsInput, DecorUncheckedUpdateWithoutReturningDecorEventsInput>
-    create: XOR<DecorCreateWithoutReturningDecorEventsInput, DecorUncheckedCreateWithoutReturningDecorEventsInput>
-  }
-
-  export type DecorUpdateWithWhereUniqueWithoutReturningDecorEventsInput = {
-    where: DecorWhereUniqueInput
-    data: XOR<DecorUpdateWithoutReturningDecorEventsInput, DecorUncheckedUpdateWithoutReturningDecorEventsInput>
-  }
-
-  export type DecorUpdateManyWithWhereWithoutReturningDecorEventsInput = {
-    where: DecorScalarWhereInput
-    data: XOR<DecorUpdateManyMutationInput, DecorUncheckedUpdateManyWithoutReturningDecorEventsInput>
+  export type EventDecorScalarWhereInput = {
+    AND?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
+    OR?: EventDecorScalarWhereInput[]
+    NOT?: EventDecorScalarWhereInput | EventDecorScalarWhereInput[]
+    id?: IntFilter<"EventDecor"> | number
+    eventId?: IntFilter<"EventDecor"> | number
+    decorId?: IntFilter<"EventDecor"> | number
+    overview?: StringFilter<"EventDecor"> | string
+    status?: StringFilter<"EventDecor"> | string
   }
 
   export type EventCreateWithoutImagesInput = {
@@ -9851,8 +10937,7 @@ export namespace Prisma {
     endDate: string
     blogLink: string
     public?: boolean
-    newDecor?: DecorCreateNestedManyWithoutNewDecorEventInput
-    returningDecor?: DecorCreateNestedManyWithoutReturningDecorEventsInput
+    eventDecor?: EventDecorCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutImagesInput = {
@@ -9862,8 +10947,7 @@ export namespace Prisma {
     endDate: string
     blogLink: string
     public?: boolean
-    newDecor?: DecorUncheckedCreateNestedManyWithoutNewDecorEventInput
-    returningDecor?: DecorUncheckedCreateNestedManyWithoutReturningDecorEventsInput
+    eventDecor?: EventDecorUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutImagesInput = {
@@ -9888,8 +10972,7 @@ export namespace Prisma {
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
-    newDecor?: DecorUpdateManyWithoutNewDecorEventNestedInput
-    returningDecor?: DecorUpdateManyWithoutReturningDecorEventsNestedInput
+    eventDecor?: EventDecorUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutImagesInput = {
@@ -9899,21 +10982,57 @@ export namespace Prisma {
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
-    newDecor?: DecorUncheckedUpdateManyWithoutNewDecorEventNestedInput
-    returningDecor?: DecorUncheckedUpdateManyWithoutReturningDecorEventsNestedInput
+    eventDecor?: EventDecorUncheckedUpdateManyWithoutEventNestedInput
   }
 
-  export type EventCreateWithoutNewDecorInput = {
+  export type EventDecorCreateWithoutDecorInput = {
+    overview: string
+    status: string
+    event: EventCreateNestedOneWithoutEventDecorInput
+  }
+
+  export type EventDecorUncheckedCreateWithoutDecorInput = {
+    id?: number
+    eventId: number
+    overview: string
+    status: string
+  }
+
+  export type EventDecorCreateOrConnectWithoutDecorInput = {
+    where: EventDecorWhereUniqueInput
+    create: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput>
+  }
+
+  export type EventDecorCreateManyDecorInputEnvelope = {
+    data: EventDecorCreateManyDecorInput | EventDecorCreateManyDecorInput[]
+  }
+
+  export type EventDecorUpsertWithWhereUniqueWithoutDecorInput = {
+    where: EventDecorWhereUniqueInput
+    update: XOR<EventDecorUpdateWithoutDecorInput, EventDecorUncheckedUpdateWithoutDecorInput>
+    create: XOR<EventDecorCreateWithoutDecorInput, EventDecorUncheckedCreateWithoutDecorInput>
+  }
+
+  export type EventDecorUpdateWithWhereUniqueWithoutDecorInput = {
+    where: EventDecorWhereUniqueInput
+    data: XOR<EventDecorUpdateWithoutDecorInput, EventDecorUncheckedUpdateWithoutDecorInput>
+  }
+
+  export type EventDecorUpdateManyWithWhereWithoutDecorInput = {
+    where: EventDecorScalarWhereInput
+    data: XOR<EventDecorUpdateManyMutationInput, EventDecorUncheckedUpdateManyWithoutDecorInput>
+  }
+
+  export type EventCreateWithoutEventDecorInput = {
     name: string
     startDate: string
     endDate: string
     blogLink: string
     public?: boolean
     images?: ImageCreateNestedManyWithoutEventInput
-    returningDecor?: DecorCreateNestedManyWithoutReturningDecorEventsInput
   }
 
-  export type EventUncheckedCreateWithoutNewDecorInput = {
+  export type EventUncheckedCreateWithoutEventDecorInput = {
     id?: number
     name: string
     startDate: string
@@ -9921,62 +11040,50 @@ export namespace Prisma {
     blogLink: string
     public?: boolean
     images?: ImageUncheckedCreateNestedManyWithoutEventInput
-    returningDecor?: DecorUncheckedCreateNestedManyWithoutReturningDecorEventsInput
   }
 
-  export type EventCreateOrConnectWithoutNewDecorInput = {
+  export type EventCreateOrConnectWithoutEventDecorInput = {
     where: EventWhereUniqueInput
-    create: XOR<EventCreateWithoutNewDecorInput, EventUncheckedCreateWithoutNewDecorInput>
+    create: XOR<EventCreateWithoutEventDecorInput, EventUncheckedCreateWithoutEventDecorInput>
   }
 
-  export type EventCreateWithoutReturningDecorInput = {
+  export type DecorCreateWithoutEventDecorInput = {
     name: string
-    startDate: string
-    endDate: string
-    blogLink: string
-    public?: boolean
-    images?: ImageCreateNestedManyWithoutEventInput
-    newDecor?: DecorCreateNestedManyWithoutNewDecorEventInput
+    type: string
   }
 
-  export type EventUncheckedCreateWithoutReturningDecorInput = {
+  export type DecorUncheckedCreateWithoutEventDecorInput = {
     id?: number
     name: string
-    startDate: string
-    endDate: string
-    blogLink: string
-    public?: boolean
-    images?: ImageUncheckedCreateNestedManyWithoutEventInput
-    newDecor?: DecorUncheckedCreateNestedManyWithoutNewDecorEventInput
+    type: string
   }
 
-  export type EventCreateOrConnectWithoutReturningDecorInput = {
-    where: EventWhereUniqueInput
-    create: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput>
+  export type DecorCreateOrConnectWithoutEventDecorInput = {
+    where: DecorWhereUniqueInput
+    create: XOR<DecorCreateWithoutEventDecorInput, DecorUncheckedCreateWithoutEventDecorInput>
   }
 
-  export type EventUpsertWithoutNewDecorInput = {
-    update: XOR<EventUpdateWithoutNewDecorInput, EventUncheckedUpdateWithoutNewDecorInput>
-    create: XOR<EventCreateWithoutNewDecorInput, EventUncheckedCreateWithoutNewDecorInput>
+  export type EventUpsertWithoutEventDecorInput = {
+    update: XOR<EventUpdateWithoutEventDecorInput, EventUncheckedUpdateWithoutEventDecorInput>
+    create: XOR<EventCreateWithoutEventDecorInput, EventUncheckedCreateWithoutEventDecorInput>
     where?: EventWhereInput
   }
 
-  export type EventUpdateToOneWithWhereWithoutNewDecorInput = {
+  export type EventUpdateToOneWithWhereWithoutEventDecorInput = {
     where?: EventWhereInput
-    data: XOR<EventUpdateWithoutNewDecorInput, EventUncheckedUpdateWithoutNewDecorInput>
+    data: XOR<EventUpdateWithoutEventDecorInput, EventUncheckedUpdateWithoutEventDecorInput>
   }
 
-  export type EventUpdateWithoutNewDecorInput = {
+  export type EventUpdateWithoutEventDecorInput = {
     name?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
     endDate?: StringFieldUpdateOperationsInput | string
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUpdateManyWithoutEventNestedInput
-    returningDecor?: DecorUpdateManyWithoutReturningDecorEventsNestedInput
   }
 
-  export type EventUncheckedUpdateWithoutNewDecorInput = {
+  export type EventUncheckedUpdateWithoutEventDecorInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     startDate?: StringFieldUpdateOperationsInput | string
@@ -9984,35 +11091,28 @@ export namespace Prisma {
     blogLink?: StringFieldUpdateOperationsInput | string
     public?: BoolFieldUpdateOperationsInput | boolean
     images?: ImageUncheckedUpdateManyWithoutEventNestedInput
-    returningDecor?: DecorUncheckedUpdateManyWithoutReturningDecorEventsNestedInput
   }
 
-  export type EventUpsertWithWhereUniqueWithoutReturningDecorInput = {
-    where: EventWhereUniqueInput
-    update: XOR<EventUpdateWithoutReturningDecorInput, EventUncheckedUpdateWithoutReturningDecorInput>
-    create: XOR<EventCreateWithoutReturningDecorInput, EventUncheckedCreateWithoutReturningDecorInput>
+  export type DecorUpsertWithoutEventDecorInput = {
+    update: XOR<DecorUpdateWithoutEventDecorInput, DecorUncheckedUpdateWithoutEventDecorInput>
+    create: XOR<DecorCreateWithoutEventDecorInput, DecorUncheckedCreateWithoutEventDecorInput>
+    where?: DecorWhereInput
   }
 
-  export type EventUpdateWithWhereUniqueWithoutReturningDecorInput = {
-    where: EventWhereUniqueInput
-    data: XOR<EventUpdateWithoutReturningDecorInput, EventUncheckedUpdateWithoutReturningDecorInput>
+  export type DecorUpdateToOneWithWhereWithoutEventDecorInput = {
+    where?: DecorWhereInput
+    data: XOR<DecorUpdateWithoutEventDecorInput, DecorUncheckedUpdateWithoutEventDecorInput>
   }
 
-  export type EventUpdateManyWithWhereWithoutReturningDecorInput = {
-    where: EventScalarWhereInput
-    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutReturningDecorInput>
+  export type DecorUpdateWithoutEventDecorInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
-  export type EventScalarWhereInput = {
-    AND?: EventScalarWhereInput | EventScalarWhereInput[]
-    OR?: EventScalarWhereInput[]
-    NOT?: EventScalarWhereInput | EventScalarWhereInput[]
-    id?: IntFilter<"Event"> | number
-    name?: StringFilter<"Event"> | string
-    startDate?: StringFilter<"Event"> | string
-    endDate?: StringFilter<"Event"> | string
-    blogLink?: StringFilter<"Event"> | string
-    public?: BoolFilter<"Event"> | boolean
+  export type DecorUncheckedUpdateWithoutEventDecorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type FlowerCreateWithoutBigFlowerForecastsInput = {
@@ -10197,10 +11297,11 @@ export namespace Prisma {
     imageUrl: string
   }
 
-  export type DecorCreateManyNewDecorEventInput = {
+  export type EventDecorCreateManyEventInput = {
     id?: number
-    name: string
-    type: string
+    decorId: number
+    overview: string
+    status: string
   }
 
   export type ImageUpdateWithoutEventInput = {
@@ -10217,73 +11318,51 @@ export namespace Prisma {
     imageUrl?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DecorUpdateWithoutNewDecorEventInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    returningDecorEvents?: EventUpdateManyWithoutReturningDecorNestedInput
+  export type EventDecorUpdateWithoutEventInput = {
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    decor?: DecorUpdateOneRequiredWithoutEventDecorNestedInput
   }
 
-  export type DecorUncheckedUpdateWithoutNewDecorEventInput = {
+  export type EventDecorUncheckedUpdateWithoutEventInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    returningDecorEvents?: EventUncheckedUpdateManyWithoutReturningDecorNestedInput
+    decorId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DecorUncheckedUpdateManyWithoutNewDecorEventInput = {
+  export type EventDecorUncheckedUpdateManyWithoutEventInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
+    decorId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DecorUpdateWithoutReturningDecorEventsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    newDecorEvent?: EventUpdateOneWithoutNewDecorNestedInput
+  export type EventDecorCreateManyDecorInput = {
+    id?: number
+    eventId: number
+    overview: string
+    status: string
   }
 
-  export type DecorUncheckedUpdateWithoutReturningDecorEventsInput = {
+  export type EventDecorUpdateWithoutDecorInput = {
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    event?: EventUpdateOneRequiredWithoutEventDecorNestedInput
+  }
+
+  export type EventDecorUncheckedUpdateWithoutDecorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    newDecorEventId?: NullableIntFieldUpdateOperationsInput | number | null
+    eventId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DecorUncheckedUpdateManyWithoutReturningDecorEventsInput = {
+  export type EventDecorUncheckedUpdateManyWithoutDecorInput = {
     id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    newDecorEventId?: NullableIntFieldUpdateOperationsInput | number | null
-  }
-
-  export type EventUpdateWithoutReturningDecorInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    startDate?: StringFieldUpdateOperationsInput | string
-    endDate?: StringFieldUpdateOperationsInput | string
-    blogLink?: StringFieldUpdateOperationsInput | string
-    public?: BoolFieldUpdateOperationsInput | boolean
-    images?: ImageUpdateManyWithoutEventNestedInput
-    newDecor?: DecorUpdateManyWithoutNewDecorEventNestedInput
-  }
-
-  export type EventUncheckedUpdateWithoutReturningDecorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    startDate?: StringFieldUpdateOperationsInput | string
-    endDate?: StringFieldUpdateOperationsInput | string
-    blogLink?: StringFieldUpdateOperationsInput | string
-    public?: BoolFieldUpdateOperationsInput | boolean
-    images?: ImageUncheckedUpdateManyWithoutEventNestedInput
-    newDecor?: DecorUncheckedUpdateManyWithoutNewDecorEventNestedInput
-  }
-
-  export type EventUncheckedUpdateManyWithoutReturningDecorInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    startDate?: StringFieldUpdateOperationsInput | string
-    endDate?: StringFieldUpdateOperationsInput | string
-    blogLink?: StringFieldUpdateOperationsInput | string
-    public?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: IntFieldUpdateOperationsInput | number
+    overview?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type FlowerUpdateWithoutBigFlowerForecastsInput = {

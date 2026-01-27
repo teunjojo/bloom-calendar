@@ -11,15 +11,14 @@ datasource db {
 }
 
 model Event {
-  id             Int     @id @default(autoincrement())
-  name           String
-  startDate      String
-  endDate        String
-  blogLink       String
-  images         Image[]
-  public         Boolean @default(false)
-  newDecor       Decor[] @relation(name: "newDecor")
-  returningDecor Decor[] @relation(name: "returningDecor")
+  id         Int          @id @default(autoincrement())
+  name       String
+  startDate  String
+  endDate    String
+  blogLink   String
+  images     Image[]
+  public     Boolean      @default(false)
+  eventDecor EventDecor[] @relation("Event")
 }
 
 model Image {
@@ -30,12 +29,20 @@ model Image {
 }
 
 model Decor {
-  id                    Int      @id @default(autoincrement())
-  name                  String
-  type                  String
-  newDecorEvent         Event?   @relation(name: "newDecor", fields: [newDecorEventId], references: [id])
-  newDecorEventId       Int?
-  returningDecorEvents  Event[] @relation(name: "returningDecor")
+  id         Int          @id @default(autoincrement())
+  name       String
+  type       String
+  eventDecor EventDecor[] @relation("Decor")
+}
+
+model EventDecor {
+  id       Int    @id @default(autoincrement())
+  event    Event  @relation(name: "Event", fields: [eventId], references: [id])
+  eventId  Int
+  decor    Decor  @relation(name: "Decor", fields: [decorId], references: [id])
+  decorId  Int
+  overview String
+  status   String
 }
 
 model Forecast {
@@ -46,7 +53,7 @@ model Forecast {
   flowerOfTheMonthId Int
   blogLink           String
   name               String
-  public         Boolean @default(false)
+  public             Boolean  @default(false)
 }
 
 model Flower {
