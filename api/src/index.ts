@@ -10,22 +10,22 @@ import flowerRouter from './routes/flower';
 
 type Bindings = {
 	bloom_calendar_database: D1Database;
+	CORS_ORIGINS: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.use(
-	cors({
+app.use('*', async (c, next) => {
+	const origins = c.env.CORS_ORIGINS
+		.split(',')
+		.map(o => o.trim())
+		.filter(Boolean);
+
+	return cors({
 		credentials: true,
-		origin: [
-			'https://bloom-calendar.teunjojo.com',
-			'https://dev-bloom-calendar-frontend.teunjojo.workers.dev',
-			'https://api.bloom-calendar.teunjojo.com/',
-			'http://localhost:8787',
-			'http://localhost:5173',
-		],
-	}),
-);
+		origin: origins,
+	})(c, next);
+});
 
 app.route('/', indexRouter);
 app.route('/events', eventRouter);
