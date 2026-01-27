@@ -13,18 +13,16 @@ export const EventInputSchema = z.object({
 			imageUrl: z.url(),
 		}),
 	),
-	newDecor: z.array(
+	eventDecor: z.array(
 		z.object({
 			id: z.number().optional(),
-			name: z.string(),
-			type: z.string(),
-		}),
-	),
-	returningDecor: z.array(
-		z.object({
-			id: z.number().optional(),
-			name: z.string(),
-			type: z.string(),
+			decor: z.object({
+				id: z.number().optional(),
+				name: z.string(),
+				type: z.string(),
+			}),
+			overview: z.string(),
+			status: z.union([z.literal('NEW'), z.literal('RETURNING')]),
 		}),
 	),
 });

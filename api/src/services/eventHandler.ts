@@ -22,8 +22,11 @@ export function applyEventFilter(filter: EventFilter) {
 
 	options.include = {
 		images: true,
-		newDecor: true,
-		returningDecor: true,
+		eventDecor: {
+			include: {
+				decor: true,
+			},
+		},
 	};
 
 	if (filter.currentDate) {
@@ -54,8 +57,9 @@ export async function updateEventPublicState(prisma: PrismaClient, _id: number, 
 	const updatedEvent = await prisma.event.update({
 		include: {
 			images: true,
-			newDecor: true,
-			returningDecor: true,
+			eventDecor: {
+				include: { decor: true },
+			},
 		},
 		where: {
 			id: _id,
@@ -72,8 +76,9 @@ export async function createEvent(prisma: PrismaClient, event: EventInput) {
 	const createdEvent = prisma.event.create({
 		include: {
 			images: true,
-			newDecor: true,
-			returningDecor: true,
+			eventDecor: {
+				include: { decor: true },
+			},
 		},
 		data: {
 			name: event.name,
@@ -86,16 +91,21 @@ export async function createEvent(prisma: PrismaClient, event: EventInput) {
 					imageUrl: i.imageUrl,
 				})),
 			},
-			newDecor: {
-				create: event.newDecor.map((i) => ({
-					name: i.name,
-					type: i.type,
-					newDecorEventId: event.id,
-				})),
-			},
-			returningDecor: {
-				connect: event.returningDecor.map((i) => ({
-					id: i.id,
+			eventDecor: {
+				create: event.eventDecor.map((i) => ({
+					decor: {
+						connectOrCreate: {
+							where: {
+								id: i.id,
+							},
+							create: {
+								name: i.decor.name,
+								type: i.decor.type,
+							},
+						},
+					},
+					overview: i.overview,
+					status: i.status,
 				})),
 			},
 		},
@@ -108,8 +118,9 @@ export async function deleteEvent(prisma: PrismaClient, id: number) {
 	const deletedEvent = prisma.event.delete({
 		include: {
 			images: true,
-			newDecor: true,
-			returningDecor: true,
+			eventDecor: {
+				include: { decor: true },
+			},
 		},
 		where: { id },
 	});
@@ -121,8 +132,9 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 		where: { id },
 		include: {
 			images: true,
-			newDecor: true,
-			returningDecor: true,
+			eventDecor: {
+				include: { decor: true },
+			},
 		},
 	});
 
@@ -134,19 +146,20 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 		where: { id: { in: imagesToDelete } },
 	});
 
-	// Remove newDecor not in the provided event
-	const existingNewDecorIds = existingEvent?.newDecor.map((decor) => decor.id) || [];
-	const newNewDecorIds = event.newDecor.map((decor) => decor.id).filter(Boolean);
-	const newDecorToDelete = existingNewDecorIds.filter((id) => !newNewDecorIds.includes(id));
-	await prisma.decor.deleteMany({
-		where: { id: { in: newDecorToDelete } },
+	// Remove eventDecor not in the provided event
+	const existingEventDecorIds = existingEvent?.eventDecor.map((decor) => decor.id) || [];
+	const newEventDecorIds = event.eventDecor.map((decor) => decor.id).filter(Boolean);
+	const eventDecorToDelete = existingEventDecorIds.filter((id) => !newEventDecorIds.includes(id));
+	await prisma.eventDecor.deleteMany({
+		where: { id: { in: eventDecorToDelete } },
 	});
 
 	const updatedEvent = prisma.event.update({
 		include: {
 			images: true,
-			newDecor: true,
-			returningDecor: true,
+			eventDecor: {
+				include: { decor: true },
+			},
 		},
 		where: { id: id },
 		data: {
@@ -168,24 +181,41 @@ export async function updateEvent(prisma: PrismaClient, id: number, event: Event
 					},
 				})),
 			},
-			newDecor: {
-				upsert: event.newDecor.map((i) => ({
+			eventDecor: {
+				upsert: event.eventDecor.map((i) => ({
 					where: {
 						id: i.id,
 					},
 					update: {
-						name: i.name,
-						type: i.type,
+						decor: {
+							connectOrCreate: {
+								where: {
+									id: i.decor.id,
+								},
+								create: {
+									name: i.decor.name,
+									type: i.decor.type,
+								},
+							},
+						},
+						overview: i.overview,
+						status: i.status,
 					},
 					create: {
-						name: i.name,
-						type: i.type,
+						decor: {
+							connectOrCreate: {
+								where: {
+									id: i.decor.id,
+								},
+								create: {
+									name: i.decor.name,
+									type: i.decor.type,
+								},
+							},
+						},
+						overview: i.overview,
+						status: i.status,
 					},
-				})),
-			},
-			returningDecor: {
-				set: event.returningDecor.map((i) => ({
-					id: i.id,
 				})),
 			},
 		},

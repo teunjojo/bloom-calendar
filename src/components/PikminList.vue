@@ -4,7 +4,10 @@ import { onMounted, ref } from 'vue'
 const props = defineProps({
   name: { type: String, required: true },
   type: { type: String, required: true },
+  overview: { type: String, required: false },
 })
+
+const pikminOverviewShow = ref(false)
 
 const baseHeight = ref(32)
 const canvasWidth = ref(32)
@@ -70,15 +73,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white rounded-full p-2">
+  <div class="bg-white rounded-lg p-2">
     <div class="flex items-center gap-2">
       <canvas
         ref="coinCanvas"
         :style="{ height: baseHeight + 'px', width: canvasWidth + 'px' }"
       ></canvas>
       <span class="font-bold text-amber-900">{{ props.name }}</span>
+      <button
+        v-if="overview && overview.length > 0"
+        class="button button-pikmin-list"
+        style="height: 1rem; width: 1rem"
+        :class="pikminOverviewShow ? 'rotate-90' : 'rotate-0'"
+        @click="pikminOverviewShow = !pikminOverviewShow"
+      >
+        <span class="icon forward-icon" style="height: 0.75rem; width: 0.75rem"></span>
+      </button>
     </div>
+    <span v-if="pikminOverviewShow" class="text-amber-950">{{ overview }}</span>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button-pikmin-list {
+  --bg: transparent;
+  --color: theme(colors.amber.950);
+  transition: 0.25s ease-out;
+}
+</style>

@@ -1,4 +1,4 @@
-import type { Decor } from './Decor'
+import type { EventDecor } from './EventDecor'
 import type { Image } from './Image'
 
 export interface PikminEvent {
@@ -9,6 +9,5 @@ export interface PikminEvent {
   blogLink?: string
   images: Image[]
   public: boolean
-  newDecor: Decor[]
-  returningDecor: Decor[]
+  eventDecor: EventDecor[]
 }

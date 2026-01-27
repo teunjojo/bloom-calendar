@@ -7,6 +7,7 @@ import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/even
 import PikminList from './PikminList.vue'
 import type { Decor } from '@/types/Decor'
 import { getDecors } from '@/service/decorService'
+import type { EventDecor } from '@/types/EventDecor'
 
 const authStore = useAuthStore()
 
@@ -417,7 +418,7 @@ onMounted(() => {
     <div v-if="!eventEditMode">
       <div
         class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-        v-if="event.newDecor.length > 0"
+        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'NEW').length > 0"
       >
         <span
           class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
@@ -425,10 +426,13 @@ onMounted(() => {
         >
         <div class="flex flex-wrap gap-2 justify-around">
           <PikminList
-            v-for="decor in event.newDecor"
-            :key="decor.id"
-            :name="decor.name"
-            :type="decor.type"
+            v-for="eventDecor in event.eventDecor.filter(
+              (eventDecor) => eventDecor.status === 'NEW',
+            )"
+            :key="eventDecor.id"
+            :name="eventDecor.decor.name"
+            :type="eventDecor.decor.type"
+            :overview="eventDecor.overview"
             class="shadow-xl"
           ></PikminList>
         </div>
@@ -438,23 +442,36 @@ onMounted(() => {
       <span class="text-lg align-center">New Decor</span>
       <div
         class="flex gap-2 items-center justify-start w-full"
-        v-for="decor in eventEdit.newDecor"
-        :key="decor.id"
+        v-for="eventDecor in eventEdit.eventDecor.filter(
+          (eventDecor) => eventDecor.status === 'NEW',
+        )"
+        :key="eventDecor.id"
       >
         <button
           class="button button-red"
-          @click="eventEdit.newDecor.splice(eventEdit.newDecor.indexOf(decor), 1)"
+          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)"
         >
           <span class="icon delete-icon"></span>
         </button>
-        <input class="w-full" type="text" v-model="decor.name" />
-        <input class="w-full" type="text" v-model="decor.type" />
+        <input class="w-full" type="text" v-model="eventDecor.decor.name" />
+        <input class="w-full" type="text" v-model="eventDecor.decor.type" />
       </div>
       <button
         class="button"
         @click="
           () => {
-            eventEdit.newDecor.push({ id: -1, name: '', type: '', newDecorEventId: event.id })
+            eventEdit.eventDecor.push({
+              id: -1,
+              eventId: -1,
+              decorId: -1,
+              decor: {
+                id: -1,
+                name: '',
+                type: '',
+              },
+              overview: 'test',
+              status: 'NEW',
+            })
           }
         "
       >
@@ -464,7 +481,7 @@ onMounted(() => {
     <div v-if="!eventEditMode">
       <div
         class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-        v-if="event.returningDecor.length > 0"
+        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'RETURNING').length > 0"
       >
         <span
           class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
@@ -472,10 +489,13 @@ onMounted(() => {
         >
         <div class="flex flex-wrap gap-2 justify-around">
           <PikminList
-            v-for="decor in event.returningDecor"
-            :key="decor.id"
-            :name="decor.name"
-            :type="decor.type"
+            v-for="eventDecor in event.eventDecor.filter(
+              (eventDecor) => eventDecor.status === 'RETURNING',
+            )"
+            :key="eventDecor.id"
+            :name="eventDecor.decor.name"
+            :type="eventDecor.decor.type"
+            :overview="eventDecor.overview"
             class="shadow-xl"
           ></PikminList>
         </div>
@@ -485,16 +505,18 @@ onMounted(() => {
       <span class="text-lg align-center">Returning Decor</span>
       <div
         class="flex gap-2 items-center justify-start w-full"
-        v-for="decor in eventEdit.returningDecor"
-        :key="decor.id"
+        v-for="eventDecor in eventEdit.eventDecor.filter(
+          (eventDecor) => eventDecor.status === 'RETURNING',
+        )"
+        :key="eventDecor.id"
       >
         <button
           class="button button-red"
-          @click="eventEdit.returningDecor.splice(eventEdit.returningDecor.indexOf(decor), 1)"
+          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)"
         >
           <span class="icon delete-icon"></span>
         </button>
-        <span>{{ decor.name }}</span>
+        <span>{{ eventDecor.decor.name }}</span>
       </div>
       <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
         <option :value="undefined" disabled></option>
@@ -502,7 +524,7 @@ onMounted(() => {
           v-for="selectDecor in allDecor"
           :key="selectDecor.id"
           :value="selectDecor"
-          :disabled="eventEdit.returningDecor.some((decor) => decor.id === selectDecor.id)"
+          :disabled="eventEdit.eventDecor.some((decor) => decor.id === selectDecor.id)"
         >
           {{ selectDecor.name }}
         </option>
@@ -516,13 +538,24 @@ onMounted(() => {
               eventErrorMessage = 'No returning decor selected'
               return
             }
-            if (eventEdit.returningDecor.some((decor) => decor.id === selectedReturningDecor!.id)) {
+            if (
+              eventEdit.eventDecor
+                .filter((eventDecor) => eventDecor.status === 'RETURNING')
+                .some((decor) => decor.id === selectedReturningDecor!.id)
+            ) {
               eventError = true
               eventErrorMessage = 'Returning decor already added'
               return
             }
 
-            eventEdit.returningDecor.push(selectedReturningDecor)
+            eventEdit.eventDecor.push({
+              id: -1,
+              eventId: -1,
+              decorId: -1,
+              decor: selectedReturningDecor,
+              status: 'RETURNING',
+              overview: '',
+            })
             eventError = false
             selectedReturningDecor = undefined
           }

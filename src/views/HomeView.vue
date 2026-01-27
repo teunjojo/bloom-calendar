@@ -169,8 +169,7 @@ async function handleAddUpcomingEvent() {
     images: [],
     public: false,
     blogLink: '',
-    newDecor: [],
-    returningDecor: [],
+    eventDecor: [],
   }
   const createdEvent = await createEvent(newEvent)
   upcomingEvents.value.push(createdEvent)
