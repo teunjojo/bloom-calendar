@@ -7,7 +7,6 @@ import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/even
 import PikminList from './PikminList.vue'
 import type { Decor } from '@/types/Decor'
 import { getDecors } from '@/service/decorService'
-import type { EventDecor } from '@/types/EventDecor'
 
 const authStore = useAuthStore()
 
@@ -271,7 +270,7 @@ onMounted(() => {
         {{ event.name }}
       </h2>
       <h2 v-else class="text-xl font-bold flex-grow">
-        <input type="text" class="w-full" v-model="eventEdit.name" />
+        <input type="text" class="w-full" v-model="eventEdit.name" placeholder="event name" />
       </h2>
       <div
         class="flex gap-2 flex-col"
@@ -350,7 +349,13 @@ onMounted(() => {
     </div>
     <div v-if="eventEditMode">
       <label for="blog-link" class="whitespace-nowrap">Link:</label>
-      <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" />
+      <input
+        type="text"
+        name="blog-link"
+        class="w-full"
+        v-model="eventEdit.blogLink"
+        placeholder="blog link"
+      />
     </div>
     <div v-if="!eventEditMode">
       <div
@@ -391,7 +396,7 @@ onMounted(() => {
         >
           <span class="icon delete-icon"></span>
         </button>
-        <input class="w-full" type="text" v-model="image.imageUrl" />
+        <input class="w-full" type="text" v-model="image.imageUrl" placeholder="image link" />
         <img
           class="event-image cursor-zoom-in"
           style="height: 2rem"
@@ -453,8 +458,9 @@ onMounted(() => {
         >
           <span class="icon delete-icon"></span>
         </button>
-        <input class="w-full" type="text" v-model="eventDecor.decor.name" />
-        <input class="w-full" type="text" v-model="eventDecor.decor.type" />
+        <input class="w-full" type="text" v-model="eventDecor.decor.name" placeholder="name" />
+        <input class="w-full" type="text" v-model="eventDecor.decor.type" placeholder="type" />
+        <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
       </div>
       <button
         class="button"
@@ -469,7 +475,7 @@ onMounted(() => {
                 name: '',
                 type: '',
               },
-              overview: 'test',
+              overview: '',
               status: 'NEW',
             })
           }
@@ -519,7 +525,7 @@ onMounted(() => {
         <span>{{ eventDecor.decor.name }}</span>
       </div>
       <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
-        <option :value="undefined" disabled></option>
+        <option :value="undefined" disabled placeholder="name"></option>
         <option
           v-for="selectDecor in allDecor"
           :key="selectDecor.id"
@@ -621,6 +627,11 @@ select {
   border: solid 2px white;
   border-radius: 12px;
   padding: 0;
+}
+
+input::placeholder {
+  color: #00000060;
+  text-align: center;
 }
 
 .grayed-out {
