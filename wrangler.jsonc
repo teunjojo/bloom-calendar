@@ -1,6 +1,6 @@
 {
   "$schema": "api/node_modules/wrangler/config-schema.json",
-  "name": "bloom-calendar",
+  "name": "bloom-calendar-preview",
   "compatibility_date": "2025-12-08",
   "main": "api/src/worker.ts",
   "assets": {
