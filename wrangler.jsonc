@@ -10,7 +10,7 @@
     "run_worker_first": ["/api/*"],
   },
   "vars": {
-    "CORS_ORIGINS": "https://bloom-calendar.teunjojo.com,https://bloom-calendar.teunjojo.workers.dev,,https://dev-bloom-calendar.teunjojo.workers.dev",
+    "CORS_ORIGINS": "https://bloom-calendar.teunjojo.com,https://bloom-calendar.teunjojo.workers.dev,https://dev-bloom-calendar.teunjojo.workers.dev",
   },
   "observability": {
     "enabled": true,
