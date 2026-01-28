@@ -21,18 +21,5 @@
       "migrations_dir": "api/migrations/",
     },
   ],
-  "env": {
-    "preview": {
-      "name": "bloom-calendar-preview",
-      "d1_databases": [
-        {
-          "binding": "bloom_calendar_database",
-          "database_name": "bloom-calendar",
-          "database_id": "d91375e8-f4ab-4709-9d94-19f0c6c6fe1f",
-          "migrations_dir": "api/migrations/",
-        },
-      ],
-    },
-  },
   "placement": { "mode": "smart" },
 }
