@@ -523,6 +523,7 @@ onMounted(() => {
           <span class="icon delete-icon"></span>
         </button>
         <span>{{ eventDecor.decor.name }}</span>
+        <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
       </div>
       <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
         <option :value="undefined" disabled placeholder="name"></option>
