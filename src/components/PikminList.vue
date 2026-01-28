@@ -90,7 +90,9 @@ onMounted(() => {
         <span class="icon forward-icon" style="height: 0.75rem; width: 0.75rem"></span>
       </button>
     </div>
-    <span v-if="pikminOverviewShow" class="text-amber-950">{{ overview }}</span>
+    <span v-if="pikminOverviewShow" class="text-amber-950 flex flex-col">
+      <span v-for="item in overview?.split(',')" v-bind:key="item">- {{ item }}</span>
+    </span>
   </div>
 </template>
 
