@@ -23,6 +23,7 @@
   ],
   "env": {
     "preview": {
+      "name": "bloom-calendar-preview",
       "d1_databases": [
         {
           "binding": "bloom_calendar_database",
