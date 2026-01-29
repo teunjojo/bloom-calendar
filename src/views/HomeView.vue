@@ -243,7 +243,7 @@ onMounted(async () => {
 
 <template>
   <div class="dashboard flex flex-wrap justify-center items-start gap-4 p-4">
-    <div class="event-list flex flex-col gap-2 p-4 w-96">
+    <div class="event-list flex flex-col gap-2 p-4 w-[25rem] max-w-full min-w-[15rem]">
       <img
         src="/images/icons/gift.png"
         alt="Flower Icon"
