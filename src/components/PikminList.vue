@@ -73,13 +73,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg p-2">
+  <div class="bg-white rounded-lg p-2 w-full">
     <div class="flex items-center gap-2">
       <canvas
         ref="coinCanvas"
         :style="{ height: baseHeight + 'px', width: canvasWidth + 'px' }"
       ></canvas>
-      <span class="font-bold text-amber-900">{{ props.name }}</span>
+      <span class="font-bold text-amber-900 truncate">{{ props.name }}</span>
       <button
         v-if="overview && overview.length > 0"
         class="button button-pikmin-list"
