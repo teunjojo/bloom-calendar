@@ -655,6 +655,7 @@ input::placeholder {
   color: var(--primary-color);
   padding: 0 0.4rem;
   height: 1.4em;
+  text-wrap: nowrap;
 }
 
 .fullscreen-popup {
