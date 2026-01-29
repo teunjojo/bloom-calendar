@@ -429,7 +429,7 @@ onMounted(() => {
           class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
           >New Decor Pikmin</span
         >
-        <div class="flex flex-wrap gap-2 justify-around">
+        <div class="flex flex-wrap gap-2 justify-around w-full">
           <PikminList
             v-for="eventDecor in event.eventDecor.filter(
               (eventDecor) => eventDecor.status === 'NEW',
@@ -458,9 +458,13 @@ onMounted(() => {
         >
           <span class="icon delete-icon"></span>
         </button>
-        <input class="w-full" type="text" v-model="eventDecor.decor.name" placeholder="name" />
-        <input class="w-full" type="text" v-model="eventDecor.decor.type" placeholder="type" />
-        <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
+        <div class="flex flex-col gap-1">
+          <div class="flex gap-2">
+            <input class="w-full" type="text" v-model="eventDecor.decor.name" placeholder="name" />
+            <input class="w-full" type="text" v-model="eventDecor.decor.type" placeholder="type" />
+          </div>
+          <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
+        </div>
       </div>
       <button
         class="button"
@@ -493,7 +497,7 @@ onMounted(() => {
           class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
           >Returning Decor Pikmin</span
         >
-        <div class="flex flex-wrap gap-2 justify-around">
+        <div class="flex flex-wrap gap-2 justify-around w-full">
           <PikminList
             v-for="eventDecor in event.eventDecor.filter(
               (eventDecor) => eventDecor.status === 'RETURNING',
@@ -507,7 +511,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-else class="flex flex-col gap-1 items-center">
+    <div v-else class="flex flex-col gap-3 items-center">
       <span class="text-lg align-center">Returning Decor</span>
       <div
         class="flex gap-2 items-center justify-start w-full"
@@ -522,8 +526,10 @@ onMounted(() => {
         >
           <span class="icon delete-icon"></span>
         </button>
-        <span>{{ eventDecor.decor.name }}</span>
-        <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
+        <div class="flex flex-col gap-1 overflow-hidden w-full">
+          <span class="truncate">{{ eventDecor.decor.name }}</span>
+          <input type="text" v-model="eventDecor.overview" placeholder="overview" />
+        </div>
       </div>
       <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
         <option :value="undefined" disabled placeholder="name"></option>
