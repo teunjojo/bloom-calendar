@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg p-2 w-full">
+  <div class="bg-white rounded-lg p-2 w-full cursor-pointer" @click="pikminOverviewShow = !pikminOverviewShow">
     <div class="flex items-center gap-2">
       <canvas
         ref="coinCanvas"
@@ -85,7 +85,6 @@ onMounted(() => {
         class="button button-pikmin-list"
         style="height: 1rem; width: 1rem"
         :class="pikminOverviewShow ? 'rotate-90' : 'rotate-0'"
-        @click="pikminOverviewShow = !pikminOverviewShow"
       >
         <span class="icon forward-icon" style="height: 0.75rem; width: 0.75rem"></span>
       </button>
