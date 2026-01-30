@@ -79,7 +79,7 @@ onMounted(() => {
         ref="coinCanvas"
         :style="{ height: baseHeight + 'px', width: canvasWidth + 'px' }"
       ></canvas>
-      <span class="font-bold text-amber-900 truncate">{{ props.name }}</span>
+      <span class="font-bold text-amber-900 overflow-hidden break-words">{{ props.name }}</span>
       <button
         v-if="overview && overview.length > 0"
         class="button button-pikmin-list"
