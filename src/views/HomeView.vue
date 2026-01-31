@@ -91,7 +91,7 @@ async function fetchUpcomingForecast() {
   loadingUpcomingForecast.value = true
 
   const now = new Date()
-  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
   const filters: ForecastFilter = {
     currentDate: getLocalTimeString(nextMonth),
   }
