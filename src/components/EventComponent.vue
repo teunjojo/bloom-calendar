@@ -7,6 +7,7 @@ import { deleteEvent, updateEvent, updateEventPublicState } from '@/service/even
 import PikminList from './PikminList.vue'
 import type { Decor } from '@/types/Decor'
 import { getDecors } from '@/service/decorService'
+import { getLocalTimeString } from '@/utils'
 
 const authStore = useAuthStore()
 
@@ -149,6 +150,9 @@ function handleEditEventCancelButton() {
 
 async function handleSaveEventButton() {
   savingEvent.value = true
+    eventEdit.value.startDate = getLocalTimeString(new Date(eventEdit.value.startDate));
+    eventEdit.value.endDate = getLocalTimeString(new Date(eventEdit.value.endDate));
+
   try {
     event.value = await updateEvent(eventEdit.value)
   } catch {

@@ -13,6 +13,7 @@ import type { Forecast } from '@/types/Forecast'
 import { createForecast, getForecasts } from '@/service/forecastService'
 import { useAuthStore } from '@/stores/authStore'
 import ForecastComponent from '@/components/ForecastComponent.vue'
+import { getLocalTimeString } from '@/utils'
 
 const authStore = useAuthStore()
 
@@ -113,17 +114,6 @@ async function fetchUpcomingForecast() {
   }
 
   loadingUpcomingForecast.value = false
-}
-
-function getLocalTimeString(date?: Date) {
-  if (!date) {
-    date = new Date()
-  }
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return (
-    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
-    ` ${pad(date.getHours())}:${pad(date.getMinutes())}`
-  )
 }
 
 function startPreciseInterval() {
