@@ -122,7 +122,7 @@ function getLocalTimeString(date?: Date) {
   const pad = (n: number) => String(n).padStart(2, '0')
   return (
     `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
-    ` ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+    ` ${pad(date.getHours())}:${pad(date.getMinutes())}`
   )
 }
 
@@ -158,9 +158,10 @@ async function handleAddUpcomingEvent() {
   startDate.setFullYear(now.getFullYear())
   startDate.setMonth(now.getMonth() + 1)
   startDate.setDate(1)
+  startDate.setHours(0)
+  startDate.setMinutes(0)
   const endDate = new Date(startDate)
   endDate.setMonth(now.getMonth() + 2)
-  endDate.setMinutes(-1)
   const newEvent: PikminEvent = {
     id: 0,
     name: 'New Event',
