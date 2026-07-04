@@ -7,7 +7,7 @@ import { ref } from 'vue'
 
 const authStore = useAuthStore()
 
-const showFeedbackAlert = ref<boolean>(true)
+const showFeedbackAlert = ref<boolean>(false)
 
 async function openPikminBloomApp() {
   const deepLink =
