@@ -64,17 +64,15 @@ function getOS() {
 
 <template>
   <div>
-    <nav class="flex p-2 justify-center items-center bg-white px-4">
-      <ul
-        class="flex justify-center items-center gap-4 flex-wrap"
-        style="width: 100%; max-width: 720px"
-      >
-        <li>
+    <nav class="flex p-2 flex-col gap-3 justify-center items-center bg-white px-4">
           <RouterLink to="/" class="flex items-center gap-2">
             <img src="/images/icons/logo.png" style="height: 3rem" />
             <h1 class="text-2xl font-bold">BloomCalendar</h1>
           </RouterLink>
-        </li>
+      <ul
+        class="flex justify-center items-center gap-4 flex-wrap"
+        style="width: 100%; max-width: 720px"
+      >
         <li v-if="/^Android|^iOS/.test(getOS())">
           <button class="big-button button-primary button-outline" @click="openPikminBloomApp()">
             <img src="https://pikminbloom.com/images/favicon.png" style="height: 2rem" alt="" />
@@ -85,6 +83,12 @@ function getOS() {
           <a class="big-button button-primary button-outline" href="https://www.pikminwiki.com/">
             <img src="https://pikmin.wiki.gallery/images/c/c1/Wiki-icon.svg" style="height: 2rem" />
             <span>Pikipedia</span>
+          </a>
+        </li>
+        <li>
+          <a class="big-button button-primary button-outline" href="https://pikgarden.vercel.app/">
+            <img src="https://pikgarden.vercel.app/images/ui/App%20Icon.png" style="height: 2rem" />
+            <span>PikGarden</span>
           </a>
         </li>
         <li>
