@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --primary-color-rgb: 0, 168, 130;
+  --primary-color-rgb: 76, 234, 200;
   --primary-color: rgb(var(--primary-color-rgb));
-  --primary-color-dark-rgb: 0, 130, 100;
+  --primary-color-dark-rgb: 0, 200, 150;
   --primary-color-dark: rgb(var(--primary-color-dark-rgb));
 
   --secondary-color-rgb: 255, 166, 51;
@@ -37,71 +37,77 @@ body {
 
 .button {
   --hover: white;
-  --bg: var(--gray-200);
-  --color: black;
+  --primary-button-color: var(--gray-200);
+  --secondary-button-color: black;
+  --tertiary-button-color: var(--gray-400);
   border-radius: 100vw;
   height: 2.5rem;
   font-size: 1rem;
-  background: var(--bg);
-  color: var(--color);
-  transition: all 0.25s ease-in-out;
+  /* background: var(--primary-button-color); */
+  background: linear-gradient(var(--primary-button-color), var(--tertiary-button-color));
+  color: var(--secondary-button-color);
   @apply aspect-square flex items-center justify-center;
 }
 
 .big-button {
   @apply button;
-  --bg: var(--primary-color);
-  --color: #fff;
+  --primary-button-color: var(--primary-color);
+  --secondary-button-color: #fff;
+  --tertiary-button-color: var(--primary-color-dark);
   padding: 0.5rem 1rem;
   aspect-ratio: unset;
   font-weight: bold;
 }
 
 .button:hover {
-  background: color-mix(in hsl, var(--bg) 80%, var(--hover));
+  background: color-mix(in hsl, var(--primary-button-color) 90%, var(--hover));
 }
 
 .button-outline:hover {
-  background: color-mix(in hsl, var(--bg) 50%, var(--hover));
+  background: color-mix(in hsl, var(--primary-button-color) 50%, var(--hover));
 }
 
 .button .icon {
-  background-color: var(--color);
+  background-color: var(--secondary-button-color);
 }
 
 .button-outline {
   --hover: transparent;
-  --color: var(--bg);
-  --bg: transparent;
+  --primary-button-color: transparent;
+  --secondary-button-color: var(--tertiary-button-color);
   background: transparent;
-  border: 2px solid var(--color);
+  border: 2px solid var(--secondary-button-color);
   @apply flex items-center justify-center;
 }
 
 .button-primary {
-  --bg: var(--primary-color);
+  --primary-button-color: var(--primary-color);
+  --tertiary-button-color: var(--primary-color-dark);
 }
 
 .button-primary .icon {
-  --color: #fff;
+  --secondary-button-color: #fff;
 }
 
 .button-white {
-  --bg: #fff;
+  --primary-button-color: #fff;
+  --tertiary-button-color: #fff;
 }
 
 .button-red {
-  --bg: #de4230;
+  --primary-button-color: #de4230;
+  --tertiary-button-color: #b83829;
 }
 
 .button-green {
-  --bg: #1aca06;
+  --primary-button-color: #1aca06;
+  --tertiary-button-color: #16a706;
 }
 
 .icon {
   width: 1.5rem;
   height: 1.5rem;
-  background-color: var(--bg);
+  background-color: var(--primary-button-color);
 }
 
 .forward-icon {
@@ -146,7 +152,7 @@ body {
 }
 
 .spinner {
-  --bg: black;
+  --primary-button-color: black;
   display: flex;
 }
 
@@ -154,6 +160,7 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(-360deg);
   }

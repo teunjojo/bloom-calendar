@@ -254,74 +254,77 @@ onMounted(() => {
 
     <div class="flex justify-between">
       <div class="text-sm text-transparent">Loading Event Start/End Date</div>
-      <div class="countdown text-xs rounded rounded-full text-transparent">??d ??h ??m</div>
+      <div class="countdown text-xs rounded-full text-transparent">??d ??h ??m</div>
     </div>
   </div>
   <div v-else class="event-container" :class="{ 'grayed-out': dateNow < new Date(event.startDate) }">
     <div v-if="eventError" class="error-message mb-3">
       <span class="icon attention-icon"></span>An error occurred: {{ eventErrorMessage }}
     </div>
-    <span class="flex items-center justify-between gap-2 mb-2">
-      <h2 v-if="!eventEditMode" class="text-xl font-bold flex-grow">
-        {{ event.name }}
-      </h2>
-      <h2 v-else class="text-xl font-bold flex-grow">
-        <input type="text" class="w-full" v-model="eventEdit.name" placeholder="event name" />
-      </h2>
-      <div class="flex gap-2 flex-col" v-if="authStore.isAuthenticated() && !eventEditMode"
-        @click="eventEdit.public = !eventEdit.public">
-        <SwitchComponent :switch-state="event.public" :states="['public', 'hidden']"
-          @state-changed="handlePublicSwitchUpdate" :icon="(updatingPublicState && showPublicStateLoading) || eventLoading
+    <div class="px-2">
+      <span class="flex items-center justify-between gap-2">
+        <h2 v-if="!eventEditMode" class="text-lg font-bold flex-grow">
+          {{ event.name }}
+        </h2>
+        <h2 v-else class="text-xl font-bold flex-grow">
+          <input type="text" class="w-full" v-model="eventEdit.name" placeholder="event name" />
+        </h2>
+        <div class="flex gap-2 flex-col" v-if="authStore.isAuthenticated() && !eventEditMode"
+          @click="eventEdit.public = !eventEdit.public">
+          <SwitchComponent :switch-state="event.public" :states="['public', 'hidden']"
+            @state-changed="handlePublicSwitchUpdate" :icon="(updatingPublicState && showPublicStateLoading) || eventLoading
+              ? 'flip-icon spinning-icon'
+              : 'everyone-icon'
+              "></SwitchComponent>
+        </div>
+        <button class="button button-red" v-if="authStore.isAuthenticated() && eventEditMode"
+          @click="handleDeleteEventButton()">
+          <span class="icon delete-icon"></span>
+        </button>
+        <button class="button" v-if="authStore.isAuthenticated() && !eventEditMode" @click="handleEditEventButton()">
+          <span class="icon edit-icon"></span>
+        </button>
+        <button class="button" v-if="authStore.isAuthenticated() && eventEditMode"
+          @click="handleEditEventCancelButton()">
+          <span class="icon close-icon"></span>
+        </button>
+        <button class="button" v-if="eventEditMode" @click="handleSaveEventButton">
+          <span class="icon" :class="(savingEvent && showSavingEvent) || eventLoading
             ? 'flip-icon spinning-icon'
-            : 'everyone-icon'
-            "></SwitchComponent>
-      </div>
-      <button class="button button-red" v-if="authStore.isAuthenticated() && eventEditMode"
-        @click="handleDeleteEventButton()">
-        <span class="icon delete-icon"></span>
-      </button>
-      <button class="button" v-if="authStore.isAuthenticated() && !eventEditMode" @click="handleEditEventButton()">
-        <span class="icon edit-icon"></span>
-      </button>
-      <button class="button" v-if="authStore.isAuthenticated() && eventEditMode" @click="handleEditEventCancelButton()">
-        <span class="icon close-icon"></span>
-      </button>
-      <button class="button" v-if="eventEditMode" @click="handleSaveEventButton">
-        <span class="icon" :class="(savingEvent && showSavingEvent) || eventLoading
-          ? 'flip-icon spinning-icon'
-          : 'save-icon'
-          "></span>
-      </button>
-      <a class="button button-outline button-white" v-if="event.blogLink && !eventEditMode" :href="event.blogLink"
-        target="_blank" rel="noopener noreferrer">
-        <span class="icon forward-icon"></span>
-      </a>
-    </span>
-    <div class="flex justify-between items-start" v-if="!eventEditMode">
-      <div class="flex flex-col">
-        <div v-if="new Date(event.startDate) > dateNow" class="text-sm">
-          From {{ formatDate(new Date(event.startDate)) }}
+            : 'save-icon'
+            "></span>
+        </button>
+        <a class="button button-outline button-white max-h-[2rem] mb-2" v-if="event.blogLink && !eventEditMode"
+          :href="event.blogLink" target="_blank" rel="noopener noreferrer">
+          <span class="icon forward-icon max-h-[1rem]"></span>
+        </a>
+      </span>
+      <div class="flex justify-between items-start" v-if="!eventEditMode">
+        <div class="flex flex-col">
+          <div v-if="new Date(event.startDate) > dateNow" class="text-sm">
+            From {{ formatDate(new Date(event.startDate)) }}
+          </div>
+          <div class="text-sm">
+            Until {{ formatDate(new Date(event.endDate), true) }}
+          </div>
         </div>
-        <div class="text-sm">
-          Until {{ formatDate(new Date(event.endDate), true) }}
-        </div>
+        <div class="countdown text-xs rounded-full">{{ remainingTime }}</div>
       </div>
-      <div class="countdown text-xs rounded-full">{{ remainingTime }}</div>
-    </div>
-    <div v-else>
-      <label for="start-date" class="whitespace-nowrap">From:</label>
-      <input type="datetime-local" class="w-full" name="start-date" v-model="eventEdit.startDate" />
-      <label for="end-date" class="whitespace-nowrap">Until:</label>
-      <input type="datetime-local" class="w-full" name="end-date" v-model="eventEdit.endDate" />
-    </div>
-    <div v-if="eventEditMode">
-      <label for="blog-link" class="whitespace-nowrap">Link:</label>
-      <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" placeholder="blog link" />
+      <div v-else>
+        <label for="start-date" class="whitespace-nowrap">From:</label>
+        <input type="datetime-local" class="w-full" name="start-date" v-model="eventEdit.startDate" />
+        <label for="end-date" class="whitespace-nowrap">Until:</label>
+        <input type="datetime-local" class="w-full" name="end-date" v-model="eventEdit.endDate" />
+      </div>
+      <div v-if="eventEditMode">
+        <label for="blog-link" class="whitespace-nowrap">Link:</label>
+        <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" placeholder="blog link" />
+      </div>
     </div>
     <div v-if="!eventEditMode">
-      <div v-if="event.images.length > 0" class="rounded-xl bg-indigo-300 mt-5 p-2 flex flex-col items-center gap-1">
+      <div v-if="event.images.length > 0" class="rounded-xl bg-[#E0F2F2] mt-3 p-2 flex flex-col items-center gap-1">
         <span
-          class="font-bold rounded-full border border-2 border-indigo-500 text-indigo-600 px-3 mb-2 shadow-inward">Event
+          class="font-bold rounded-full border border-2 border-teal-500 text-teal-600 px-3 mb-2 shadow-inward">Event
           Images</span>
         <div class="flex flex-wrap items-center justify-around gap-2">
           <div v-for="image in event.images" :key="image.id" class="event-image w-32">
@@ -508,10 +511,8 @@ onMounted(() => {
 
 <style scoped>
 .event-container {
-  padding: 1rem;
-  border-radius: 1rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
-  color: white;
+  /* background: linear-gradient(90deg, var(--primary-color), var(--primary-color-dark) 75%); */
+  @apply p-3 rounded-2xl text-white bg-gradient-to-r from-teal-400 to-cyan-300;
 }
 
 input,

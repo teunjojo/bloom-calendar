@@ -128,14 +128,14 @@ function onDragStart(e: DragEvent, index: number) {
   try {
     e.dataTransfer?.setData('text/plain', String(index))
     e.dataTransfer!.effectAllowed = 'move'
-  } catch {}
+  } catch { }
 }
 
 function onDragOver(e: DragEvent) {
   e.preventDefault()
   try {
     e.dataTransfer!.dropEffect = 'move'
-  } catch {}
+  } catch { }
 }
 
 function onDrop(e: DragEvent, targetIndex: number, array: unknown[]) {
@@ -184,72 +184,42 @@ watch(selectedFlowerId, (id) => {
       <h2 v-else class="text-xl font-bold flex-grow">
         <input type="text" class="w-full" v-model="forecastEdit.name" />
       </h2>
-      <div
-        class="flex gap-2 flex-col"
-        v-if="authStore.isAuthenticated() && !forecastEditMode"
-        @click="forecastEdit.public = !forecastEdit.public"
-      >
-        <SwitchComponent
-          :switch-state="forecast.public"
-          :states="['public', 'hidden']"
-          @state-changed="handlePublicSwitchUpdate"
-          :icon="
-            (updatingPublicState && showPublicStateLoading) || forecastLoading
-              ? 'flip-icon spinning-icon'
-              : 'everyone-icon'
-          "
-        ></SwitchComponent>
+      <div class="flex gap-2 flex-col" v-if="authStore.isAuthenticated() && !forecastEditMode"
+        @click="forecastEdit.public = !forecastEdit.public">
+        <SwitchComponent :switch-state="forecast.public" :states="['public', 'hidden']"
+          @state-changed="handlePublicSwitchUpdate" :icon="(updatingPublicState && showPublicStateLoading) || forecastLoading
+            ? 'flip-icon spinning-icon'
+            : 'everyone-icon'
+            "></SwitchComponent>
       </div>
-      <button
-        class="button button-red"
-        v-if="authStore.isAuthenticated() && forecastEditMode"
-        @click="handleDeleteForecastButton()"
-      >
+      <button class="button button-red" v-if="authStore.isAuthenticated() && forecastEditMode"
+        @click="handleDeleteForecastButton()">
         <span class="icon delete-icon"></span>
       </button>
-      <button
-        class="button"
-        v-if="authStore.isAuthenticated() && !forecastEditMode"
-        @click="handleEditForecastButton()"
-      >
+      <button class="button" v-if="authStore.isAuthenticated() && !forecastEditMode"
+        @click="handleEditForecastButton()">
         <span class="icon edit-icon"></span>
       </button>
-      <button
-        class="button"
-        v-if="authStore.isAuthenticated() && forecastEditMode"
-        @click="handleEditForecastCancelButton()"
-      >
+      <button class="button" v-if="authStore.isAuthenticated() && forecastEditMode"
+        @click="handleEditForecastCancelButton()">
         <span class="icon close-icon"></span>
       </button>
       <button class="button" v-if="forecastEditMode" @click="handleSaveForecastButton">
-        <span
-          class="icon"
-          :class="
-            (savingForecast && showSavingForecast) || forecastLoading
-              ? 'flip-icon spinning-icon'
-              : 'save-icon'
-          "
-        ></span>
+        <span class="icon" :class="(savingForecast && showSavingForecast) || forecastLoading
+          ? 'flip-icon spinning-icon'
+          : 'save-icon'
+          "></span>
       </button>
-      <a
-        class="button button-outline button-white"
-        v-if="forecast.blogLink"
-        :href="forecast.blogLink"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="icon forward-icon"></span>
+      <a class="button button-outline button-white max-h-[2rem]" v-if="forecast.blogLink"
+        :href="forecast.blogLink" target="_blank" rel="noopener noreferrer">
+        <span class="icon forward-icon max-h-[1rem]"></span>
       </a>
     </span>
 
-    <div class="flex flex-col items-stretch justify-between gap-2 mb-2">
+    <div class="flex flex-col items-stretch justify-between gap-4">
       <div v-if="!forecastEditMode">
-        <FlowerList
-          v-if="forecast.flowerOfTheMonth"
-          class=""
-          :flowers="[forecast.flowerOfTheMonth]"
-          name="Flower of the Month"
-        />
+        <FlowerList v-if="forecast.flowerOfTheMonth" class="" :flowers="[forecast.flowerOfTheMonth]"
+          name="Flower of the Month" />
       </div>
       <div v-else class="flex flex-col gap-1 items-center">
         <span class="text-lg align-center">Flower of the Month</span>
@@ -269,65 +239,46 @@ watch(selectedFlowerId, (id) => {
         </select>
       </div>
       <div v-if="!forecastEditMode">
-        <FlowerList
-          v-if="forecast.bigFlowers"
-          class="big-flower-forecast"
-          :flowers="forecast.bigFlowers"
-          name="Big Flowers"
-        />
+        <FlowerList v-if="forecast.bigFlowers" class="big-flower-forecast" :flowers="forecast.bigFlowers"
+          name="Big Flowers" />
       </div>
       <div v-else class="flex flex-col gap-1 items-center">
         <span class="text-lg align-center">Big Flowers</span>
-        <div
-          class="flex gap-2 items-center justify-start w-full"
-          v-for="(flower, index) in forecastEdit.bigFlowers"
-          :key="flower.id"
-          draggable="true"
-          @dragstart="onDragStart($event, index)"
-          @dragover.prevent="onDragOver($event)"
-          @drop="onDrop($event, index, forecastEdit.bigFlowers)"
-          @dragend="onDragEnd"
-        >
-          <button
-            class="button button-red"
-            @click="forecastEdit.bigFlowers.splice(forecastEdit.bigFlowers.indexOf(flower), 1)"
-          >
+        <div class="flex gap-2 items-center justify-start w-full" v-for="(flower, index) in forecastEdit.bigFlowers"
+          :key="flower.id" draggable="true" @dragstart="onDragStart($event, index)"
+          @dragover.prevent="onDragOver($event)" @drop="onDrop($event, index, forecastEdit.bigFlowers)"
+          @dragend="onDragEnd">
+          <button class="button button-red"
+            @click="forecastEdit.bigFlowers.splice(forecastEdit.bigFlowers.indexOf(flower), 1)">
             <span class="icon delete-icon"></span>
           </button>
           <span>{{ flower.name }}</span>
         </div>
         <select class="w-full" name="selectedDecor" v-model="selectedBigFlower">
           <option :value="undefined" disabled></option>
-          <option
-            v-for="selectFlower in allFlowers"
-            :key="selectFlower.id"
-            :value="selectFlower"
-            :disabled="forecastEdit.bigFlowers.some((flower) => flower.id === selectFlower.id)"
-          >
+          <option v-for="selectFlower in allFlowers" :key="selectFlower.id" :value="selectFlower"
+            :disabled="forecastEdit.bigFlowers.some((flower) => flower.id === selectFlower.id)">
             {{ selectFlower.name }}
           </option>
         </select>
-        <button
-          class="button"
-          @click="
-            () => {
-              if (!selectedBigFlower) {
-                forecastError = true
-                forecastErrorMessage = 'No returning decor selected'
-                return
-              }
-              if (forecastEdit.bigFlowers.some((flower) => flower.id === selectedBigFlower!.id)) {
-                forecastError = true
-                forecastErrorMessage = 'Returning decor already added'
-                return
-              }
-
-              forecastEdit.bigFlowers.push(selectedBigFlower)
-              forecastError = false
-              selectedBigFlower = undefined
+        <button class="button" @click="
+          () => {
+            if (!selectedBigFlower) {
+              forecastError = true
+              forecastErrorMessage = 'No returning decor selected'
+              return
             }
-          "
-        >
+            if (forecastEdit.bigFlowers.some((flower) => flower.id === selectedBigFlower!.id)) {
+              forecastError = true
+              forecastErrorMessage = 'Returning decor already added'
+              return
+            }
+
+            forecastEdit.bigFlowers.push(selectedBigFlower)
+            forecastError = false
+            selectedBigFlower = undefined
+          }
+        ">
           <span class="icon plus-icon"></span>
         </button>
       </div>
@@ -361,10 +312,9 @@ watch(selectedFlowerId, (id) => {
 
 <style scoped>
 .forecast {
-  padding: 1rem;
-  border-radius: 1rem;
   background: linear-gradient(135deg, var(--tertiary-color), var(--tertiary-color-dark));
-  color: white;
+  @apply p-3 rounded-2xl text-white;
+
 }
 
 .flower-container img {
