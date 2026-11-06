@@ -8,7 +8,7 @@
   --primary-color-dark-rgb: 0, 200, 150;
   --primary-color-dark: rgb(var(--primary-color-dark-rgb));
 
-  --secondary-color-rgb: 255, 166, 51;
+  --secondary-color-rgb: 88, 205, 212;
   --secondary-color: rgb(var(--secondary-color-rgb));
   --secondary-color-dark-rgb: 255, 140, 0;
   --secondary-color-dark: rgb(var(--secondary-color-dark-rgb));

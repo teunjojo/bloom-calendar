@@ -323,8 +323,7 @@ onMounted(() => {
     </div>
     <div v-if="!eventEditMode">
       <div v-if="event.images.length > 0" class="rounded-xl bg-[#E0F2F2] mt-3 p-2 flex flex-col items-center gap-1">
-        <span
-          class="font-bold rounded-full border border-2 border-teal-500 text-teal-600 px-3 mb-2 shadow-inward">Event
+        <span class="font-bold rounded-full border border-2 border-teal-500 text-teal-600 px-3 mb-2 shadow-inward">Event
           Images</span>
         <div class="flex flex-wrap items-center justify-around gap-2">
           <div v-for="image in event.images" :key="image.id" class="event-image w-32">
@@ -511,8 +510,7 @@ onMounted(() => {
 
 <style scoped>
 .event-container {
-  /* background: linear-gradient(90deg, var(--primary-color), var(--primary-color-dark) 75%); */
-  @apply p-3 rounded-2xl text-white bg-gradient-to-r from-teal-400 to-cyan-300;
+  @apply p-3 rounded-2xl text-white bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)];
 }
 
 input,
@@ -531,6 +529,7 @@ input::placeholder {
 .grayed-out {
   --primary-color: var(--gray-500);
   --primary-color-dark: var(--gray-550);
+  @apply to-[var(--primary-color-dark)]
 }
 
 .countdown {
