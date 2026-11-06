@@ -150,8 +150,8 @@ function handleEditEventCancelButton() {
 
 async function handleSaveEventButton() {
   savingEvent.value = true
-    eventEdit.value.startDate = getLocalTimeString(new Date(eventEdit.value.startDate));
-    eventEdit.value.endDate = getLocalTimeString(new Date(eventEdit.value.endDate));
+  eventEdit.value.startDate = getLocalTimeString(new Date(eventEdit.value.startDate));
+  eventEdit.value.endDate = getLocalTimeString(new Date(eventEdit.value.endDate));
 
   try {
     event.value = await updateEvent(eventEdit.value)
@@ -244,11 +244,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    v-if="eventLoading"
-    class="event-container"
-    :class="{ 'grayed-out': dateNow < new Date(event.startDate) }"
-  >
+  <div v-if="eventLoading" class="event-container" :class="{ 'grayed-out': dateNow < new Date(event.startDate) }">
     <span class="flex items-center justify-between gap-2 mb-2">
       <h2 class="text-xl font-bold flex-grow text-transparent">Loading Event</h2>
       <div class="button">
@@ -261,11 +257,7 @@ onMounted(() => {
       <div class="countdown text-xs rounded rounded-full text-transparent">??d ??h ??m</div>
     </div>
   </div>
-  <div
-    v-else
-    class="event-container"
-    :class="{ 'grayed-out': dateNow < new Date(event.startDate) }"
-  >
+  <div v-else class="event-container" :class="{ 'grayed-out': dateNow < new Date(event.startDate) }">
     <div v-if="eventError" class="error-message mb-3">
       <span class="icon attention-icon"></span>An error occurred: {{ eventErrorMessage }}
     </div>
@@ -276,74 +268,45 @@ onMounted(() => {
       <h2 v-else class="text-xl font-bold flex-grow">
         <input type="text" class="w-full" v-model="eventEdit.name" placeholder="event name" />
       </h2>
-      <div
-        class="flex gap-2 flex-col"
-        v-if="authStore.isAuthenticated() && !eventEditMode"
-        @click="eventEdit.public = !eventEdit.public"
-      >
-        <SwitchComponent
-          :switch-state="event.public"
-          :states="['public', 'hidden']"
-          @state-changed="handlePublicSwitchUpdate"
-          :icon="
-            (updatingPublicState && showPublicStateLoading) || eventLoading
-              ? 'flip-icon spinning-icon'
-              : 'everyone-icon'
-          "
-        ></SwitchComponent>
+      <div class="flex gap-2 flex-col" v-if="authStore.isAuthenticated() && !eventEditMode"
+        @click="eventEdit.public = !eventEdit.public">
+        <SwitchComponent :switch-state="event.public" :states="['public', 'hidden']"
+          @state-changed="handlePublicSwitchUpdate" :icon="(updatingPublicState && showPublicStateLoading) || eventLoading
+            ? 'flip-icon spinning-icon'
+            : 'everyone-icon'
+            "></SwitchComponent>
       </div>
-      <button
-        class="button button-red"
-        v-if="authStore.isAuthenticated() && eventEditMode"
-        @click="handleDeleteEventButton()"
-      >
+      <button class="button button-red" v-if="authStore.isAuthenticated() && eventEditMode"
+        @click="handleDeleteEventButton()">
         <span class="icon delete-icon"></span>
       </button>
-      <button
-        class="button"
-        v-if="authStore.isAuthenticated() && !eventEditMode"
-        @click="handleEditEventButton()"
-      >
+      <button class="button" v-if="authStore.isAuthenticated() && !eventEditMode" @click="handleEditEventButton()">
         <span class="icon edit-icon"></span>
       </button>
-      <button
-        class="button"
-        v-if="authStore.isAuthenticated() && eventEditMode"
-        @click="handleEditEventCancelButton()"
-      >
+      <button class="button" v-if="authStore.isAuthenticated() && eventEditMode" @click="handleEditEventCancelButton()">
         <span class="icon close-icon"></span>
       </button>
       <button class="button" v-if="eventEditMode" @click="handleSaveEventButton">
-        <span
-          class="icon"
-          :class="
-            (savingEvent && showSavingEvent) || eventLoading
-              ? 'flip-icon spinning-icon'
-              : 'save-icon'
-          "
-        ></span>
+        <span class="icon" :class="(savingEvent && showSavingEvent) || eventLoading
+          ? 'flip-icon spinning-icon'
+          : 'save-icon'
+          "></span>
       </button>
-      <a
-        class="button button-outline button-white"
-        v-if="event.blogLink && !eventEditMode"
-        :href="event.blogLink"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a class="button button-outline button-white" v-if="event.blogLink && !eventEditMode" :href="event.blogLink"
+        target="_blank" rel="noopener noreferrer">
         <span class="icon forward-icon"></span>
       </a>
     </span>
-    <div class="flex justify-between" v-if="!eventEditMode">
-      <div
-        v-if="new Date(event.startDate) < dateNow && new Date(event.endDate) > dateNow"
-        class="text-sm"
-      >
-        Until {{ formatDate(new Date(event.endDate), true) }}
+    <div class="flex justify-between items-start" v-if="!eventEditMode">
+      <div class="flex flex-col">
+        <div v-if="new Date(event.startDate) > dateNow" class="text-sm">
+          From {{ formatDate(new Date(event.startDate)) }}
+        </div>
+        <div class="text-sm">
+          Until {{ formatDate(new Date(event.endDate), true) }}
+        </div>
       </div>
-      <div v-else-if="new Date(event.startDate) > dateNow" class="text-sm">
-        From {{ formatDate(new Date(event.startDate)) }}
-      </div>
-      <div class="countdown text-xs rounded rounded-full">{{ remainingTime }}</div>
+      <div class="countdown text-xs rounded-full">{{ remainingTime }}</div>
     </div>
     <div v-else>
       <label for="start-date" class="whitespace-nowrap">From:</label>
@@ -353,113 +316,67 @@ onMounted(() => {
     </div>
     <div v-if="eventEditMode">
       <label for="blog-link" class="whitespace-nowrap">Link:</label>
-      <input
-        type="text"
-        name="blog-link"
-        class="w-full"
-        v-model="eventEdit.blogLink"
-        placeholder="blog link"
-      />
+      <input type="text" name="blog-link" class="w-full" v-model="eventEdit.blogLink" placeholder="blog link" />
     </div>
     <div v-if="!eventEditMode">
-      <div
-        v-if="event.images.length > 0"
-        class="rounded-xl bg-indigo-300 mt-5 p-2 flex flex-col items-center gap-1"
-      >
+      <div v-if="event.images.length > 0" class="rounded-xl bg-indigo-300 mt-5 p-2 flex flex-col items-center gap-1">
         <span
-          class="font-bold rounded-full border border-2 border-indigo-500 text-indigo-600 px-3 mb-2 shadow-inward"
-          >Event Images</span
-        >
+          class="font-bold rounded-full border border-2 border-indigo-500 text-indigo-600 px-3 mb-2 shadow-inward">Event
+          Images</span>
         <div class="flex flex-wrap items-center justify-around gap-2">
           <div v-for="image in event.images" :key="image.id" class="event-image w-32">
-            <img
-              class="cursor-zoom-in rounded-xl max-w-full max-h-full shadow-xl"
-              :src="image.imageUrl"
-              @click="
-                (() => {
-                  fullscreenImageUrl = image.imageUrl
-                  isFullscreen = true
-                })()
-              "
-              alt="Event image"
-            />
+            <img class="cursor-zoom-in rounded-xl max-w-full max-h-full shadow-xl" :src="image.imageUrl" @click="
+              (() => {
+                fullscreenImageUrl = image.imageUrl
+                isFullscreen = true
+              })()
+              " alt="Event image" />
           </div>
         </div>
       </div>
     </div>
     <div v-else class="flex flex-col gap-1 items-center">
       <span class="text-lg align-center">Images</span>
-      <div
-        class="flex gap-2 items-center justify-start w-full"
-        v-for="image in eventEdit.images"
-        :key="image.id"
-      >
-        <button
-          class="button button-red"
-          @click="eventEdit.images.splice(eventEdit.images.indexOf(image), 1)"
-        >
+      <div class="flex gap-2 items-center justify-start w-full" v-for="image in eventEdit.images" :key="image.id">
+        <button class="button button-red" @click="eventEdit.images.splice(eventEdit.images.indexOf(image), 1)">
           <span class="icon delete-icon"></span>
         </button>
         <input class="w-full" type="text" v-model="image.imageUrl" placeholder="image link" />
-        <img
-          class="event-image cursor-zoom-in"
-          style="height: 2rem"
-          :src="image.imageUrl"
-          @click="
-            (() => {
-              fullscreenImageUrl = image.imageUrl
-              isFullscreen = true
-            })()
-          "
-        />
+        <img class="event-image cursor-zoom-in" style="height: 2rem" :src="image.imageUrl" @click="
+          (() => {
+            fullscreenImageUrl = image.imageUrl
+            isFullscreen = true
+          })()
+          " />
       </div>
-      <button
-        class="button"
-        @click="
-          () => {
-            eventEdit.images.push({ id: -1, imageUrl: '' })
-          }
-        "
-      >
+      <button class="button" @click="
+        () => {
+          eventEdit.images.push({ id: -1, imageUrl: '' })
+        }
+      ">
         <span class="icon plus-icon"></span>
       </button>
     </div>
     <div v-if="!eventEditMode">
-      <div
-        class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'NEW').length > 0"
-      >
-        <span
-          class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
-          >New Decor Pikmin</span
-        >
+      <div class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'NEW').length > 0">
+        <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2">New Decor
+          Pikmin</span>
         <div class="flex flex-wrap gap-2 justify-around w-full">
-          <PikminList
-            v-for="eventDecor in event.eventDecor.filter(
-              (eventDecor) => eventDecor.status === 'NEW',
-            )"
-            :key="eventDecor.id"
-            :name="eventDecor.decor.name"
-            :type="eventDecor.decor.type"
-            :overview="eventDecor.overview"
-            class="shadow-xl"
-          ></PikminList>
+          <PikminList v-for="eventDecor in event.eventDecor.filter(
+            (eventDecor) => eventDecor.status === 'NEW',
+          )" :key="eventDecor.id" :name="eventDecor.decor.name" :type="eventDecor.decor.type"
+            :overview="eventDecor.overview" class="shadow-xl"></PikminList>
         </div>
       </div>
     </div>
     <div v-else class="flex flex-col gap-1 items-center">
       <span class="text-lg align-center">New Decor</span>
-      <div
-        class="flex gap-2 items-center justify-start w-full"
-        v-for="eventDecor in eventEdit.eventDecor.filter(
-          (eventDecor) => eventDecor.status === 'NEW',
-        )"
-        :key="eventDecor.id"
-      >
-        <button
-          class="button button-red"
-          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)"
-        >
+      <div class="flex gap-2 items-center justify-start w-full" v-for="eventDecor in eventEdit.eventDecor.filter(
+        (eventDecor) => eventDecor.status === 'NEW',
+      )" :key="eventDecor.id">
+        <button class="button button-red"
+          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)">
           <span class="icon delete-icon"></span>
         </button>
         <div class="flex flex-col gap-1">
@@ -470,64 +387,45 @@ onMounted(() => {
           <input class="w-full" type="text" v-model="eventDecor.overview" placeholder="overview" />
         </div>
       </div>
-      <button
-        class="button"
-        @click="
-          () => {
-            eventEdit.eventDecor.push({
+      <button class="button" @click="
+        () => {
+          eventEdit.eventDecor.push({
+            id: -1,
+            eventId: -1,
+            decorId: -1,
+            decor: {
               id: -1,
-              eventId: -1,
-              decorId: -1,
-              decor: {
-                id: -1,
-                name: '',
-                type: '',
-              },
-              overview: '',
-              status: 'NEW',
-            })
-          }
-        "
-      >
+              name: '',
+              type: '',
+            },
+            overview: '',
+            status: 'NEW',
+          })
+        }
+      ">
         <span class="icon plus-icon"></span>
       </button>
     </div>
     <div v-if="!eventEditMode">
-      <div
-        class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
-        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'RETURNING').length > 0"
-      >
-        <span
-          class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2"
-          >Returning Decor Pikmin</span
-        >
+      <div class="mt-5 rounded-xl p-2 flex flex-col items-center gap-1 bg-amber-100"
+        v-if="event.eventDecor.filter((eventDecor) => eventDecor.status === 'RETURNING').length > 0">
+        <span class="font-bold px-3 rounded-full border border-2 border-amber-500 text-amber-600 mb-2">Returning Decor
+          Pikmin</span>
         <div class="flex flex-wrap gap-2 justify-around w-full">
-          <PikminList
-            v-for="eventDecor in event.eventDecor.filter(
-              (eventDecor) => eventDecor.status === 'RETURNING',
-            )"
-            :key="eventDecor.id"
-            :name="eventDecor.decor.name"
-            :type="eventDecor.decor.type"
-            :overview="eventDecor.overview"
-            class="shadow-xl"
-          ></PikminList>
+          <PikminList v-for="eventDecor in event.eventDecor.filter(
+            (eventDecor) => eventDecor.status === 'RETURNING',
+          )" :key="eventDecor.id" :name="eventDecor.decor.name" :type="eventDecor.decor.type"
+            :overview="eventDecor.overview" class="shadow-xl"></PikminList>
         </div>
       </div>
     </div>
     <div v-else class="flex flex-col gap-3 items-center">
       <span class="text-lg align-center">Returning Decor</span>
-      <div
-        class="flex gap-2 items-center justify-start w-full"
-        v-for="eventDecor in eventEdit.eventDecor.filter(
-          (eventDecor) => eventDecor.status === 'RETURNING',
-        )"
-        :key="eventDecor.id"
-      >
-        <button
-          class="button button-red"
-          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)"
-        >
+      <div class="flex gap-2 items-center justify-start w-full" v-for="eventDecor in eventEdit.eventDecor.filter(
+        (eventDecor) => eventDecor.status === 'RETURNING',
+      )" :key="eventDecor.id">
+        <button class="button button-red"
+          @click="eventEdit.eventDecor.splice(eventEdit.eventDecor.indexOf(eventDecor), 1)">
           <span class="icon delete-icon"></span>
         </button>
         <div class="flex flex-col gap-1 overflow-hidden w-full">
@@ -537,67 +435,50 @@ onMounted(() => {
       </div>
       <select class="w-full" name="selectedDecor" v-model="selectedReturningDecor">
         <option :value="undefined" disabled placeholder="name"></option>
-        <option
-          v-for="selectDecor in allDecor"
-          :key="selectDecor.id"
-          :value="selectDecor"
-          :disabled="
-            eventEdit.eventDecor.some((eventDecor) => eventDecor.decor.id === selectDecor.id)
-          "
-        >
+        <option v-for="selectDecor in allDecor" :key="selectDecor.id" :value="selectDecor" :disabled="eventEdit.eventDecor.some((eventDecor) => eventDecor.decor.id === selectDecor.id)
+          ">
           {{ selectDecor.name }}
         </option>
       </select>
-      <button
-        class="button"
-        @click="
-          () => {
-            if (!selectedReturningDecor) {
-              eventError = true
-              eventErrorMessage = 'No returning decor selected'
-              return
-            }
-            if (
-              eventEdit.eventDecor
-                .filter((eventDecor) => eventDecor.status === 'RETURNING')
-                .some((eventDecor) => eventDecor.decor.id === selectedReturningDecor!.id)
-            ) {
-              eventError = true
-              eventErrorMessage = 'Returning decor already added'
-              return
-            }
-
-            eventEdit.eventDecor.push({
-              id: -1,
-              eventId: -1,
-              decorId: -1,
-              decor: selectedReturningDecor,
-              status: 'RETURNING',
-              overview: '',
-            })
-            eventError = false
-            selectedReturningDecor = undefined
+      <button class="button" @click="
+        () => {
+          if (!selectedReturningDecor) {
+            eventError = true
+            eventErrorMessage = 'No returning decor selected'
+            return
           }
-        "
-      >
+          if (
+            eventEdit.eventDecor
+              .filter((eventDecor) => eventDecor.status === 'RETURNING')
+              .some((eventDecor) => eventDecor.decor.id === selectedReturningDecor!.id)
+          ) {
+            eventError = true
+            eventErrorMessage = 'Returning decor already added'
+            return
+          }
+
+          eventEdit.eventDecor.push({
+            id: -1,
+            eventId: -1,
+            decorId: -1,
+            decor: selectedReturningDecor,
+            status: 'RETURNING',
+            overview: '',
+          })
+          eventError = false
+          selectedReturningDecor = undefined
+        }
+      ">
         <span class="icon plus-icon"></span>
       </button>
     </div>
   </div>
   <!-- fullscreen popup modal-->
-  <div
-    class="fullscreen-popup cursor-zoom-out"
-    :style="{
-      opacity: isFullscreen ? '1' : '0',
-      pointerEvents: isFullscreen ? 'auto' : 'none',
-    }"
-    @click="isFullscreen = false"
-  >
-    <img
-      class="fullscreen-image"
-      :class="isFullscreen ? 'popin' : 'popout'"
-      :src="fullscreenImageUrl"
-    />
+  <div class="fullscreen-popup cursor-zoom-out" :style="{
+    opacity: isFullscreen ? '1' : '0',
+    pointerEvents: isFullscreen ? 'auto' : 'none',
+  }" @click="isFullscreen = false">
+    <img class="fullscreen-image" :class="isFullscreen ? 'popin' : 'popout'" :src="fullscreenImageUrl" />
   </div>
 
   <!-- delete event dialog modal -->
@@ -605,8 +486,7 @@ onMounted(() => {
     <div class="flex flex-col items-center">
       <span class="text-xl">Are you sure you want to:</span>
       <span class="font-bold">
-        Delete <span class="code-block">{{ event.name }}</span
-        >?
+        Delete <span class="code-block">{{ event.name }}</span>?
       </span>
     </div>
     <div class="flex justify-around pt-3">
@@ -708,6 +588,7 @@ input::placeholder {
   from {
     transform: scale(0);
   }
+
   to {
     transform: scale(1);
   }
@@ -717,6 +598,7 @@ input::placeholder {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(0);
   }
