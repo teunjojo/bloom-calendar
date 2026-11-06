@@ -35,12 +35,12 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col justify-between min-h-screen">
     <NavBar />
-    <div v-if="tryingAuth" class="flex justify-center">
+    <!-- <div v-if="tryingAuth" class="flex justify-center">
       <div class="spinner bg-white rounded-full p-2 shadow-xl">
         <span class="icon flip-icon spinning-icon"></span>
-      </div>
-    </div>
-    <RouterView v-else />
+      </div> -->
+    <!-- </div> -->
+    <RouterView />
     <FooterComponent />
   </div>
 </template>
