@@ -42,8 +42,9 @@ async function fetchCurrentEvents() {
   }
   try {
     currentEvents.value = await getEvents(filters)
-  } catch {
+  } catch (e) {
     currentEventsFailed.value = true
+    console.error(e)
   }
   loadingCurrentEvents.value = false
 }
@@ -58,8 +59,9 @@ async function fetchCurrentForecast() {
   }
   try {
     currentForecast.value = (await getForecasts(filters))[0] || ({} as Forecast)
-  } catch {
+  } catch (e) {
     currentForecastFailed.value = true
+    console.error(e)
   }
   loadingCurrentForecast.value = false
 }
@@ -75,8 +77,9 @@ async function fetchUpcomingEvents() {
   let nextWeekEvents: PikminEvent[] = []
   try {
     nextWeekEvents = await getEvents(filters)
-  } catch {
+  } catch (e) {
     upcomingEventsFailed.value = true
+    console.error(e)
   }
 
   const filteredEvents = nextWeekEvents.filter((event) => {
@@ -100,8 +103,9 @@ async function fetchUpcomingForecast() {
   let upcomingForecasts: Forecast[] = []
   try {
     upcomingForecasts = await getForecasts(filters)
-  } catch {
+  } catch (e) {
     upcomingForecastFailed.value = true
+    console.error(e)
   }
 
   const filteredEvents = upcomingForecasts.filter((forecast) => {
@@ -235,13 +239,8 @@ onMounted(async () => {
 <template>
   <div class="dashboard flex flex-wrap justify-center items-start gap-4 p-4">
     <div class="event-list flex flex-col gap-2 p-4 w-[25rem] max-w-full min-w-[15rem]">
-      <img
-        src="/images/icons/gift.png"
-        alt="Flower Icon"
-        class="w-10 h-10 absolute self-end"
-        style="transform: translate(-1rem, 25%) rotate(10deg)"
-        v-if="currentEvents.length > 0"
-      />
+      <img src="/images/icons/gift.png" alt="Flower Icon" class="w-10 h-10 absolute self-end"
+        style="transform: translate(-1rem, 25%) rotate(10deg)" v-if="currentEvents.length > 0" />
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="invert" style="height: 2rem" src="/images/icons/special.png" />
         Current Events
@@ -256,29 +255,21 @@ onMounted(async () => {
       </div>
       <div v-else-if="currentEvents.length === 0" class="text-center italic">No current events</div>
       <div v-else class="flex flex-col gap-2">
-        <EventComponent
-          v-for="event in currentEvents"
-          :key="event.id"
-          :pikminEvent="event"
-          :edit-mode="event.id === -1"
-          :loading="loadingCurrentEvents && showLoadingCurrentEvents"
-          @event-ended="
+        <EventComponent v-for="event in currentEvents" :key="event.id" :pikminEvent="event" :edit-mode="event.id === -1"
+          :loading="loadingCurrentEvents && showLoadingCurrentEvents" @event-ended="
             () => {
               fetchCurrentEvents()
             }
-          "
-          @event-updated="
+          " @event-updated="
             () => {
               fetchCurrentEvents()
               fetchUpcomingEvents()
             }
-          "
-          @event-removed="
+          " @event-removed="
             () => {
               currentEvents.splice(currentEvents.indexOf(event), 1)
             }
-          "
-        />
+          " />
       </div>
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="invert" style="height: 2rem" src="/images/icons/special.png" />
@@ -296,35 +287,24 @@ onMounted(async () => {
         No upcoming events
       </div>
       <div v-else class="flex flex-col gap-2">
-        <EventComponent
-          v-for="event in upcomingEvents"
-          :key="event.id"
-          :pikminEvent="event"
-          :loading="loadingUpcomingEvents && showLoadingUpcomingEvents"
-          @event-started="
+        <EventComponent v-for="event in upcomingEvents" :key="event.id" :pikminEvent="event"
+          :loading="loadingUpcomingEvents && showLoadingUpcomingEvents" @event-started="
             () => {
               fetchCurrentEvents()
               fetchUpcomingEvents()
             }
-          "
-          @event-updated="
+          " @event-updated="
             () => {
               fetchCurrentEvents()
               fetchUpcomingEvents()
             }
-          "
-          @event-removed="
+          " @event-removed="
             () => {
               upcomingEvents.splice(upcomingEvents.indexOf(event), 1)
             }
-          "
-        />
+          " />
       </div>
-      <div
-        v-if="authStore.isAuthenticated()"
-        class="flex justify-center"
-        @click="handleAddUpcomingEvent()"
-      >
+      <div v-if="authStore.isAuthenticated()" class="flex justify-center" @click="handleAddUpcomingEvent()">
         <button class="button button-primary">
           <span class="icon plus-icon"></span>
         </button>
@@ -346,10 +326,8 @@ onMounted(async () => {
       </div>
       <div v-else-if="!currentForecast.id" class="text-center italic">No current forecasts</div>
       <div v-else class="flex flex-col gap-2">
-        <ForecastComponent
-          :forecast="currentForecast"
-          :loading="loadingCurrentForecast && showLoadingCurrentForecast"
-        />
+        <ForecastComponent :forecast="currentForecast"
+          :loading="loadingCurrentForecast && showLoadingCurrentForecast" />
       </div>
       <span class="text-xl font-bold flex items-center gap-1">
         <img class="invert" style="height: 2rem" src="/images/icons/weather.png" />
@@ -365,21 +343,15 @@ onMounted(async () => {
       </div>
       <div v-else-if="!upcomingForecast.id" class="text-center italic">No upcoming forecast</div>
       <div v-else class="flex flex-col gap-2">
-        <ForecastComponent
-          :forecast="upcomingForecast"
-          :loading="loadingUpcomingForecast && showLoadingUpcomingForecast"
-          @forecast-removed="
+        <ForecastComponent :forecast="upcomingForecast"
+          :loading="loadingUpcomingForecast && showLoadingUpcomingForecast" @forecast-removed="
             () => {
               upcomingForecast = {} as Forecast
             }
-          "
-        />
+          " />
       </div>
-      <div
-        v-if="authStore.isAuthenticated() && !upcomingForecast.id"
-        class="flex justify-center"
-        @click="handleAddUpcomingForecast()"
-      >
+      <div v-if="authStore.isAuthenticated() && !upcomingForecast.id" class="flex justify-center"
+        @click="handleAddUpcomingForecast()">
         <button class="button button-primary">
           <span class="icon plus-icon"></span>
         </button>
