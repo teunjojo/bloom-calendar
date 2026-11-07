@@ -398,7 +398,7 @@ onMounted(() => {
             decor: {
               id: -1,
               name: '',
-              type: '',
+              type: 'special',
             },
             overview: '',
             status: 'NEW',
