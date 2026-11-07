@@ -73,19 +73,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg p-2 w-full cursor-pointer" @click="pikminOverviewShow = !pikminOverviewShow">
+  <div class="bg-white rounded-lg p-2 w-full" :class="overview && overview.length > 0 ? 'cursor-pointer' : ''"
+    @click="overview && overview.length > 0 ? (pikminOverviewShow = !pikminOverviewShow) : (() => { })">
     <div class="flex items-center gap-2">
-      <canvas
-        ref="coinCanvas"
-        :style="{ height: baseHeight + 'px', width: canvasWidth + 'px' }"
-      ></canvas>
+      <canvas ref="coinCanvas" :style="{ height: baseHeight + 'px', width: canvasWidth + 'px' }"></canvas>
       <span class="font-bold text-amber-900 overflow-hidden break-words">{{ props.name }}</span>
-      <button
-        v-if="overview && overview.length > 0"
-        class="button button-pikmin-list"
-        style="height: 1rem; width: 1rem"
-        :class="pikminOverviewShow ? 'rotate-90' : 'rotate-0'"
-      >
+      <button v-if="overview && overview.length > 0" class="button button-pikmin-list" style="height: 1rem; width: 1rem"
+        :class="pikminOverviewShow ? 'rotate-90' : 'rotate-0'">
         <span class="icon forward-icon" style="height: 0.75rem; width: 0.75rem"></span>
       </button>
     </div>
@@ -98,7 +92,7 @@ onMounted(() => {
 <style scoped>
 .button-pikmin-list {
   --bg: transparent;
-  --color: theme(colors.amber.950);
+  --color: var(--color-amber-950);
   transition: 0.25s ease-out;
 }
 </style>
