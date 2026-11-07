@@ -43,7 +43,6 @@ body {
   border-radius: 100vw;
   height: 2.5rem;
   font-size: 1rem;
-  /* background: var(--primary-button-color); */
   background: linear-gradient(var(--primary-button-color), var(--tertiary-button-color));
   color: var(--secondary-button-color);
   @apply aspect-square flex items-center justify-center;
