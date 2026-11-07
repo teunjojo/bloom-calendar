@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --primary-color-rgb: 73, 209, 185;
@@ -35,7 +33,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.button {
+@utility button {
   --hover: white;
   --primary-button-color: var(--gray-200);
   --secondary-button-color: black;

@@ -311,6 +311,8 @@ watch(selectedFlowerId, (id) => {
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
 .forecast {
   background: linear-gradient(135deg, var(--tertiary-color), var(--tertiary-color-dark));
   @apply p-3 rounded-2xl text-white;

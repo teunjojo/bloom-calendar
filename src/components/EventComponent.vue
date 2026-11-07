@@ -509,6 +509,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
 .event-container {
   @apply p-3 rounded-2xl text-white bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)];
 }
