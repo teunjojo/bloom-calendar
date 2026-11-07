@@ -262,7 +262,7 @@ onMounted(() => {
       <span class="icon attention-icon"></span>An error occurred: {{ eventErrorMessage }}
     </div>
     <div class="px-2">
-      <span class="flex items-center justify-between gap-2">
+      <span class="flex items-center justify-between gap-2 mb-2">
         <h2 v-if="!eventEditMode" class="text-lg font-bold flex-grow">
           {{ event.name }}
         </h2>
@@ -294,7 +294,7 @@ onMounted(() => {
             : 'save-icon'
             "></span>
         </button>
-        <a class="button button-outline button-white max-h-[2rem] mb-2" v-if="event.blogLink && !eventEditMode"
+        <a class="button button-outline button-white max-h-[2rem]" v-if="event.blogLink && !eventEditMode"
           :href="event.blogLink" target="_blank" rel="noopener noreferrer">
           <span class="icon forward-icon max-h-[1rem]"></span>
         </a>
@@ -323,7 +323,7 @@ onMounted(() => {
     </div>
     <div v-if="!eventEditMode">
       <div v-if="event.images.length > 0" class="rounded-xl bg-[#E0F2F2] mt-3 p-2 flex flex-col items-center gap-1">
-        <span class="font-bold rounded-full border border-2 border-teal-500 text-teal-600 px-3 mb-2 shadow-inward">Event
+        <span class="font-bold rounded-full border-2 border-teal-500 text-teal-600 px-3 mb-2 shadow-inward">Event
           Images</span>
         <div class="flex flex-wrap items-center justify-around gap-2">
           <div v-for="image in event.images" :key="image.id" class="event-image w-32">
