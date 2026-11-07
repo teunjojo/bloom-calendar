@@ -148,6 +148,10 @@ body {
   mask: url('/images/icons/attention-stroke.png') no-repeat center / contain;
 }
 
+.zoom-in-icon {
+  mask: url('/images/icons/zoom-in.png') no-repeat center / contain;
+}
+
 .spinner {
   --primary-button-color: black;
   display: flex;

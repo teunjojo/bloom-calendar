@@ -102,6 +102,7 @@ function calculateRemainingTime(date: Date): string {
 }
 
 function updateRemainingTime() {
+  if (eventEditMode.value) return;
   if (new Date(event.value.startDate) <= new Date(dateNow.value)) {
     if (!eventStarted.value) {
       eventStarted.value = true
@@ -327,12 +328,20 @@ onMounted(() => {
           Images</span>
         <div class="flex flex-wrap items-center justify-around gap-2">
           <div v-for="image in event.images" :key="image.id" class="event-image w-32">
-            <img class="cursor-zoom-in rounded-xl max-w-full max-h-full shadow-xl" :src="image.imageUrl" @click="
-              (() => {
-                fullscreenImageUrl = image.imageUrl
-                isFullscreen = true
-              })()
-              " alt="Event image" />
+            <div class="rounded-xl overflow-hidden relative">
+              <img class="cursor-zoom-in max-w-full max-h-full shadow-xl" :src="image.imageUrl" @click="
+                (() => {
+                  fullscreenImageUrl = image.imageUrl
+                  isFullscreen = true
+                })()
+                " alt="Event image" />
+              <div
+                class="pointer-fine:hidden  absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black/30 pointer-events-none">
+                <div class="">
+                  <span class="block h-10 w-10 icon zoom-in-icon button-white"></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
